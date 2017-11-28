@@ -490,3 +490,86 @@ int main ()
 #ifndef MAX  //和#if !defined()的用法基本一致致
     ...code...
 #endif
+
+
+
+预处理#include.h
+
+1.#include指令允许嵌套包含，比如a.h包含b.h，b.h包含c.h，但是不允许递归包含，比如 a.h 包含 b.h，b.h 包含 a.h。
+2.为了解决重复编译，导致程序变慢的问题：需要在每个xx.h文件中写上：
+#ifndef _ONE_H_  //如果没有被定义one.h文件，则定义one.h
+#define _ONE_H_
+#endif
+
+如下栗子：
+#include "one.h"
+#ifndef _ONE_H_
+#define _ONE_H_
+
+void one();
+#endif
+
+// #include "two.h"
+#ifndef _TWO_H_
+#define _TWO_H_
+
+// #include "one.h"
+#ifndef _ONE_H_
+#define _ONE_H_
+
+void one();
+#endif
+
+void two();
+#endif
+
+// 编译后就只有两个声明，就不会有重复的声明：
+void one();
+void two();
+
+
+外部函数：
+如果在当前文件中定义的函数允许其他文件访问、调用，就称为外部函数。
+C语言规定，不允许有同名的外部函数。
+
+内部函数：
+如果在当前文件中定义的函数不允许其他文件访问、调用，只能在内部使用，就称为内部函数。
+C语言规定不同的源文件可以有同名的内部函数，并且互不干扰。
+
+
+栗子：在main.c中调用one.c中定义的one函数
+main.c如下：
+#include <stdio.h>  //include的意思相当于拷贝
+#include "one.h"  //引用one.h文件，这儿.h文件是头文件的意思，是否跟one.c不一致？
+int.int main(int argc, char const *argv[])
+{
+    void one();
+    return 0;
+}
+
+one.h如下：
+#include <stdio.h>
+void one() //void前面省略了extern， 因为函数默认可以被外部调用
+{
+    printf("调用了one函数\n");
+    return 0;
+}
+
+
+栗子：内部函数
+#include <stdio.h> 
+static void test();  //加上static，针对于内部函数使用，函数外部无法调用
+int main(int argc, const char * argv[])
+{
+    test();
+    return 0;
+}
+
+static void test() {
+    printf("调用了test函数");
+}
+
+Note:
+所谓编译，就是单独检查每个源文件的语法是否合理，并不会检查每个源文件之间的关联关系，一个源文件编译成功就生成一个目标文件。
+所谓链接，就是检查目标文件的关联关系，将相关联的目标文件组合在一起，生成可执行文件。
+定义和声明完全是两码事
