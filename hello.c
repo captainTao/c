@@ -627,3 +627,168 @@ note:
 // 如果不想其他源文件共享，相当于私有的全局变量，那么就得用static关键字来定义变量   static int a;
 // extern是用来声明已经定义过而且能够访问的变量，如果外部文件变量私有化了，就不用能用  extern int a; 
 // extern可以用来声明一个全局变量，但是不能用来定义变量；
+
+
+类型别名： typedef
+
+// 一般用法：
+#include <stdio.h> 
+typedef int Integer;  //int别名
+typedef unsigned int UInterger; //unsinged int
+typedef float Float; //float
+int main(int argc, const char * argv[]) {
+    Integer i = -10;
+    UInterger ui = 11;   
+    Float f = 12.39f;    
+    printf("%d  %d  %.2f", i, ui, f);
+    
+    return 0;
+}
+
+// * 也可以在别名的基础上再起一个别名
+typedef int Integer;
+typedef Integer MyInteger;
+
+
+typedef与指针：
+#include <stdio.h>
+typedef char *String;   // 给指针类型char *起别名为String
+int main(int argc, const char * argv[]) {
+    String str = "This is a string!";   // 相当于char *str = "This is a string!";
+    printf("%s", str);   
+    return 0;
+}
+
+typedef结构体：
+
+// 以前结构体的写法
+struct MyPoint { // 定义一个结构体
+    float x;
+    float y;
+};
+int main(int argc, const char * argv[]) {
+    // 定义结构体变量
+    struct MyPoint p;
+    p.x = 10.0f;
+    p.y = 20.0f;
+    
+    return 0;
+}
+
+// 用别名的结构体的写法
+struct MyPoint { // 定义一个结构体
+    float x;
+    float y;
+};
+// 起别名
+typedef struct MyPoint Point;   //方法一
+int main(int argc, const char * argv[]) {
+    // 定义结构体变量
+    Point p;
+    p.x = 10.0f;
+    p.y = 20.0f;    
+    return 0;
+}
+
+// 结构体取别名可以在定义的步骤就开始：
+typedef struct MyPoint { //方法二
+    float x;
+    float y;
+} Point;
+
+typedef struct {  //方法三
+    float x;
+    float y;
+} Point;
+
+
+typedef与结构指针：
+
+#include <stdio.h>
+typedef struct {
+    float x;
+    float y;
+} Point;  // 定义一个结构体并起别名
+
+typedef Point *PP;  // 起别名，指向结构体的指针定义了别名PP
+int main(int argc, const char * argv[]) {
+    // 定义结构体变量
+    Point point = {10, 20};   
+    // 定义指针变量
+    PP p = &point;    
+    // 利用指针变量访问结构体成员
+    printf("x=%f，y=%f", p->x, p->y); //x=10.000000，y=20.000000 
+    return 0;
+}
+
+
+typedef与枚举类型：
+
+
+// 定义枚举类型的第一种方式：
+enum Season {spring, summer, autumn, winter};
+// 给枚举类型起别名
+typedef enum Season Season;
+// 定义枚举类型的第二种方式：
+// typedef enum Season {spring, summer, autumn, winter} Season
+// 定义的第三种方式：
+// typedef enum {spring, summer, autumn, winter} Season;
+int main(int argc, const char * argv[]) {
+    // 定义枚举变量
+    Season s = spring; 
+    printf("%u\n", s); //这里的s为unsigned int类型  
+    return 0;
+}
+
+
+typedef与函数指针：
+
+#include <stdio.h>
+ // 定义一个sum函数，计算a跟b的和
+ int sum(int a, int b) {
+     int c = a + b;
+     printf("%d + %d = %d", a, b, c);
+     return c;
+ } 
+ int main(int argc, const char * argv[]) {
+     int (*p)(int, int) = sum;       // 定义一个指向sum函数的指针变量p
+     // 利用指针变量p调用sum函数
+     (*p)(4, 5); //9
+     
+     return 0;
+ }
+
+//另外一种写法：
+#include <stdio.h>
+ // 定义一个sum函数，计算a跟b的和
+ int sum(int a, int b) {
+     int c = a + b;
+     printf("%d + %d = %d", a, b, c);
+     return c;
+ } 
+ typedef int (*MySum)(int, int);//给指向函数的指针类型，起了个别名叫MySum，被指向的函数接收2个int类型的参数，返回值为int类型。
+ int main(int argc, const char * argv[]) {
+     // 定义一个指向sum函数的指针变量p
+     MySum p = sum;
+     // 利用指针变量p调用sum函数
+     (*p)(4, 5);
+     
+     return 0;
+ }
+
+
+ typedef与#define
+
+typedef char *String1; //char *起了个别名String1
+
+#define String2 char * //定义了宏String2
+
+int main(int argc, const char * argv[]) {
+    String1 str1, str2;  //定义了两个指向char类型的指针    
+    String2 str3, str4;  //char *替换了Sting2的字段
+    return 0;
+}
+
+// 结果：只有str1、str2、str3才是指向char类型的指针变量，str4只是个char类型的变量。
+Note:
+以后给类型起别名，最好使用typedef，而不是使用#define
