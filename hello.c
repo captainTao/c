@@ -96,6 +96,18 @@ l int a[][5] = {3,21,31,2,32,1};
 int a = 10;
 int *p = &a;
 
+#include <stdio.h>
+int main(int argc, char const *argv[])
+{
+    int a=10;
+    int *pa; //如果要写成一行，用int *pa=&i;
+    pa=&a;  //单独一行的时候，不能写成*pa=&i(编译报错),或者*pa=i（出来的值报错）
+    *pa=20;
+    printf("%d\n", a); //20
+    printf("%d\n", *pa); //20
+    return 0;
+}
+
 清空指针：
 p = 0;
 p = NULL;
@@ -112,6 +124,106 @@ p = NULL;
 返回指针的函数的一般形式为：类型名 * 函数名(参数列表)
 指向函数的指针一般形式：函数的返回值类型 (*指针变量名)(形参1, 形参2, ...);
 
+// 循环遍历数组：
+#include <stdio.h>
+int main(int argc, char const *argv[])
+{
+int i, a[] = {3,4,5,6,7,3,7,4,4,6}; 
+for (i = 0; i <= 9; i++) {
+    printf("%d\n", a[i]); } 
+    return 0;
+}
+
+// 指针遍历数组：
+#include <stdio.h>
+int main(int argc, char const *argv[]){
+    int i, *pa, a[] = {3,4,5,6,7,3,7,4,4,6}; 
+    pa = a; //数组名a直接赋值给了指针*pa
+    for (i = 0; i <= 9; i++) {
+        printf("%d\n", pa[i]); }  //通过pa[i]取值，又把指针当做了一个数组
+    return 0;
+}
+
+#include <stdio.h>
+int main(int argc, char const *argv[]){
+    int i, *pa, a[] = {3,4,5,6,7,3,7,4,4,6}; 
+    pa = a; //数组名a直接赋值给了指针*pa
+    for (i = 0; i <= 9; i++) {
+        printf("%d\n", *(pa+i); }  //通过*(pa+i)取值
+    return 0;
+}
+
+#include <stdio.h>
+int main(int argc, char const *argv[]){
+    int i, *pa, a[] = {3,4,5,6,7,3,7,4,4,6}; 
+    pa = a; //数组名a直接赋值给了指针*pa
+    for (i = 0; i <= 9; i++) {
+        printf("%d\n", *pa); //直接取指针
+        pa++; //地址加1
+        }  //通过*(pa+i)取值
+    return 0;
+}
+
+#include <stdio.h>
+int main(int argc, char const *argv[]){
+    int i, a[] = {3,4,5,6,7,3,7,4,4,6}; 
+    for (i = 0; i <= 9; i++){
+        printf("%d\n", *(a+i)); } //可以直接取a,数组名也就是指针,前面没定义指针a
+    return 0;
+}
+
+// 数组名和指针的区别：（某种意义上可以认为一样）
+// 指针是一个指针变量，可以被修改；而数组是一个指针常量，不能被修改；
+
+#include <stdio.h>
+int main(int argc, char const *argv[]){
+    int i, a[] = {3,4,5,6,7,3,7,4,4,6}; 
+    int *const pa = a; //注意const位置，不是const int *pa,常量指针
+    for (i = 0; i <= 9; i++) {
+        printf("%d\n", *(pa+i)); //直接取指针
+        // pa++; //地址加1,这儿不能这么写，认为pa是一个常量了，所以pa的值不能被改变
+        }  //通过*(pa+i)取值
+    return 0;
+}
+
+note:
+常量：
+const int i=3
+int const i=5
+指针常量：
+const int *p  //p的值可以被修改
+int *const p  //p的值不能被修改
+
+
+#include <stdio.h>
+void Exchg2(int *px, int *py){
+    int tmp = *px; 
+    *px = *py; 
+    *py = tmp; 
+    printf("*px = %d, *py = %d.\n", *px, *py);
+} 
+int main(){ 
+    int a = 4; 
+    int b = 6; 
+    Exchg2(&a, &b); //6,4
+    printf("a = %d, b = %d.\n", a, b); //6,4,这里交换了指针地址，即对a，b进行了修改
+    return(0);
+} 
+
+
+#include <stdio.h>
+void Exchg3(int x, int y){
+    int tmp = x; 
+    x = y; 
+    y = tmp; 
+    printf("x = %d,y = %d\n", x, y); 
+} 
+int main(){ 
+    int a = 4; 
+    int b = 6; 
+    Exchg3(a, b);  //6,4
+    printf("a = %d, b = %d\n", a, b); return(0);  //4,6 前一个函数引起的只是x,y形参的变化，不影响实参a,b
+}
 
 
 自动变量：
@@ -777,7 +889,7 @@ typedef与函数指针：
  }
 
 
- typedef与#define
+typedef与#define
 
 typedef char *String1; //char *起了个别名String1
 
