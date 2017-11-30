@@ -1070,7 +1070,7 @@ Note:
 
 
 ===================================================================
-ps:
+typedef 举栗子：
 
 // typedef常用系列：
 #include <stdio.h>
@@ -1081,7 +1081,6 @@ int main(){
     *px = 10; /* px 就是 int*类型的变量 */
     return 0;
 }
-
 
 
 // typedef声明函数
@@ -1105,8 +1104,6 @@ void MyFun(int x){
 FunType FunP2;
 FunType FunP3; 
 */
-
-
 
 
 // typedef的应用
