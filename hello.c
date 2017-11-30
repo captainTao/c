@@ -1116,7 +1116,12 @@ FunType FunP3;
 函数的定义格式应相同）。
 实现：代码如下：
 */
+
+// 先写main函数，main中需要用到callMyfun, CallMyFun中需要用到三个fun; 四个函数都需要前面声明，声明可以重定义
+
+
 #include <stdio.h>
+
 void MyFun1(int x);
 void MyFun2(int x);
 void MyFun3(int x);
@@ -1134,6 +1139,7 @@ int main(int argc, char* argv[]){
 void CallMyFun(FunType fp,int x){ /* ③. 参数fp的类型是FunType。*/
     fp(x);/* ④. 通过 fp 的指针执行传递进来的函数，注意fp所指的函数是有一个参数的。 */
 }
+
 void MyFun1(int x){/* ①. 这是个有一个参数的函数，以下两个函数也相同。 */
     printf("函数 MyFun1 中输出：%d\n",x);
 }
