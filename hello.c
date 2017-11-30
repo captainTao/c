@@ -910,6 +910,7 @@ note:
 typedef int Integer;  //int别名
 typedef unsigned int UInterger; //unsinged int
 typedef float Float; //float
+
 int main(int argc, const char * argv[]) {
     Integer i = -10;
     UInterger ui = 11;   
@@ -1066,3 +1067,87 @@ int main(int argc, const char * argv[]) {
 // 结果：只有str1、str2、str3才是指向char类型的指针变量，str4只是个char类型的变量。
 Note:
 以后给类型起别名，最好使用typedef，而不是使用#define
+
+
+===================================================================
+ps:
+
+// typedef常用系列：
+#include <stdio.h>
+typedef int* PINT; /* 为 int* 类型定义了一个 PINT 的别名*/
+int main(){
+    int x;
+    PINT px = &x; /* 与“int *px=&x;”是等价的。PINT 类型其实就是 int * 类型 */
+    *px = 10; /* px 就是 int*类型的变量 */
+    return 0;
+}
+
+
+
+// typedef声明函数
+#include <stdio.h>
+void MyFun(int x); /*此处的声明也可写成：void MyFun( int )*/
+typedef void (*FunType)(int); /*（★）这样只是定义一个函数指针类型*/
+FunType FunP; /*然后用 FunType 类型来声明全局 FunP 变量*/
+
+int main(int argc, char* argv[]){
+    // FunType FunP; /*函数指针变量当然也是可以是局部的 ，那就请在这里声明了。 */
+    MyFun(10);
+    FunP = &MyFun;
+    return 0;
+}
+void MyFun(int x){
+    printf("%d\n",x);
+}
+/*
+有了 FunType 类型后，我们就可以同样地、很方便地用 FunType 类型来
+声明多个同类型的函数指针变量了。如下：
+FunType FunP2;
+FunType FunP3; 
+*/
+
+
+
+
+// typedef的应用
+/*
+要求：我要设计一个 CallMyFun 函数，这个函数可以通过参数中的函数
+指针值不同来分别调用 MyFun1、MyFun2、MyFun3 这三个函数（注：这三个
+函数的定义格式应相同）。
+实现：代码如下：
+*/
+#include <stdio.h>
+void MyFun1(int x);
+void MyFun2(int x);
+void MyFun3(int x);
+
+typedef void (*FunType)(int); // ②. 定义一个函数指针类型FunType
+
+void CallMyFun(FunType fp,int x);
+
+int main(int argc, char* argv[]){
+    CallMyFun(MyFun1,10); /* ⑤. 通过 CallMyFun 函数分别调用三个不同的函数 */
+    CallMyFun(MyFun2,20);
+    CallMyFun(MyFun3,30);
+}
+
+void CallMyFun(FunType fp,int x){ /* ③. 参数fp的类型是FunType。*/
+    fp(x);/* ④. 通过 fp 的指针执行传递进来的函数，注意fp所指的函数是有一个参数的。 */
+}
+void MyFun1(int x){/* ①. 这是个有一个参数的函数，以下两个函数也相同。 */
+    printf("函数 MyFun1 中输出：%d\n",x);
+}
+
+void MyFun2(int x){
+    printf("函数 MyFun2 中输出：%d\n",x);
+}
+
+void MyFun3(int x){
+    printf("函数 MyFun3 中输出：%d\n",x);
+}
+
+// 函数 MyFun1 中输出：10
+// 函数 MyFun2 中输出：20
+// 函数 MyFun3 中输出：30
+
+
