@@ -194,6 +194,7 @@ int const i=5
 const int *p  //p的值可以被修改
 int *const p  //p的值不能被修改
 
+==============================================
 
 #include <stdio.h>
 void Exchg2(int *px, int *py){
@@ -205,7 +206,7 @@ void Exchg2(int *px, int *py){
 int main(){ 
     int a = 4; 
     int b = 6; 
-    Exchg2(&a, &b); //6,4
+    Exchg2(&a, &b); //6,4；函数的参数是个指针的话，传入的应该是一个地址
     printf("a = %d, b = %d.\n", a, b); //6,4,这里交换了指针地址，即对a，b进行了修改
     return(0);
 } 
@@ -222,8 +223,169 @@ int main(){
     int a = 4; 
     int b = 6; 
     Exchg3(a, b);  //6,4
-    printf("a = %d, b = %d\n", a, b); return(0);  //4,6 前一个函数引起的只是x,y形参的变化，不影响实参a,b
+    printf("a = %d, b = %d\n", a, b); 
+    return(0);  //4,6 前一个函数引起的只是x,y形参的变化，不影响实参a,b
 }
+
+-------------------------------------------------
+指向指针的指针
+int **ppi;
+int *pi;
+int i=50;
+pi=&i;
+*ppi=&pi;
+// *ppi的值就是*pi的值作为地址，然后去寻值
+
+
+双指针的运用栗子：
+
+#include <stdio.h>
+void find1(char array[], char search, char *pa)
+{
+    int i;
+    for (i = 0; *(array + i) != 0; i++){
+    if ( *(array+i) == search){
+        pa = array + i;
+        // printf("找到了,pa=%s\n", pa); //找到了,pa=dfsdfdf
+        break;
+        }
+    else if (*(array+i) == 0){
+        pa = 0;
+        // printf("没找到,pa=%s\n", pa);
+        break;
+        }
+    }
+}
+
+int main()
+{
+    char str[] = {"afsdfsdfdf\0"}; /* 待查找的字符串 */
+    char a = 'd'; /* 设置要查找的字符 */
+    char *p = 0; /* 如果查找到后指针 p 将指向字符串中查找到的第 1 个字符的地址。 */
+    find1(str, a, p); /* 调用函数以实现所要操作。这儿的p是传入的地址值 */
+    if (0 == p){
+        printf("没找到！\n"); /* 如果没找到则输出此句 */
+        }
+    else{
+        printf("找到了，p = %s", p); /* 如果找到则输出此句*/
+        }
+    return(0);
+}
+
+//函数的结果是"没有找到"
+array = str;
+search = a;
+pa = p; /* 请注意：以上三句是调用时隐含的动作。*/ 
+// 址传递其实就是地址值传递！！！
+// 这也是对形参的改变不影响实参；对pa的修改，并不影响函数外部p的值；
+// 解决的一种方法是函数内部直接输出
+
+
+// 还有一种方法就是双指针：
+#include <stdio.h>
+void find1(char array[], char search, char **ppa)
+{
+    int i;
+    for (i = 0; *(array + i) != 0; i++){
+    if ( *(array+i) == search){
+        *ppa = array + i;
+        // printf("找到了,pa=%s\n", pa);
+        break;
+        }
+    else if (*(array+i) == 0){
+        *ppa = 0;
+        // printf("没找到,pa=%s\n", pa);
+        break;
+        }
+    }
+}
+int main()
+{
+    char str[] = {"afsdfsdfdf\0"}; /* 待查找的字符串 */
+    char a = 'd'; /* 设置要查找的字符 */
+    char *p = 0; /* 如果查找到后指针 p 将指向字符串中查找到的第 1 个字符的地址。 */
+    find1(str, a, &p); /* 调用函数以实现所要操作。这儿传入的是p的地址 */
+    if (0 == p){
+        printf("没找到！\n"); /* 如果没找到则输出此句 */
+        }
+    else{
+        printf("找到了，p = %s\n", p); /* 如果找到则输出此句*/
+        }
+    return(0);
+}
+
+// 运行结果：找到了，p = dfsdfdf
+ array = str;
+ search = a;
+ ppa = &p; /* 请注意：以上三句是调用时隐含的动作。 */ 
+// ppa 指向指针 p 的地址。
+// 对*ppa 的修改就是对 p 值的修改。
+
+======================================================
+
+函数名与指针：
+note:
+1.函数名就是指针；
+2.赋值时，即可 FunP = &MyFun 形式，也可 FunP = MyFun。
+void MyFun(int x); =  void MyFun(int);   /*不能写成 void (*MyFun)(int)。*/
+void(*FunP)(int x); = void (*FunP)(int);  /*不能写成 void FunP(int)。*/ 
+
+
+
+#include <stdio.h>
+
+void MyFun(int x); /* 此处的声明也可写成：void MyFun(int) */
+
+int main(int argc, char* argv[]){
+    MyFun(10); /* 这里是调用 MyFun(10) 函数 */
+    return(0);
+}
+
+void MyFun(int x){ /* 这里定义一个 MyFun 函数 */
+    printf("%d\n",x);
+}
+
+
+
+#include <stdio.h>
+
+void MyFun(int x); /* 这个声明也可写成：void MyFun( int )*/
+
+void (*FunP)(int ); /*也可声明成 void(*FunP)(int x)，但习惯上一般不这样。 */
+
+int main(int argc, char* argv[]){
+    MyFun(10); /* 这是直接调用 MyFun 函数 ，10*/ 
+    FunP = &MyFun; /* 将 MyFun 函数的地址赋给 FunP 变量 ；这儿类似于 pi=&i */
+    (*FunP)(20); /* （★）这是通过函数指针变量 FunP 来调用MyFun 函数的。20 */
+    // FunP(20); //这儿也可以这样写
+    // (*MyFun)(20); //也可以这样
+}
+
+void MyFun(int x){ /* 这里定义一个 MyFun 函数 */
+    printf("%d\n",x);
+}
+
+
+
+#include <stdio.h>
+
+void MyFun(int x);
+
+void (*FunP)(int );/* 声明一个用以指向同样参数，返回值函数的指针变量。 */
+
+int main(int argc, char* argv[]){
+    MyFun(10); /* 这里是调用 MyFun(10)函数-----10 */
+    FunP = MyFun; /* 将 MyFun 函数的地址赋给 FunP 变量 ，相当于直接将函数名赋值给了指针*/
+    FunP(20); /* （★）这是通过函数指针变量来调用 MyFun 函数的。---20*/
+    // (*FunP)(20); //这儿也可以这样写
+    // (*MyFun)(20); //也可以这样
+    return 0;
+}
+void MyFun(int x){//这里定义一个 MyFun 函数
+    printf("%d\n",x);
+}
+
+
 
 
 自动变量：
