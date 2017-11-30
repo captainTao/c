@@ -16,6 +16,10 @@ a = b - a;
 b = b - a;
 a = b + a;
 
+不使用第三方变量
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
 
 int age;
 scanf("%d", &age);  //&是C语言中的一个地址运算符
