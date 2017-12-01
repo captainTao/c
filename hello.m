@@ -66,8 +66,10 @@ NSLog(@"%d %d", YES, NO);
 
 oc 类：
 
+-------------------------------------------
 #import <Foundation/Foundation.h>
 // 类的声明
+
 @interface Car : NSObject //加上:NSObject的目的是让Car类具备创建对象的能力
 {
     @public   //@public可以让Car对象的wheels和speed属性被外界访问
@@ -88,7 +90,6 @@ oc 类：
 @end
 
 
-
 // 创建对象
 
 // 主函数
@@ -105,7 +106,7 @@ int main()
 
 
 // 创建多个Car对象
-分别只设置wheels、speed属性
+// 分别只设置wheels、speed属性
 Car *c1 = [Car new];
 c1->wheels = 4;
 
@@ -123,10 +124,11 @@ Car *c2 = c1;
 c2->wheels = 3;
 [c1 run];
 
-
+-------------------------------------------
 note:
 1.@interface就好像暴露在外面的时钟表面
 2.@implementation就好像隐藏在时钟内部的构造实现
+
 3.常见错误:
 -  只有类的声明，没有类的实现
 -  漏了@end
@@ -134,4 +136,49 @@ note:
 -  两个类的声明嵌套
 -  成员变量没有写在括号里面
 -  方法的声明写在了大括号里面
+
+4.  语法细节
+-  成员变量不能在{}中进行初始化、不能被直接拿出去访问
+-  方法不能当做函数一样调用
+-  成员变量\方法不能用static等关键字修饰，别跟C语言混在一起（暂时忽略）
+-  类的实现可用写在main函数的后面，主要在声明后面就行了
+
+5.  OC方法和函数的区别
+-  OC方法只能声明在@interface和@end之间，只能实现在@implementation和@end之间。也就是说OC方法不能独立于类存在
+-  C函数不属于类，跟类没有联系，C函数只归定义函数的文件所有
+-  C函数不能访问OC对象的成员
+-  低级错误：方法有声明，但是实现的时候写成了函数
+
+6.  OC的方法注意
+-  方法只有声明，没有实现（经典错误）
+-  方法没有声明，只有实现（编译器警告，但是能调用，OC的弱语法）
+-  编译的时候：访问没有的成员变量直接报错，访问没有的方法，只是警告
+
+7.  @implementation
+a, 没有@interface，只有@implementation，也是能成功定义一个类的
+@implementation Car : NSObject
+{
+    @public
+    int wheels; // 多少个轮子
+    int speed; // 时速
+}
+- (void) run
+{
+    NSLog(@"%i个轮子，%i时速的车子跑起来了", wheels, speed);
+}
+@end
+b,  @implementation中不能声明和@interface一样的成员变量
+
+
+
+
+NSString的简单使用
+
+
+1.  字符串的快速创建
+NSStirng *str = @“Hello”;
+2.  使用静态方法创建
+3.  使用%@输出字符串
+NSString *name = @”mj”;
+NSLog(@“我的名字是%@”,  name);
 
