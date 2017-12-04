@@ -76,14 +76,17 @@ oc 类：
     int wheels; // 多少个轮子
     int speed; // 时速
 }
-- (void)run; // 跑的行为
+- (void)run; // 跑的行为,有参数的话用括号，()只能是括住数据类型；
+// 方法必须以减号  -  开头
+// 方法用小括号括住数据类型
+// 方法需要写在大括号外面
 @end
 // 	默认会初始化为0
 
 
 // 类的实现
-@implementation Car
-- (void) run
+@implementation Car //用来实现类的声明
+- (void) run 
 {
     NSLog(@"%i个轮子，%i时速的车子跑起来了", wheels, speed);
 }
@@ -100,7 +103,7 @@ int main()
     c->wheels = 3;  //设置指针c， car对象的属性
     c->speed = 300;
     
-    [c run];
+    [c run]; //给c发一条run的信息
     return 0;
 }
 
@@ -112,7 +115,7 @@ c1->wheels = 4;
 
 Car *c2 = [Car new];
 c2->speed = 250;
-[c1 run];
+[c1 run]; 
 
 
 // 1个赋值给另一个，然后修改属性 （复制对象，然后修改）
@@ -162,7 +165,7 @@ a, 没有@interface，只有@implementation，也是能成功定义一个类的
     int wheels; // 多少个轮子
     int speed; // 时速
 }
-- (void) run
+- (void) run  
 {
     NSLog(@"%i个轮子，%i时速的车子跑起来了", wheels, speed);
 }
