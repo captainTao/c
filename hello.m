@@ -151,6 +151,7 @@ note:
 -  C函数不属于类，跟类没有联系，C函数只归定义函数的文件所有
 -  C函数不能访问OC对象的成员
 -  低级错误：方法有声明，但是实现的时候写成了函数
+-  函数和对象一点关系都没有，函数除了不能放在 interface 声明里面外，其余的地方都可以放；
 
 6.  OC的方法注意
 -  方法只有声明，没有实现（经典错误）
@@ -172,18 +173,6 @@ a, 没有@interface，只有@implementation，也是能成功定义一个类的
 @end
 b,  @implementation中不能声明和@interface一样的成员变量
 
-
-
-
-NSString的简单使用
-
-
-1.  字符串的快速创建
-NSStirng *str = @“Hello”;
-2.  使用静态方法创建
-3.  使用%@输出字符串
-NSString *name = @”mj”;
-NSLog(@“我的名字是%@”,  name);
 
 
 --------------------------
@@ -219,3 +208,19 @@ void test2(Car *newC){  //创建car类的指针，car类似于int,char类型
     newC->speed = 250;
     newC->wheels = 6;
 }
+
+
+
+
+
+
+NSString的简单使用
+
+
+1.  字符串的快速创建
+NSStirng *str = @“Hello”;
+2.  使用静态方法创建
+3.  使用%@输出字符串
+NSString *name = @”mj”;
+NSLog(@“我的名字是%@”,  name);
+
