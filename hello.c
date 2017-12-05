@@ -330,22 +330,22 @@ int main()
 函数名与指针：
 note:
 1.函数名就是指针；
-2.赋值时，即可 FunP = &MyFun 形式，也可 FunP = MyFun。
-void MyFun(int x); =  void MyFun(int);   /*不能写成 void (*MyFun)(int)。*/
-void(*FunP)(int x); = void (*FunP)(int);  /*不能写成 void FunP(int)。*/ 
+2.赋值时，即可 FunP = &MyFun (取地址)形式，也可 FunP = MyFun（直接取）。
+void MyFun(int x); =  void MyFun(int);   //不能写成 void (*MyFun)(int)。
+void(*FunP)(int x); = void (*FunP)(int);  //不能写成 void FunP(int)。 
 
 
 
 #include <stdio.h>
 
-void MyFun(int x); /* 此处的声明也可写成：void MyFun(int) */
+void MyFun(int x); // 此处的声明也可写成：void MyFun(int) 
 
 int main(int argc, char* argv[]){
-    MyFun(10); /* 这里是调用 MyFun(10) 函数 */
+    MyFun(10); // 这里是调用 MyFun(10) 函数 
     return(0);
 }
 
-void MyFun(int x){ /* 这里定义一个 MyFun 函数 */
+void MyFun(int x){ // 这里定义一个 MyFun 函数 
     printf("%d\n",x);
 }
 
@@ -353,14 +353,14 @@ void MyFun(int x){ /* 这里定义一个 MyFun 函数 */
 
 #include <stdio.h>
 
-void MyFun(int x); /* 这个声明也可写成：void MyFun( int )*/
+void MyFun(int x); // 这个声明也可写成：void MyFun( int )
 
-void (*FunP)(int ); /*也可声明成 void(*FunP)(int x)，但习惯上一般不这样。 */
+void (*FunP)(int ); //也可声明成 void(*FunP)(int x)，但习惯上一般不这样。
 
 int main(int argc, char* argv[]){
-    MyFun(10); /* 这是直接调用 MyFun 函数 ，10*/ 
-    FunP = &MyFun; /* 将 MyFun 函数的地址赋给 FunP 变量 ；这儿类似于 pi=&i */
-    (*FunP)(20); /* （★）这是通过函数指针变量 FunP 来调用MyFun 函数的。20 */
+    MyFun(10); // 这是直接调用 MyFun 函数 ，10 
+    FunP = &MyFun; // 将 MyFun 函数的地址赋给 FunP 变量 ；这儿类似于 pi=&i 
+    (*FunP)(20); // （★）这是通过函数指针变量 FunP 来调用MyFun 函数的。20 
     // FunP(20); //这儿也可以这样写
     // (*MyFun)(20); //也可以这样
 }
@@ -375,12 +375,12 @@ void MyFun(int x){ /* 这里定义一个 MyFun 函数 */
 
 void MyFun(int x);
 
-void (*FunP)(int );/* 声明一个用以指向同样参数，返回值函数的指针变量。 */
+void (*FunP)(int );//声明一个用以指向同样参数，返回值函数的指针变量。 
 
 int main(int argc, char* argv[]){
-    MyFun(10); /* 这里是调用 MyFun(10)函数-----10 */
-    FunP = MyFun; /* 将 MyFun 函数的地址赋给 FunP 变量 ，相当于直接将函数名赋值给了指针*/
-    FunP(20); /* （★）这是通过函数指针变量来调用 MyFun 函数的。---20*/
+    MyFun(10); //这里是调用 MyFun(10)函数-----10 
+    FunP = MyFun; // 将 MyFun 函数的地址赋给 FunP 变量 ，相当于直接将函数名赋值给了指针
+    FunP(20); // （★）这是通过函数指针变量来调用 MyFun 函数的。---20
     // (*FunP)(20); //这儿也可以这样写
     // (*MyFun)(20); //也可以这样
     return 0;
