@@ -350,14 +350,11 @@ int main(){
 
 
 
-
-
-
+// 匿名对象：类新建对象的时候，不用指针命名
 
 
 
 NSString的简单使用
-
 
 1.  字符串的快速创建
 NSStirng *str = @“Hello”;
@@ -366,3 +363,6 @@ NSStirng *str = @“Hello”;
 NSString *name = @”mj”;
 NSLog(@“我的名字是%@”,  name);
 
+
+面向对象的三大特性：
+封装，继承，多态
