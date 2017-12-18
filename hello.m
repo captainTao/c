@@ -525,3 +525,171 @@ int main()
  
  可以允许类方法和对象方法同名
  */
+
+
+// 工具类：基本没有任何成员变量，里面的方法基本都是类方法
+/*
+ 设计一个计算器类
+ * 求和
+ * 求平均值
+ */
+
+#import <Foundation/Foundation.h>
+
+// 工具类：基本没有任何成员变量，里面的方法基本都是类方法
+@interface JiSusnQi : NSObject
++ (int)sumOfNum1:(int)num1 andNum2:(int)num2;
+
++ (int)averageOfNum1:(int)num1 andNum2:(int)num2;
+@end
+
+@implementation JiSusnQi
++ (int)sumOfNum1:(int)num1 andNum2:(int)num2
+{
+    return num1 + num2;
+}
+
++ (int)averageOfNum1:(int)num1 andNum2:(int)num2
+{
+    int sum = [JiSusnQi sumOfNum1:num1 andNum2:num2]; //JiSusnQi可以替换为self, self代表当前对象，代表类
+    return sum / 2;
+}
+@end
+
+int main()
+{
+    int a = [JiSusnQi averageOfNum1:10 andNum2:12];
+    
+    NSLog(@"a=%d", a);
+    
+//    JiSusnQi *jsq = [JiSusnQi new];
+//    
+//    
+//    [jsq sumOfNum1:10 andNum2:13];
+    
+    return 0;
+}
+
+
+self对象：
+
+
+#import <Foundation/Foundation.h>
+
+@interface Person : NSObject
+{
+    int _age;
+}
+
+- (void)setAge:(int)age;
+- (int)age;
+
+- (void)test;
+
+@end
+
+@implementation Person
+- (void)setAge:(int)age
+{
+    // _age = age;
+    self->_age = age;
+}
+- (int)age
+{
+    return self->_age;
+}
+
+- (void)test
+{
+    // self：指向了方向调用者,代表着当期对象
+    int _age = 20;
+    NSLog(@"Person的年龄是%d岁", self->_age);
+}
+
+@end
+
+int main()
+{
+    Person *p = [Person new];
+    
+    [p setAge:10];
+    
+    [p test];
+    
+    return 0;
+}
+
+
+
+
+
+
+/*
+ self的用途：
+ 1> 谁调用了当前方法，self就代表谁
+ * self出现在对象方法中，self就代表对象
+ * self出现在类方法中，self就代表类
+ 
+ 2> 在对象方法利用"self->成员变量名"访问当前对象内部的成员变量
+ 
+ 2> [self 方法名]可以调用其他对象方法\类方法
+ */
+#import <Foundation/Foundation.h>
+@interface Dog : NSObject
+- (void)bark;
+- (void)run;
+@end
+
+@implementation Dog
+- (void)bark
+{
+    NSLog(@"汪汪汪");
+}
+- (void)run
+{
+    [self bark];  //self指向了当前对象
+    //NSLog(@"汪汪汪");
+    NSLog(@"跑跑跑");
+}
+@end
+
+int main()
+{
+    Dog *d = [Dog new];
+    
+    [d run];
+    
+    return 0;
+}
+
+
+继承
+/*
+ 1.继承的好处：
+ 1> 抽取重复代码
+ 2> 建立了类之间的关系
+ 3> 子类可以拥有父类中的所有成员变量和方法
+ 
+ 2.注意点
+ 1> 基本上所有类的根类是NSObject
+ */
+
+
+/*
+ 1.重写：子类重新实现父类中的某个方法，覆盖父类以前的做法
+ 2.注意
+ 1> 父类必须声明在子类的前面
+ 2> 子类不能拥有和父类相同的成员变量
+ 3> 调用某个方法时，优先去当前类中找，如果找不到，去父类中找
+ 
+ 2.坏处：耦合性太强
+
+
+ 继承的使用场合
+ 1> 当两个类拥有相同属性和方法的时候，就可以将相同的东西抽取到一个父类中
+ 2> 当A类完全拥有B类中的部分属性和方法时，可以考虑让B类继承A类
+ */
+
+
+每一个对象里面有一个isa指针，它指向类；
+而每个类中有一个superclass指针，它指向它的父类；
