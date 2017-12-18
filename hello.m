@@ -364,5 +364,134 @@ NSString *name = @”mj”;
 NSLog(@“我的名字是%@”,  name);
 
 
-面向对象的三大特性：
-封装，继承，多态
+
+// 无参，有参函数的调用
+
+
+#import <Foundation/Foundation.h>
+
+// 有参,有返回值方法类的调用
+/*
+计算器：
+1.返回pi
+2.返回一个整数的平方
+3.返回两个整数的和
+*/
+@interface Calculator : NSObject
+- (double)pi;
+- (int)square:(int)num;
+// - (int)sum:(int)num1 :(int)num2;  //一般不这么写
+- (int)sumWithNum1:(int)num1 andNum2:(int)num2;
+@end
+
+@implementation Calculator
+- (double)pi{
+    return 3.14;
+}
+- (int)square:(int)num{
+    return num * num;
+}
+- (int)sumWithNum1:(int)num1 andNum2:(int)num2{
+    return num1 + num2;
+}
+@end
+
+int main(int argc, char const *argv[])
+{
+    Calculator *cal = [Calculator new];
+
+    NSLog(@"调用pi方法之后的值：%f", [cal pi]); //0个参数一个返回值
+    NSLog(@"平方后的值为%d", [cal square:10]); //一个参数一个返回值
+    NSLog(@"两个参数的和为%d", [cal sumWithNum1:8 andNum2:9]);//两个参数一个返回值
+    return 0;
+}
+
+
+
+
+
+// 封装
+
+#import <Foundation/Foundation.h>
+
+@interface Student : NSObject
+{
+    // 成员变量尽量不要用@public
+    // @public
+    int age;
+    
+    //@public
+    // 只读（readonly）：只允许外界访问我的no，不允许外界修改我的no
+    int no; // 只需要提供get方法
+}
+
+//
+/*
+ set方法
+ 1.作用： 提供一个方法给外界设置成员变量值，可以在方法里面对参数进行相应过滤
+ 2.命名规范：
+ 1> 方法名必须以set开头
+ 2> set后面跟上成员变量的名称，成员变量的首字母必须大写
+ 3> 返回值一定是void
+ 4> 一定要接收一个参数，而且参数类型跟成员变量类型一致
+ 5> 形参的名称不能跟成员变量名一样
+ */
+- (void)setAge:(int)newAge;
+
+/*
+ get方法
+ 1.作用：返回对象内部的成员变量
+ 2.命名规范：
+ 1> 肯定有返回值，返回值类型肯定与成员变量类型一致
+ 2> 方法名跟成员变量名一样
+ 3> 不需要接收任何参数
+ */
+- (int)age;
+
+- (void)study;
+
+@end
+
+@implementation Student
+
+// set方法的实现
+- (void)setAge:(int)newAge
+{
+    // 对传进来的参数进行过滤
+    if (newAge <= 0)
+    {
+        newAge = 1;
+    }
+    
+    age = newAge;
+}
+
+- (int)age
+{
+    return age;
+}
+
+- (void)study
+{
+    NSLog(@"%d岁的学生在学习", age);
+}
+
+@end
+
+int main()
+{
+    Student *stu = [Student new];
+    //stu->age = -10;
+    
+    //stu->age = 10;
+    
+    [stu setAge:10];
+    
+    
+    NSLog(@"学生的年龄是%d岁", [stu age]);
+    
+    //[stu study];
+    
+    
+    return 0;
+}
