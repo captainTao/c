@@ -693,3 +693,125 @@ int main()
 
 每一个对象里面有一个isa指针，它指向类；
 而每个类中有一个superclass指针，它指向它的父类；
+
+
+/********Animal的声明*******/
+@interface Animal : NSObject
+{
+    int _age;
+    double _weight;
+}
+
+- (void)setAge:(int)age;
+- (int)age;
+
+- (void)setWeight:(double)weight;
+- (double)weight;
+@end
+
+/********Animal的实现*******/
+@implementation Animal
+- (void)setAge:(int)age
+{
+    _age = age;
+}
+- (int)age
+{
+    return _age;
+}
+
+- (void)setWeight:(double)weight
+{
+    _weight = weight;
+}
+- (double)weight
+{
+    return _weight;
+}
+@end
+
+/********Dog*******/
+// : Animal 继承了Animal，相当于拥有了Animal里面的所有成员变量和方法
+// Animal称为Dog的父类
+// Dog称为Animal的子类
+@interface Dog : Animal
+@end
+
+@implementation Dog
+@end
+
+/********Cat*******/
+@interface Cat : Animal
+@end
+
+@implementation Cat
+@end
+
+int main()
+{
+    Dog *d = [Dog new];
+    
+    [d setAge:10];
+    
+    NSLog(@"age=%d", [d age]);
+    return 0;
+}
+
+/*
+1.继承的使用场合
+ 1> 当两个类拥有相同属性和方法的时候，就可以将相同的东西抽取到一个父类中
+ 2> 当A类完全拥有B类中的部分属性和方法时，可以考虑让B类继承A类
+ A
+ {
+    int _age;
+    int _no;
+ }
+ 
+ B : A
+ {
+    int _weight;
+ }
+ 
+ // 继承：xx 是 xxx
+ // 组合：xxx 拥有 xxx
+ 
+ 2.组合
+ A
+ {
+     int _age;
+     int _no;
+ }
+ 
+ B
+ {
+     A *_a;
+     int _weight;
+ }
+*/
+
+组合：
+
+
+@interface Score : NSObject
+{
+    int _cScore;
+    int _ocScore;
+}
+@end
+
+@implementation Score
+@end
+
+@interface Student : NSObject
+{
+    // 组合
+    Score *_score;      // 组合，一个类拥有另外一个类
+//    int _cScore;
+//    int _ocScore;
+    int _age;
+}
+@end
+
+@implementation Student
+
+@end
