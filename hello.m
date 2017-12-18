@@ -412,6 +412,10 @@ int main(int argc, char const *argv[])
 
 // 封装
 
+声明；（成员变量，每个变量的可读写）
+方法实例；（可读写的具体内容）
+main主函数：（新建对象，然后实现对应的方法）
+
 #import <Foundation/Foundation.h>
 
 @interface Student : NSObject
