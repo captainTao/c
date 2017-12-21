@@ -896,3 +896,128 @@ int main()
     
     return 0;
 }
+
+
+
+/*
+ 多态
+ 1.没有继承就没有多态
+ 2.代码的体现：父类类型的指针指向子类对象
+ 3.好处：如果函数\方法参数中使用的是父类类型，可以传入父类、子类对象
+ 4.局限性：
+ 1> 父类类型的变量 不能 直接调用子类特有的方法。必须强转为子类类型变量后，才能直接调用子类特有的方法
+ */
+
+
+#import <Foundation/Foundation.h>
+
+
+// 动物
+@interface Animal : NSObject
+- (void)eat;
+@end
+
+@implementation Animal
+- (void)eat
+{
+    NSLog(@"Animal-吃东西----");
+}
+@end
+
+// 狗
+@interface Dog : Animal
+- (void)run;
+@end
+
+@implementation  Dog
+- (void)run
+{
+    NSLog(@"Dog---跑起来");
+}
+- (void)eat //父类定义了eat,这里就不用声明了
+{
+    NSLog(@"Dog-吃东西----");
+}
+@end
+
+// 猫
+@interface Cat : Animal
+
+@end
+
+@implementation Cat
+- (void)eat
+{
+    NSLog(@"Cat-吃东西----");
+}
+@end
+
+// 这个函数是专门用来喂动画
+//void feed(Dog *d)
+//{
+//    [d eat];
+//}
+//
+//void feed2(Cat *c)
+//{
+//    [c eat];
+//}
+//
+// 上面猫和狗，可以抽离出一个animal：这就是多态的好处
+// 如果参数中使用的是父类类型，可以传入父类、子类对象
+void feed(Animal *a)
+{
+    [a eat];
+}
+
+int main()
+{
+    // NSString *d = [Cat new];
+    // [d eat];
+    
+    /*
+    Animal *aa = [Dog new];  //oc为弱语法
+    // 多态的局限性：父类类型的变量 不能 用来调用子类的方法
+    //[aa run];
+    
+    // 将aa转为Dog *类型的变量
+    Dog *dd = (Dog *)aa; //类型的强制转换，如： int a = (int) 3.14;
+    
+    [dd run];
+    */
+    
+    //Dog *d = [Dog new];
+    
+    //[d run];
+    
+    /*
+    Animal *aa = [Animal new];
+    feed(aa);
+    
+    Dog *dd = [Dog new];
+    feed(dd);
+    
+    Cat *cc = [Cat new];
+    feed(cc);
+     */
+    
+    /*
+    // NSString *s = [Cat new];
+    Animal *c = [Cat new];
+    
+    
+    NSObject *n = [Dog new];
+    NSObject *n2 = [Animal new];
+    
+    
+    // 多种形态
+    //Dog *d = [Dog new]; // Dog类型
+    
+    // 多态：父类指针指向子类对象
+    Animal *a = [Dog new];
+    
+    // 调用方法时会检测对象的真实形象
+    [a eat];
+    */
+    return 0;
+}
