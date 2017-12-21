@@ -4,6 +4,123 @@ case enum register typedef char extern return union
 const float short unsigned continue for signed void
 default goto sizeof volatile do if while static
 
+/*
+ 1.变量的作用域
+ 从定义变量的那一行代码开始，一直到所在的代码块结束
+ 
+ 2.代码块的作用
+ 及时回收不再使用的变量，为了提升性能
+
+ */
+#include <stdio.h>
+
+
+int test()
+{
+    int v = 10;
+    return 0;
+}
+
+int main()
+{
+    {
+        double height = 1.55;
+        
+        height = height + 1;
+        
+        printf("height=%f\n", height); //height=2.550000
+    }
+    
+   /*
+    {
+        int a = 10;   //代码块只生效局部
+    }
+    
+    printf("a=%d\n", a);*/
+    
+    
+    int score = 100;
+    
+    {
+        int score = 200;
+        
+        {
+            int score;
+            score = 50;
+        }
+        
+        printf("score=%d\n", score); //score=200
+    }
+    
+    printf("score=%d\n", score); //score=100     
+    return 0;
+}
+
+/*
+结果：
+
+height=2.550000
+score=200
+score=100
+
+*/
+
+#include <stdio.h>
+
+int main()
+{
+    int a = 20;
+    int score = a + 100;
+    printf("%d\n", score); //120
+    
+    {
+        int score = 50;
+        {
+            score = 10;
+            printf("%d\n", score); //10
+        }
+        a = 10;
+    }
+    
+    {
+        score = a + 250;
+        int score = 30;
+        printf("%d", score); //30
+    }
+    printf("%d\n", a); //10  ??    
+    printf("%d\n", score); //260  ??
+    return 0;
+}
+
+/*
+结果：
+
+120
+10
+30260
+
+*/
+
+/*
+
+ a = 10
+ b = 11
+ 交换之后
+ a -> 11
+ b -> 10
+ 
+ 1.利用第三方变量(工作，掌握)
+ int temp = a;
+ a = b;
+ b = temp;
+ 
+ 2.不利用第三方变量（面试，有印象）
+ a = b - a; //求差值
+ b = b - a; //一个数减去差值等于另外一个数
+ a = b + a; //一个数+差值等于另外一个数
+
+
+
 a=10,b=11,使用两种方法交换他们的值：
 使用第三方变量
 int temp;
@@ -21,6 +138,10 @@ a = a ^ b;
 b = a ^ b;
 a = a ^ b;
 
+ */
+
+
+
 int age;
 scanf("%d", &age);  //&是C语言中的一个地址运算符
 // 短横线- 
@@ -37,6 +158,31 @@ scanf("%d %d %d", &a, &b, &c);
 note:  
 scanf的第一个参数中不要包含\n，比如scanf(“%d\n”, &a); 这将导致scanf函数无法结束
 
+// 分别使用3种语言在屏幕上输出“哈哈”这一段文字，并且换行
+// 1.C语言
+// #include <stdio.h>
+// int main()
+// {
+//     printf("哈哈\n");
+//     return 0;
+// }
+
+// 2.Objective-C(OC)
+// #import <Foundation/Foundation.h>
+// int main()
+// {
+//     NSLog(@"哈哈");
+//     return 0;
+// }
+
+// 3.Java
+// class Test
+// {
+//     public static void main(String[] args)
+//     {
+//         System.out.println("哈哈");
+//     }
+// }
 
 类型转换
 
