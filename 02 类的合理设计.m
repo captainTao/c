@@ -4,7 +4,7 @@
 //
 //  Created by captain on 2017/12/5.
 //
-typedef enum {
+typedef enum {   //枚举定义类型
     SexMan,
     SexWoman
 } Sex;

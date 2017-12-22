@@ -175,7 +175,21 @@ b,  @implementation中不能声明和@interface一样的成员变量
 
 
 
---------------------------
+
+NSString的简单使用
+
+1.  字符串的快速创建
+NSStirng *str = @“Hello”;
+2.  使用静态方法创建
+3.  使用%@输出字符串
+NSString *name = @”mj”;
+NSLog(@“我的名字是%@”,  name);
+
+
+---------------------------------
+
+// 类的定义：
+
 #import <Foundation/Foundation.h>
 void test2();
 @interface Car : NSObject //加上:NSObject的目的是让Car类具备创建对象的能力
@@ -209,18 +223,16 @@ void test2(Car *newC){  //创建car类的指针，car类似于int,char类型
     newC->wheels = 6;
 }
 
-
+---------------------------------
 
 // 类的合理设计
-
 
 //
 //  类的合理设计.m
 //  需求：人遛狗
 //
-//  Created by captain on 2017/12/5.
-//
-typedef enum {
+
+typedef enum {  //枚举定义类型
     SexMan,
     SexWoman
 } Sex;
@@ -349,24 +361,13 @@ int main(){
 }
 
 
+---------------------------------
+
 
 // 匿名对象：类新建对象的时候，不用指针命名
 
 
-
-NSString的简单使用
-
-1.  字符串的快速创建
-NSStirng *str = @“Hello”;
-2.  使用静态方法创建
-3.  使用%@输出字符串
-NSString *name = @”mj”;
-NSLog(@“我的名字是%@”,  name);
-
-
-
-// 无参，有参函数的调用
-
+// 在类中；无参，有参函数的调用
 
 #import <Foundation/Foundation.h>
 
@@ -408,103 +409,66 @@ int main(int argc, char const *argv[])
 
 
 
+---------------------------------
+
+// 对象的封装：-set, get：
+
+//   封装的好处
+//     过滤不合理的值
+//     屏蔽内部的赋值过程
+//     让外界不必关注内部的细节
 
 
-// 对象的封装
-
-声明；（成员变量，每个变量的可读写）
-方法实例；（可读写的具体内容）
-main主函数：（新建对象，然后实现对应的方法）
-
-#import <Foundation/Foundation.h>
-
-@interface Student : NSObject
-{
-    // 成员变量尽量不要用@public
-    // @public
-    int age;
-    
-    //@public
-    // 只读（readonly）：只允许外界访问我的no，不允许外界修改我的no
-    int no; // 只需要提供get方法
-}
-
-//
-/*
- set方法
- 1.作用： 提供一个方法给外界设置成员变量值，可以在方法里面对参数进行相应过滤
- 2.命名规范：
- 1> 方法名必须以set开头
- 2> set后面跟上成员变量的名称，成员变量的首字母必须大写
- 3> 返回值一定是void
- 4> 一定要接收一个参数，而且参数类型跟成员变量类型一致
- 5> 形参的名称不能跟成员变量名一样
- */
-- (void)setAge:(int)newAge;
-
-/*
- get方法
- 1.作用：返回对象内部的成员变量
- 2.命名规范：
- 1> 肯定有返回值，返回值类型肯定与成员变量类型一致
- 2> 方法名跟成员变量名一样
- 3> 不需要接收任何参数
- */
-- (int)age;
-
-- (void)study;
-
-@end
-
-@implementation Student
-
-// set方法的实现
-- (void)setAge:(int)newAge
-{
-    // 对传进来的参数进行过滤
-    if (newAge <= 0)
-    {
-        newAge = 1;
-    }
-    
-    age = newAge;
-}
-
-- (int)age
-{
-    return age;
-}
-
-- (void)study
-{
-    NSLog(@"%d岁的学生在学习", age);
-}
-
-@end
-
-int main()
-{
-    Student *stu = [Student new];
-    //stu->age = -10;
-    
-    //stu->age = 10;
-    
-    [stu setAge:10];
-    
-    
-    NSLog(@"学生的年龄是%d岁", [stu age]);
-    
-    //[stu study];
-    
-    
-    return 0;
-}
+// 一般步骤：
+// 声明：（成员变量，确定每个变量的可读写）
+// 方法实例；（可读写的具体内容）
+// main主函数：（新建对象，然后实现对应的方法）
 
 
-
-// oc允许传递没有被定义的消息，但c，和c++允许
+// OC的弱语法：
+// oc允许传递没有被定义的消息，但c，和c++不允许
 // oc的方法是动态调用，是在运行中才会检测；
 
+
+/*
+面向对象的三大特性：
+封装，继承，多态
+
+    set方法
+1.有参数，参数类型与成员变量保持一致
+2.返回值为void
+3.命名以set开始，后面成员变量名的首字母必须大写
+
+1)  作用：用来设置成员变量，可以在方法里面过滤掉一些不合理的值
+2)  命名规范：
+   方法都是以set开头，而且后面跟上成员变量名，成员变量名的首字母必须大写
+   形参名称不要跟成员变量同名
+
+
+    get方法
+1.没有参数
+2.有返回值
+3.命名与成员变量同名，但差一个下划线
+4.赋值在方法中赋值
+
+1)  作用：返回对象内部的成员变量
+2)  命名规范：get方法的名称一般就跟成员变量同名
+4.  成员变量的命名规范
+   成员变量都以下划线 _ 开头
+   可以跟get方法的名称区分开
+   可以跟其他局部变量区分开，一看到下划线开头的变量，肯定是成员变量
+*/
+
+/*成员变量的命名规范：一定要以下划线 _ 开头
+  作用：
+  1.让成员变量和get方法的名称区分开
+  2.可以跟局部变量区分开，一看到下划线开头的变量，一般都是成员变量
+*/
+
+
+---------------------------------
+
+// 类方法：
 
 /*
  对象方法
@@ -527,102 +491,15 @@ int main()
  */
 
 
-// 工具类：基本没有任何成员变量，里面的方法基本都是类方法
-/*
- 设计一个计算器类
- * 求和
- * 求平均值
- */
-
-#import <Foundation/Foundation.h>
 
 // 工具类：基本没有任何成员变量，里面的方法基本都是类方法
-@interface JiSusnQi : NSObject
-+ (int)sumOfNum1:(int)num1 andNum2:(int)num2;
-
-+ (int)averageOfNum1:(int)num1 andNum2:(int)num2;
-@end
-
-@implementation JiSusnQi
-+ (int)sumOfNum1:(int)num1 andNum2:(int)num2
-{
-    return num1 + num2;
-}
-
-+ (int)averageOfNum1:(int)num1 andNum2:(int)num2
-{
-    int sum = [JiSusnQi sumOfNum1:num1 andNum2:num2]; //JiSusnQi可以替换为self, self代表当前对象，代表类
-    return sum / 2;
-}
-@end
-
-int main()
-{
-    int a = [JiSusnQi averageOfNum1:10 andNum2:12];
-    
-    NSLog(@"a=%d", a);
-    
-//    JiSusnQi *jsq = [JiSusnQi new];
-//    
-//    
-//    [jsq sumOfNum1:10 andNum2:13];
-    
-    return 0;
-}
 
 
-self对象：
+---------------------------------
 
+// self, super:
 
-#import <Foundation/Foundation.h>
-
-@interface Person : NSObject
-{
-    int _age;
-}
-
-- (void)setAge:(int)age;
-- (int)age;
-
-- (void)test;
-
-@end
-
-@implementation Person
-- (void)setAge:(int)age
-{
-    // _age = age;
-    self->_age = age;
-}
-- (int)age
-{
-    return self->_age;
-}
-
-- (void)test
-{
-    // self：指向了方向调用者,代表着当期对象
-    int _age = 20;
-    NSLog(@"Person的年龄是%d岁", self->_age);
-}
-
-@end
-
-int main()
-{
-    Person *p = [Person new];
-    
-    [p setAge:10];
-    
-    [p test];
-    
-    return 0;
-}
-
-
-
-
-
+// self对象：
 
 /*
  self的用途：
@@ -632,38 +509,33 @@ int main()
  
  2> 在对象方法利用"self->成员变量名"访问当前对象内部的成员变量
  
- 2> [self 方法名]可以调用其他对象方法\类方法
+ 3> self->_xx   当前对象方法中调用self
+ 4> [self 方法名]可以调用其他对象方法\类方法
  */
-#import <Foundation/Foundation.h>
-@interface Dog : NSObject
-- (void)bark;
-- (void)run;
-@end
-
-@implementation Dog
-- (void)bark
-{
-    NSLog(@"汪汪汪");
-}
-- (void)run
-{
-    [self bark];  //self指向了当前对象
-    //NSLog(@"汪汪汪");
-    NSLog(@"跑跑跑");
-}
-@end
-
-int main()
-{
-    Dog *d = [Dog new];
-    
-    [d run];
-    
-    return 0;
-}
 
 
-继承
+---------------------------------
+
+// 继承，多态，组合：
+
+// super:
+
+/*
+ super的作用
+ 1.直接调用父类中的某个方法
+ 2.super处在对象方法中，那么就会调用父类的对象方法
+   super处在类方法中，那么就会调用父类的类方法
+ 
+ 3.使用场合：子类重写父类的方法时想保留父类的一些行为
+ */
+
+
+
+// 继承：
+
+// 1.每一个对象里面有一个isa指针，它指向类；
+// 2.而每个类中有一个superclass指针，它指向它的父类；
+
 /*
  1.继承的好处：
  1> 抽取重复代码
@@ -673,7 +545,6 @@ int main()
  2.注意点
  1> 基本上所有类的根类是NSObject
  */
-
 
 /*
  1.重写：子类重新实现父类中的某个方法，覆盖父类以前的做法
@@ -690,72 +561,6 @@ int main()
  2> 当A类完全拥有B类中的部分属性和方法时，可以考虑让B类继承A类
  */
 
-
-每一个对象里面有一个isa指针，它指向类；
-而每个类中有一个superclass指针，它指向它的父类；
-
-
-/********Animal的声明*******/
-@interface Animal : NSObject
-{
-    int _age;
-    double _weight;
-}
-
-- (void)setAge:(int)age;
-- (int)age;
-
-- (void)setWeight:(double)weight;
-- (double)weight;
-@end
-
-/********Animal的实现*******/
-@implementation Animal
-- (void)setAge:(int)age
-{
-    _age = age;
-}
-- (int)age
-{
-    return _age;
-}
-
-- (void)setWeight:(double)weight
-{
-    _weight = weight;
-}
-- (double)weight
-{
-    return _weight;
-}
-@end
-
-/********Dog*******/
-// : Animal 继承了Animal，相当于拥有了Animal里面的所有成员变量和方法
-// Animal称为Dog的父类
-// Dog称为Animal的子类
-@interface Dog : Animal
-@end
-
-@implementation Dog
-@end
-
-/********Cat*******/
-@interface Cat : Animal
-@end
-
-@implementation Cat
-@end
-
-int main()
-{
-    Dog *d = [Dog new];
-    
-    [d setAge:10];
-    
-    NSLog(@"age=%d", [d age]);
-    return 0;
-}
 
 /*
 1.继承的使用场合
@@ -789,113 +594,37 @@ int main()
  }
 */
 
-组合：
 
+// 组合：
 
-@interface Score : NSObject
-{
-    int _cScore;
-    int _ocScore;
-}
-@end
+// 组合：（一个类拥有另外一个类，但两个类的属性不一致，比如学生没法继承分数，只能拥有）
 
-@implementation Score
-@end
-
-@interface Student : NSObject
-{
-    // 组合
-    Score *_score;      // 组合，一个类拥有另外一个类
-//    int _cScore;
-//    int _ocScore;
-    int _age;
-}
-@end
-
-@implementation Student
-
-@end
-
-
-super对象
+// 类：其实可以理解为一个类型，跟int, double, char 等类型相似
+// 枚举：其实枚举也可以理解为一个类型，只是这个类型只能取它定义的几个值而已
 
 /*
- super的作用
- 1.直接调用父类中的某个方法
- 2.super处在对象方法中，那么就会调用父类的对象方法
-   super处在类方法中，那么就会调用父类的类方法
- 
- 3.使用场合：子类重写父类的方法时想保留父类的一些行为
- */
+enum Season {spring, summer, autumn, winter};
 
-#import <Foundation/Foundation.h>
+enum Season {spring, summer, autumn, winter} s;
 
-// 僵尸
-@interface Zoombie : NSObject
-- (void)walk;
-
-+ (void)test;
-- (void)test;
-
-@end
-
-@implementation Zoombie
-- (void)walk
-{
-    NSLog(@"往前挪两步******");
-}
-
-+ (void)test
-{
-    NSLog(@"Zoombie+test");
-}
-
-- (void)test
-{
-    NSLog(@"Zoombie-test");
-}
-@end
-
-// 跳跃僵尸
-@interface JumpZoombie : Zoombie
-+ (void)haha;
-- (void)haha2;
-@end
+enum {spring, summer, autumn, winter} s;
 
 
-@implementation JumpZoombie
+宏定义枚举类型的第一种方式：
+enum Season {spring, summer, autumn, winter};
+typedef enum Season Season;// 给枚举类型起别名
 
-+ (void)haha
-{
-    [super test];
-}
+定义枚举类型的第二种方式：
+typedef enum Season {spring, summer, autumn, winter} Season
 
-- (void)haha2
-{
-    [super test];
-}
+定义的第三种方式：
+typedef enum {spring, summer, autumn, winter} Season;
 
-- (void)walk
-{
-    // 跳两下
-    NSLog(@"跳两下");
-    
-    // 走两下(直接调用父类的walk方法)
-    [super walk];
-    //NSLog(@"往前挪两步----");
-
-}
-@end
-
-int main()
-{
-    //[JumpZoombie haha];
-    JumpZoombie *jz = [JumpZoombie new];
-    
-    [jz haha2];
-    
-    return 0;
-}
+typedef enum {  //枚举类型
+    SexMan,
+    SexWoman
+} Sex;
+*/
 
 
 
@@ -909,115 +638,5 @@ int main()
  */
 
 
-#import <Foundation/Foundation.h>
 
 
-// 动物
-@interface Animal : NSObject
-- (void)eat;
-@end
-
-@implementation Animal
-- (void)eat
-{
-    NSLog(@"Animal-吃东西----");
-}
-@end
-
-// 狗
-@interface Dog : Animal
-- (void)run;
-@end
-
-@implementation  Dog
-- (void)run
-{
-    NSLog(@"Dog---跑起来");
-}
-- (void)eat //父类定义了eat,这里就不用声明了
-{
-    NSLog(@"Dog-吃东西----");
-}
-@end
-
-// 猫
-@interface Cat : Animal
-
-@end
-
-@implementation Cat
-- (void)eat
-{
-    NSLog(@"Cat-吃东西----");
-}
-@end
-
-// 这个函数是专门用来喂动画
-//void feed(Dog *d)
-//{
-//    [d eat];
-//}
-//
-//void feed2(Cat *c)
-//{
-//    [c eat];
-//}
-//
-// 上面猫和狗，可以抽离出一个animal：这就是多态的好处
-// 如果参数中使用的是父类类型，可以传入父类、子类对象
-void feed(Animal *a)
-{
-    [a eat];
-}
-
-int main()
-{
-    // NSString *d = [Cat new];
-    // [d eat];
-    
-    /*
-    Animal *aa = [Dog new];  //oc为弱语法
-    // 多态的局限性：父类类型的变量 不能 用来调用子类的方法
-    //[aa run];
-    
-    // 将aa转为Dog *类型的变量
-    Dog *dd = (Dog *)aa; //类型的强制转换，如： int a = (int) 3.14;
-    
-    [dd run];
-    */
-    
-    //Dog *d = [Dog new];
-    
-    //[d run];
-    
-    /*
-    Animal *aa = [Animal new];
-    feed(aa);
-    
-    Dog *dd = [Dog new];
-    feed(dd);
-    
-    Cat *cc = [Cat new];
-    feed(cc);
-     */
-    
-    /*
-    // NSString *s = [Cat new];
-    Animal *c = [Cat new];
-    
-    
-    NSObject *n = [Dog new];
-    NSObject *n2 = [Animal new];
-    
-    
-    // 多种形态
-    //Dog *d = [Dog new]; // Dog类型
-    
-    // 多态：父类指针指向子类对象
-    Animal *a = [Dog new];
-    
-    // 调用方法时会检测对象的真实形象
-    [a eat];
-    */
-    return 0;
-}

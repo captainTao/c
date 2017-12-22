@@ -1,3 +1,19 @@
+//   封装的好处
+//     过滤不合理的值
+//     屏蔽内部的赋值过程
+//     让外界不必关注内部的细节
+
+
+// 一般步骤：
+// 声明：（成员变量，确定每个变量的可读写）
+// 方法实例；（可读写的具体内容）
+// main主函数：（新建对象，然后实现对应的方法）
+
+
+// OC的弱语法：
+// oc允许传递没有被定义的消息，但c，和c++不允许
+// oc的方法是动态调用，是在运行中才会检测；
+
 
 /*
 面向对象的三大特性：
@@ -28,7 +44,17 @@
 	可以跟其他局部变量区分开，一看到下划线开头的变量，肯定是成员变量
 */
 
-// 5.	代码示例
+/*成员变量的命名规范：一定要以下划线 _ 开头
+  作用：
+  1.让成员变量和get方法的名称区分开
+  2.可以跟局部变量区分开，一看到下划线开头的变量，一般都是成员变量
+*/
+
+
+
+/***********************************************/
+
+// 	代码示例（set and get）
 #import <Foundation/Foundation.h>
 // 声明
 @interface Car : NSObject
@@ -62,15 +88,12 @@
 @end
 
 
-// 6.	封装的好处
-// 	过滤不合理的值
-// 	屏蔽内部的赋值过程
-// 	让外界不必关注内部的细节
 
 
 
+/***********************************************/
 
-// 封装的调用
+// 封装的调用 (set, get, 命名细节)
 
 #import <Foundation/Foundation.h>
 
@@ -159,7 +182,10 @@ int main()
 
 
 
-// 封装实例，一个方法的可读写，
+/***********************************************/
+
+
+// 封装实例，set, get（枚举来定义数据类型 / 成员变量的命名规范 / ）
 
 #import <Foundation/Foundation.h>
 
@@ -228,6 +254,129 @@ int main()
 }
 
 
-// oc允许传递没有被定义的消息，但c，和c++允许
-// oc的方法是动态调用，是在运行中才会检测；
 
+/***********************************************/
+
+ // 封装练习
+/*
+ 4.设计一个成绩类
+ * C语言成绩（可读可写）
+ * OC成绩（可读可写）
+ * 总分（只读）
+ * 平均分（只读）
+*/
+#import <Foundation/Foundation.h>
+
+@interface Score : NSObject
+{
+    int _cScore; // C语言成绩
+    int _ocScore; // OC成绩
+    
+    int _totalScore;// 总分
+    int _averageScoe; // 平均分
+}
+
+- (void)setCScore:(int)cScore;
+- (int)cScore;
+
+- (void)setOcScore:(int)ocScore;
+- (int)ocScore;
+
+- (int)totalScore;
+- (int)averageScore;
+
+@end
+
+@implementation Score
+- (void)setCScore:(int)cScore
+{
+    _cScore = cScore;
+    
+    // 计算总分
+    _totalScore = _cScore + _ocScore;
+    _averageScoe = _totalScore/2;
+}
+- (int)cScore
+{
+    return _cScore;
+}
+
+- (void)setOcScore:(int)ocScore
+{
+    _ocScore = ocScore;
+    
+    // 计算总分
+    _totalScore = _cScore + _ocScore;
+    _averageScoe = _totalScore/2;
+}
+// 监听成员变量的改变
+
+- (int)ocScore
+{
+    return _ocScore;
+}
+
+- (int)totalScore
+{
+    return _totalScore;
+}
+- (int)averageScore
+{
+    return _averageScoe;
+}
+@end
+
+
+int main()
+{
+    Score *s = [Score new];
+    
+    [s setCScore:90];
+    [s setOcScore:100];
+    
+    [s setCScore:80];
+    
+    
+    int a = [s totalScore];
+    
+    NSLog(@"总分：%d", a);
+    
+    return 0;
+}
+
+
+
+
+/***********************************************/
+
+// OC的弱语法：允许发送没被定义的消息
+
+
+#import <Foundation/Foundation.h>
+
+// 尽管编译器容错能力比较，但是写代码必须规范
+@interface Person : NSObject
+- (void)test;
+@end
+
+@implementation Person
+- (void)test
+{
+    NSLog(@"哈哈哈");
+}
+@end
+
+// 一旦运行过程中出错，就会闪退
+
+/*
+ -[Person test]: unrecognized selector sent to instance 0x7fd2ea4097c0
+ 给Person对象发送了一个不能识别的消息：test
+ */
+
+int main()
+{
+    Person *p = [Person new];
+    // OC是在运行过程中才会检测对象有没有实现相应的方法
+    [p test];
+    return 0;
+}
