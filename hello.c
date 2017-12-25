@@ -427,9 +427,17 @@ int main()
 }
 
 
-// 自增和自减：
-#include <stdio.h>
+/******************自增，自减*******************************/
+/*
+i++  ：先引用后增加
+++i  ：先增加后引用
+i++  ：先在i所在的表达式中使用i的当前值，后让i加1
+++i  ：让i先加1，然后在i所在的表达式中使用i的新值
+*/
 
+// 自增和自减：
+// NO.1:
+#include <stdio.h>
 int main()
 {
     /*
@@ -462,6 +470,32 @@ int main()
     return 0;
 }
 
+
+// NO2.
+#include <stdio.h>
+
+int main()
+{
+    int x = 1,y = 1;
+    if(x++==2 && ++y==2) { //0 && 1
+        x =7;            //这里if没有执行完，所以y值还停留在1
+    }
+    printf("x=%d, y=%d\n", x, y); //2,1
+    return 0;
+}
+
+// NO.3
+#include <stdio.h>
+
+int main()
+{
+    int x = 1,y = 1;
+    if(x++==2 || ++y==2) {  0||1
+        x =7;               //这里执行了if,所以y就变成了2了
+    }
+    printf("x=%d, y=%d\n", x, y); //7,2
+    return 0;
+}
 /******************sizeof*******************************/
 
 
@@ -656,9 +690,296 @@ int main()
  4.if的第4种结构
  if (条件)
    语句1;
+
+note:
+1.  比较大小时，常量值放左边，变量放右边
+2.  注意赋值运算符，不要写成两个=
+3.  if语句后面不要写;
 */
 
 
+/*
+ 输入一个整数score代表分数，根据分数输出等级（A-E）(用两种方式)
+ A：90~100
+ B：80~89
+ C：70~79
+ D：60~69
+ E：0~60
+*/
+
+#include <stdio.h>
+
+int main()
+{
+    // 1.提示输入
+    printf("请输入分数值:\n");
+    
+    // 2.接收输入
+    int score;
+    scanf("%d", &score);
+    
+    // 3.判断等级 （性能最高）
+    if (score>=90 && score<=100) { // [90, 100]
+        printf("A\n");
+    } else if (score>=80) { // [80, 89]
+        printf("B\n");
+    } else if (score>=70) { // [70, 79]
+        printf("C\n");
+    } else if (score>=60) { // [60, 69]
+        printf("D\n");
+    } else { // (-∞, 59]
+        printf("E\n");
+    }
+    
+    /* 性能中等
+    if (score>=90 && score<=100) { // [90, 100]
+        printf("A\n");
+    } else if (score>=80 && score<=89) { // [80, 89]
+        printf("B\n");
+    } else if (score>=70 && score<=79) { // [70, 79]
+        printf("C\n");
+    } else if (score>=60 && score<=69) { // [60, 69]
+        printf("D\n");
+    } else { // (-∞, 59]
+        printf("E\n");
+    }*/
+    
+    /* 性能最差
+    if (score>=90 && score<=100) { // [90, 100]
+        printf("A\n");
+    }
+    
+    if (score>=80 && score<=89) { // [80, 89]
+        printf("B\n");
+    }
+    
+    if (score>=70 && score<=79) { // [70, 79]
+        printf("C\n");
+    }
+    
+    if (score>=60 && score<=69) { // [60, 69]
+        printf("D\n");
+    }
+    
+    if (score<=59) { // (-∞, 59]
+        printf("E\n");
+    }*/
+    return 0;
+}
+
+/*********************** switch ***************************/
+/*
+ if (条件)
+ {
+ 
+ }
+ 
+ 
+ switch (数值)
+ {
+    case 数值1:
+        语句1;
+        break;
+ 
+    case 数值2:
+        语句2;
+        break;
+ 
+    default :
+        语句3;
+        break;
+ }
+ */
+
+
+/*
+ if和switch
+ 1> if语句能完成的功能，switch并不一定能完成
+ int a = 10;
+ if (a>100)
+ {
+ 
+ }
+ 
+ 2> 在有些情况下，if语句和switch语句可以互换
+ 
+ 3> switch能完成的功能，if语句都能完成
+ */
+
+
+// switch练习1：
+#include <stdio.h>
+int main()
+{
+    //int a = 10;
+    // break:退出整个switch语句
+    // 如果case后面没有break，就会执行后面所有case中的语句，直到遇到break为止
+    /*
+    int b = 10;
+    
+    switch (a)
+    {
+        case 10:
+            printf("A\n");
+            b++;
+        case 5:
+            printf("B\n");
+            b++;
+        case 0:
+            printf("C\n");
+            b++;
+            break;
+        default:
+            printf("D\n");
+            break;
+    }
+    
+    printf("b的值是%d\n", b);*/
+    
+    char c = '+';
+    int a = 10;
+    int b = 20;
+    // 如果要在case后面定义新的变量，必须用大括号{}包住
+    switch (c) {
+        case '+':
+        {
+            int sum = a + b;
+            printf("和是%d\n", sum);
+            break;
+        }
+            
+        case '-':
+        {
+            int minus = a - b;
+            printf("差是%d\n", minus);
+            break;
+        }
+    }
+    
+    return 0;
+}
+
+
+
+ /*
+ switch练习2：
+ 输入一个整数score代表分数，根据分数输出等级（A-E）(用两种方式)
+ A：90~100 score/10 == 9、10
+ B：80~89  score/10 == 8
+ C：70~79  score/10 == 7
+ D：60~69  score/10 == 6
+ E：0~60   
+ */
+
+#include <stdio.h>
+int main()
+{
+    int score = 100;
+    
+    switch (score/10) {
+        case 10: // 100
+        case 9: // 90+
+            printf("A\n");
+            break;
+        case 8: // 80+
+            printf("B\n");
+            break;
+        case 7: // 70+
+            printf("C\n");
+            break;
+        case 6: // 60+
+            printf("D\n");
+            break;
+        default:
+            printf("E\n");
+            break;
+    }
+    
+    return 0;
+}
+
+
+/**************************************************/
+/*
+ if (条件)
+ {
+ 
+ }
+ 
+ while (条件)
+ {
+    循环体
+ }
+ 
+ 运行原理
+ 1.如果一开始条件就不成立，永远不会执行循环体
+ 2.如果条件成立，就会执行一次循环体，执行完毕，再次判断条件是否成立......
+ 
+ break
+ 直接结束整个while循环
+ 
+ continue
+ 结束当前的循环体，进入下一次循环体的执行
+ 
+ */
+
+
+/**************************************************/
+// 练习：
+/*
+题目：程序运行的时候提示下列信息
+ 请输入相应数字选择需要执行的运算：
+ 1 加法
+ 2 减法
+ 
+ 用户选择运算后，再提示用户输入两个需要进行运算的整数，输入完毕后就输出运算结果
+*/
+#include <stdio.h>
+
+int main()
+{
+    // 1. 提示用户选择计算类型
+    printf("请输入相应数字选择需要执行的运算：\n");
+    printf("1 加法\n");
+    printf("2 减法\n");
+    
+    // 2. 定义变量存储用户选择的计算类型
+    int type = 0;
+    
+    // 3. 让用户输入计算类型
+    scanf("%d", &type);
+    
+    if (type!=1 && type!=2)
+    {
+        // type值输入不合理，就直接退出程序
+        printf("非法选择\n");
+        return 0;
+    }
+    
+    // 4.提示用户输入两个计算的数值
+    printf("请连续输入两个需要进行运算的整数，并且以空格隔开\n");
+    
+    // 5.定义2个变量存储数值
+    int num1, num2;
+    scanf("%d %d", &num1, &num2);
+    
+    // 6.计算
+    int result;
+    if (type == 1) {
+        result = num1 + num2;
+        printf("%d + %d = %d\n", num1, num2, result);
+    } else if (type == 2) {
+        result = num1 - num2;
+        printf("%d - %d = %d\n", num1, num2, result);
+    }
+    return 0;
+}
+
+
+
+
+
+/**************************************************/
 数组：
 int ages[5] = {19, 19, 20, 21, 25}
 
