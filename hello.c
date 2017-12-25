@@ -1,8 +1,134 @@
+/*
 C语言一共提供了32个关键字，这些关键字都被C语言赋予了特殊含义:
 auto double int struct break else long switch
 case enum register typedef char extern return union
 const float short unsigned continue for signed void
 default goto sizeof volatile do if while static
+*/
+
+
+
+/*
+
+ a = 10
+ b = 11
+ 交换之后
+ a -> 11
+ b -> 10
+ 
+ 1.利用第三方变量(工作，掌握)
+ int temp = a;
+ a = b;
+ b = temp;
+ 
+ 2.不利用第三方变量（面试，有印象）
+ a = b - a; //求差值
+ b = b - a; //一个数减去差值等于另外一个数
+ a = b + a; //一个数+差值等于另外一个数
+
+
+
+a=10,b=11,使用两种方法交换他们的值：
+使用第三方变量
+int temp;
+temp = a;
+a = b;
+b = temp;
+
+不使用第三方变量
+a = b - a;
+b = b - a;
+a = b + a;
+
+不使用第三方变量
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+
+ */
+
+
+/*
+
+分别使用3种语言在屏幕上输出“哈哈”这一段文字，并且换行
+1.C语言
+#include <stdio.h>
+int main()
+{
+    printf("哈哈\n");
+    return 0;
+}
+
+2.Objective-C(OC)
+#import <Foundation/Foundation.h>
+int main()
+{
+    NSLog(@"哈哈");
+    return 0;
+}
+
+3.Java
+class Test
+{
+    public static void main(String[] args)
+    {
+        System.out.println("哈哈");
+    }
+}
+
+*/
+
+/***********************内存寻址**************************/
+
+#include <stdio.h>
+
+/*
+ 1.内存寻址由大到小，优先分配内存地址比较大的字节给变量
+ 
+ 2.变量越先定义，内存地址就越大
+ 
+ 3.取得变量的地址：&变量名
+ 
+ 4.输出地址：%p
+ 
+ 5.一个变量一定先进行初始化，才能使用
+ */
+
+int main()
+{
+    // 内存寻址由大到小
+    int a = 10;
+    
+    int b = 20;
+    
+    int c;
+    
+    // &是一个地址运算符，取得变量的地址
+    // %p用来输出地址
+    // 0x7fff56f09bc8
+    printf("a的地址是：%p\n", &a);
+    // 0x7fff56f09bc4
+    printf("b的地址是：%p\n", &b);
+    // 0x7fff56f09bc0
+    printf("c的地址是：%p\n", &c);
+    
+    //由于变量c没有经过初始化，所以直接拿来使用是不对的
+    //int d = c  + 1;
+     
+    printf("c的值是%d\n", c);
+    
+    return 0;
+}
+/*
+运行结果：
+a的地址是：0x7ffee7a12978
+b的地址是：0x7ffee7a12974
+c的地址是：0x7ffee7a12970
+c的值是-408868456
+*/
+
+
+/*********************代码块****************************/
 
 /*
  1.变量的作用域
@@ -77,20 +203,23 @@ int main()
         int score = 50;
         {
             score = 10;
-            printf("%d\n", score); //10
+            printf("%d\n", score);//10
         }
         a = 10;
     }
     
     {
         score = a + 250;
+        // printf("%d\n", a); //10
+        // printf("%d", score); //260
         int score = 30;
         printf("%d", score); //30
     }
-    printf("%d\n", a); //10  ??    
-    printf("%d\n", score); //260  ??
+    
+    printf("%d\n", score); //260
     return 0;
 }
+
 
 /*
 结果：
@@ -101,46 +230,7 @@ int main()
 
 */
 
-/*
-
- a = 10
- b = 11
- 交换之后
- a -> 11
- b -> 10
- 
- 1.利用第三方变量(工作，掌握)
- int temp = a;
- a = b;
- b = temp;
- 
- 2.不利用第三方变量（面试，有印象）
- a = b - a; //求差值
- b = b - a; //一个数减去差值等于另外一个数
- a = b + a; //一个数+差值等于另外一个数
-
-
-
-a=10,b=11,使用两种方法交换他们的值：
-使用第三方变量
-int temp;
-temp = a;
-a = b;
-b = temp;
-
-不使用第三方变量
-a = b - a;
-b = b - a;
-a = b + a;
-
-不使用第三方变量
-a = a ^ b;
-b = a ^ b;
-a = a ^ b;
-
- */
-
-
+/*********************scanf****************************/
 
 int age;
 scanf("%d", &age);  //&是C语言中的一个地址运算符
@@ -155,53 +245,253 @@ scanf("%dx%dx%d", &a, &b, &c); // 输入格式：10x14x20
 // 空格 ， 分隔符可以是空格、tab、回车
 scanf("%d %d %d", &a, &b, &c);
 
-note:  
-scanf的第一个参数中不要包含\n，比如scanf(“%d\n”, &a); 这将导致scanf函数无法结束
+// note:  
+// scanf的第一个参数中不要包含\n，比如scanf(“%d\n”, &a); 这将导致scanf函数无法结束
 
-// 分别使用3种语言在屏幕上输出“哈哈”这一段文字，并且换行
-// 1.C语言
-// #include <stdio.h>
-// int main()
-// {
-//     printf("哈哈\n");
-//     return 0;
-// }
 
-// 2.Objective-C(OC)
-// #import <Foundation/Foundation.h>
-// int main()
-// {
-//     NSLog(@"哈哈");
-//     return 0;
-// }
+// scanf练习1:
+#include <stdio.h>
 
-// 3.Java
-// class Test
-// {
-//     public static void main(String[] args)
-//     {
-//         System.out.println("哈哈");
-//     }
-// }
+int main()
+{
+    // 定义一个变量，用来保存用户输入的整数
+    int number;
+    
+    // scanf函数只接受变量的地址
+    // scanf函数是一个阻塞式的函数，等待用户输入
+    // 用户输入完毕后，就会将用户输入的值赋值给number变量
+    // 函数调用完毕
+    scanf("%d", &number);
+    
+    printf("用户输入的值是%d\n", number);
+    
+    return 0;
+}
 
-类型转换
+
+// scanf练习2：
+/*
+ 提示用户输入两个整数，计算并且输出两个整数的和
+*/
+
+#include <stdio.h>
+
+int main()
+{
+    // 1.定义2个变量，保存用户输入的整数
+    int num1, num2;
+    
+    // 2.提示用户输入第1个整数
+    printf("请输入第1个整数：\n");
+    
+    // 3.接收用户输入的第1个整数
+    scanf("%d", &num1);
+    
+    // 4.提示用户输入第2个整数
+    printf("请输入第2个整数：\n");
+    
+    // 5.接收用户输入的第2个整数
+    scanf("%d", &num2);
+    
+    // 6.计算和，并且输出
+    int sum = num1 + num2;
+    printf("%d+%d=%d\n", num1, num2, sum);
+    
+    //printf("num1=%d, num2=%d\n", num1, num2);
+    return 0;
+}
+
+
+// scanf练习3：
+#include <stdio.h>
+
+int main()
+{
+    /* 1.输入字符
+    char myc;
+    
+    scanf("%c", &myc);
+    
+    printf("输入的字符是%c\n", myc);
+     */
+    
+    /* 2.一次性输入多个数值，并且以某些符号隔开
+    int num1, num2;
+     
+    scanf("%d#%d", &num1, &num2);
+    
+    printf("num1=%d, num2=%d\n", num1, num2);
+    */
+    
+    /*
+    3.如果scanf参数中以空格隔开，实际输入可以以空格、tab、回车作为分隔符
+    int num1, num2;
+    scanf("%d %d", &num1, &num2);
+    printf("num1=%d, num2=%d\n", num1, num2);
+     */
+    
+    /*
+    4.scanf中不能写\n
+    int a;
+    scanf("%d\n", &a); // 错误写法
+    printf("a的值是%d\n", a);
+     */
+    
+    return 0;
+}
+
+
+/*********************类型转换****************************/
+
+/*
+// 类型转换
 
 自动类型转换
 int a = 10.6;
 int b = 10.5 + 1.7;
 自动将大类型转换为了小类型，会丢失精度
+
 自动类型提升
-int b = 10.5 + 10;
-将右边的10提升为了double类型
-double b = 1.0 / 2;
-解决除法的精度问题
+
+
 强制类型转换
 double a = (double)1 / 2;
 double b = (double)(1 / 2);
+*/
+#include <stdio.h>
+
+int main()
+{
+    /*1.算数运算符的基本使用
+    int a = 10 + 1 + 2 - 3 + 5;
+    
+    int b = -10;
+    
+    int c = 10 * b;
+    
+    int d = 10 / 2;
+    
+    // 取余运算（模运算）
+    // %两边都是整数
+    // %取余结果的正负性只跟%左边的数值有关
+    int e = 10 % -3;
+    printf("%d\n", e);
+    */
+    
+    /*
+    // 自动类型转换(double->int)
+    int a = 10.8;
+    
+    // 强制类型转换（double->int）
+    int b = (int) 10.5;
+    printf("%d\n", a);
+     */
+    
+    // 自动类型提升(int->double)
+    double c = 10.6 + 6;
+
+    double d = 1 / 3;
+    
+    double e = (double)3/2;
+    
+    printf("e的值是%f\n", e);
+        
+    return 0;
+}
+
+
+/*********************赋值运算****************************/
+
+
+//赋值运算：
+#include <stdio.h>
+
+int main()
+{
+    int a = 10;
+    
+    // a = a + 5;
+    
+    // 复合赋值运算符
+    a += 5; // a = a + 5;
+    
+    a *= 5; // a = a * 5;
+    
+    a += 5 + 6 + 4; // a = a + (5 + 6 + 4);
+    
+    a = 5 + 6 * 5 + 8;   
+
+    printf("a的值是%d\n", a);
+       
+    return 0;
+}
+
+
+// 自增和自减：
+#include <stdio.h>
+
+int main()
+{
+    /*
+    int a = 10;
+    
+    a = a + 1; // 11
+    
+    a += 1; // 12
+    
+    a++; // 13
+    
+    ++a; // 14
+    
+    a--; // a -= 1;  a = a - 1;   13
+    */
+    // printf("a的值是%d\n", a);
+    
+    int b;
+    int a = 10;
+   
+    // b = (a++) + (++a); // b = 10 + 12;
+    
+    b = (++a) + (a++);   // b = 11 + 11;
+   
+    // a -> 11
+    
+    // a : 12
+    printf("b=%d, a=%d\n", b, a);
+    
+    return 0;
+}
+
+/******************sizeof*******************************/
 
 
 sizeof( 数据类型 ): 数据类型的长度
 
+#include <stdio.h>
+
+int main()
+{
+    // int size = sizeof(10); // 整形长度： 4
+    // int size = sizeof 10.9;  // 浮点型长度： 8
+    
+    // int a = 10;
+    
+    // int size = sizeof(a);  
+    // int size = sizeof a;
+    
+    int size = sizeof(char);  //字符型： 1
+    // int size = sizeof char; // 错误的
+    
+    printf("size=%d\n", size);
+    
+    return 0;
+}
+
+
+/******************** 或||且&&非！*******三目**********************/
+
+
+/*
 main函数
 返回值：0，正常退出；1，异常退出
 
@@ -211,6 +501,162 @@ unsigned int等价于unsigned
 | 按位或
 ^ 按位异或
 ~ 按位取反
+
+
+或||，且&&，非！
+*/
+
+
+#include <stdio.h>
+
+int main()
+{
+    //逻辑与 条件1 && 条件2
+    
+    // int a  =  10>3 && 7<6;
+    
+    //int a = 0 && 10;
+    
+    //printf("a=%d\n", a);
+    
+    /*
+    int a = 10;
+    int b = 10;
+    
+    //int c = (a>5) && (++b>=11);
+    
+    int c = (a<5) && (++b>=11);
+    
+    // a = 10
+    // b = 10
+    // c = 0
+    printf("a=%d, b=%d, c=%d\n", a, b, c);*/
+    
+    
+    // 逻辑或 条件1 || 条件2
+    
+    //int a = 0 || 11;
+    /*
+    int a = 10;
+    int b = 10;
+    
+    int c = (a<5) || (b++ - 10);
+    
+    // a = 10
+    // b = 11
+    // c = 0
+    printf("a=%d, b=%d, c=%d\n", a, b, c);*/
+    
+    // 逻辑非 !条件
+    // 如果条件成立，就返回0；如果条件不成立，就返回1
+    
+    //int a = !(10>8);
+    
+    //int a = !-10;
+    
+    //int a = !10>8;
+    
+    /*
+    int a = !!10;
+    
+    printf("a=%d\n", a);
+    */
+         
+    
+    return 0;
+}
+
+
+
+// 三目运算符  条件 ? 数值1 : 数值2
+
+//int a = !100 ? 9 : 89;
+
+//printf("a=%d\n", a);
+
+
+#include <stdio.h>
+
+int main()
+{
+    /* 计算2个整数之间的最大值
+    int a = 10;
+    
+    int b = 99;
+    
+    int c = a>b ? a : b;
+     
+     printf("c is %d\n", c);
+    */
+    
+    // 计算3个整数之间的最大值
+    int a = 10;
+    int b = 999999;
+    int c = 1000;
+    
+     // 求出a、b的最大值
+    int abMax = (a > b) ? a : b;
+    // 求出最终的最大值
+    int d = (abMax > c) ? abMax : c;
+    
+    //int d = (((a > b) ? a : b) > c) ? ((a > b) ? a : b) : c;
+    
+    printf("d is %d\n", d);
+    return 0;
+}
+
+/********************** if ***************************/
+
+
+/*
+ 1.if的第1种结构
+ if(条件)
+ {
+    语句1;
+    语句2;
+    ......
+ }
+ 
+ 2.if的第2种结构
+ if(条件1)
+ {
+     语句1;
+     语句2;
+     ......
+ } 
+ else
+ {
+    
+ }
+ 
+ 3.if的第3种结构
+ if(条件1)
+ {
+     语句1;
+     语句2;
+     ......
+ }
+ else if(条件2)
+ {
+ 
+ }
+ else if(条件3)
+ {
+ 
+ }
+ else if(条件4)
+ {
+ 
+ }
+ else 
+ {
+ 
+ }
+ 
+ 4.if的第4种结构
+ if (条件)
+   语句1;
+*/
 
 
 数组：
@@ -241,6 +687,8 @@ l int a[][5] = {3,21,31,2,32,1};
 
 
 
+
+/*************************************************/
 指针
 定义：
 int a = 10;
