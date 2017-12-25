@@ -1,4 +1,4 @@
-/*
+
 1. 常见区别
 关键字以@开头
 nil相当于NULL,0
@@ -651,3 +651,89 @@ typedef enum {  //枚举类型
 // 只有利用类名调用类方法的时候，不需要在类后面写*
 // 其他情况下，类名后面统一加上*
 
+
+/********************* NSString *****************************/
+
+#import <Foundation/Foundation.h>
+
+@interface Person : NSObject
+{
+    //char *_name;
+    NSString *_name;
+}
+@end
+
+int main()
+{
+    /*
+    // 最简单的创建字符串的方式
+    NSString *str = @"itcast";
+    
+    char *name = "itcast";
+    
+    
+    NSLog(@"我在%@上课", str);
+    //NSLog(@"%s", name);
+    */
+    
+    int age = 15;
+    int no = 5;
+    NSString *name = @"哈哈jack";
+    // length方法算的是字数
+    int size = [name length];
+    
+    NSLog(@"%d", size);
+    
+    // 创建OC字符串的另一种方式
+    NSString *newStr = [NSString stringWithFormat:@"My age is %d and no is %d and name is %@", age, no, name];
+    
+    
+    NSLog(@"---- %ld", [newStr length]);
+    
+    return 0;
+}
+
+// Note: 以后在OC中用NSString 类代替字符char类型
+
+
+
+/********************** Xcode Project ****************************/
+
+/*
+
+xcode的方法：
+1. 新建类
+2. 断点调试
+3. 代码块的保存和调用 
+4. 标记和注释，// #pragma mark - 今天就写到这儿....  (这是xcode特有的，- 是用来分组的)
+5. 多文件查看（不同的视图）
+
+
+点语法：（为其他语言程序员快速上手） 转为set和get方法， 是方法调用
+p.age=10       // [p setAge:10]  相当于set方法
+int a = p.age  // [p age]        相当于get方法
+
+访问成员变量用： self->_age;
+
+// set方法实现中：--不能这么写
+self.age = age;
+
+// get方法实现中：--不能这么写
+return self.age;
+
+只能写成 return self->_age;
+
+点语法一般用在main函数中,不能写在方法的实现中：
+
+
+@public：   可以对外在任何地方访问；
+@private:   只能在当前类的对象方法中直接访问；如果要访问，用set或者get方法
+@protected: 能在当前类和子类的对象方法中访问； 什么都不写的时候，访问的就是这种模式
+
+
+声明里面不写，默认是protected;
+实现里面不写，默认是private;
+implementation中不能定义和声明中一样的成员变量
+
+oc是单继承，c++,python是多继承
+*/
