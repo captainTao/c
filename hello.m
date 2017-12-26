@@ -14,7 +14,7 @@ int main()
 }
 
 编译cc –c main.m
-链接cc main.o
+链接cc main.o          ------这一句就可以了
 运行./a.out
 
 
@@ -26,7 +26,7 @@ int main()
 }
 
 编译cc –c main.m
-链接cc main.o –framework Foundation
+链接cc main.o –framework Foundation           ------这一句就可以了
 运行./a.out
 
 
@@ -709,7 +709,7 @@ xcode的方法：
 5. 多文件查看（不同的视图）
 
 
-点语法：（为其他语言程序员快速上手） 转为set和get方法， 是方法调用
+一、点语法：（为其他语言程序员快速上手） 转为set和get方法， 是方法调用
 p.age=10       // [p setAge:10]  相当于set方法
 int a = p.age  // [p age]        相当于get方法
 
@@ -723,17 +723,102 @@ return self.age;
 
 只能写成 return self->_age;
 
+
 点语法一般用在main函数中,不能写在方法的实现中：
+
+
 
 
 @public：   可以对外在任何地方访问；
 @private:   只能在当前类的对象方法中直接访问；如果要访问，用set或者get方法
 @protected: 能在当前类和子类的对象方法中访问； 什么都不写的时候，访问的就是这种模式
-
+@package：  同一个“体系内”（框架）可以访问，介于@private和@public之间
 
 声明里面不写，默认是protected;
 实现里面不写，默认是private;
-implementation中不能定义和声明中一样的成员变量
+
+implementation中不能定义和声明interface中一样的成员变量
+
+   父类\超类 superclass
+   子类 subclass\subclasses
 
 oc是单继承，c++,python是多继承
+
+
+二、// @property：可以自动生成某个成员变量的setter和getter声明 ,写在@interface中；
+
+
+note: 最新版本的property可以自动生成成员变量和对应的声明和实现；缺点是这个变量是private私有类型，只能当前对象访问；
+
+
+@property int age; 
+//- (void)setAge:(int)age;
+//- (int)age;
+
+NSString *_name;
+
+@property NSString *name;  
+
+// - (void)setName:(NSString *)Name;
+// - (NSString *)Name;
+
+
+三、// @synthesize自动生成age的setter和getter实现，并且会访问_age这个成员变量,如果成员变量不存在，就会自动生成对应的@private类型的成员变量
+
+@synthesizes是写在implamentation中；
+
+正确的是：@synthesize age = _age;  // 访问的是_age这个成员变量名；
+
+@synthesize age  //这句话只能默认访问age这个成员变量，不是访问的_age这个成员变量；
+
+
+相当于下面的内容：
+- (void)setAge:(int)age
+{
+    _age = age;
+}
+
+- (int)age
+{
+    return _age;
+}
+
+细节：
+1.如手动实现了setter方法，编译器只会生成getter方法和成员变量；
+2.如手动实现了getter方法，编译器只会生成setter方法和成员变量；
+3.如同时实现了setter和getter方法，编译器就不会生成任何方法和成员变量；
+
 */
+
+
+/********************* id *****************************/
+
+// 1. id是万能指针，可以指向任何OC对象；
+// 2. id已经包括了*, 所以在书写的时候，不需要*， id = NSObject *
+
+// id类型的官方定义:
+typedef struct objc_object {
+    Class isa;
+} *id;
+
+
+Person *p = [Person new];
+
+id  d = [Person new]; //这一句等同于上一句。。。
+
+
+/********************* 构造方法 *****************************/
+
+Person *p =[Person new];
+
+// 1.调用+alloc分配存储空间
+Person *p1 = [Person alloc];
+// 2.调用-init进行初始化
+Person *p2 = [p1 init];
+
+
+//上面两步简写成下面的内容：
+Person *p3 = [[Person alloc] init];
+
+init方法就是构造方法；
+
