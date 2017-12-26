@@ -767,6 +767,58 @@ int main()
     return 0;
 }
 
+
+// if 练习：
+/*
+题目：程序运行的时候提示下列信息
+ 请输入相应数字选择需要执行的运算：
+ 1 加法
+ 2 减法
+ 
+ 用户选择运算后，再提示用户输入两个需要进行运算的整数，输入完毕后就输出运算结果
+*/
+#include <stdio.h>
+
+int main()
+{
+    // 1. 提示用户选择计算类型
+    printf("请输入相应数字选择需要执行的运算：\n");
+    printf("1 加法\n");
+    printf("2 减法\n");
+    
+    // 2. 定义变量存储用户选择的计算类型
+    int type = 0;
+    
+    // 3. 让用户输入计算类型
+    scanf("%d", &type);
+    
+    if (type!=1 && type!=2)
+    {
+        // type值输入不合理，就直接退出程序
+        printf("非法选择\n");
+        return 0;
+    }
+    
+    // 4.提示用户输入两个计算的数值
+    printf("请连续输入两个需要进行运算的整数，并且以空格隔开\n");
+    
+    // 5.定义2个变量存储数值
+    int num1, num2;
+    scanf("%d %d", &num1, &num2);
+    
+    // 6.计算
+    int result;
+    if (type == 1) {
+        result = num1 + num2;
+        printf("%d + %d = %d\n", num1, num2, result);
+    } else if (type == 2) {
+        result = num1 - num2;
+        printf("%d - %d = %d\n", num1, num2, result);
+    }
+    return 0;
+}
+
+
 /*********************** switch ***************************/
 /*
  if (条件)
@@ -923,59 +975,59 @@ int main()
  
  */
 
-
-/**************************************************/
-// 练习：
-/*
-题目：程序运行的时候提示下列信息
- 请输入相应数字选择需要执行的运算：
- 1 加法
- 2 减法
- 
- 用户选择运算后，再提示用户输入两个需要进行运算的整数，输入完毕后就输出运算结果
-*/
 #include <stdio.h>
-
 int main()
 {
-    // 1. 提示用户选择计算类型
-    printf("请输入相应数字选择需要执行的运算：\n");
-    printf("1 加法\n");
-    printf("2 减法\n");
+    // 1.先确定需要重复执行的操作
     
-    // 2. 定义变量存储用户选择的计算类型
-    int type = 0;
+    // 2.再确定约束条件
     
-    // 3. 让用户输入计算类型
-    scanf("%d", &type);
+    // 定义一个变量记录做的次数
+    int count = 0;
     
-    if (type!=1 && type!=2)
+    /*
+    while (count<50)
     {
-        // type值输入不合理，就直接退出程序
-        printf("非法选择\n");
-        return 0;
+        ++count;
+        
+        if (count%10 != 0)
+        {
+            printf("做第%d次俯卧撑\n", count);
+        }
+    }*/
+    
+    
+    while (count<50)
+    {
+        ++count;
+        
+        if (count%10 == 0)
+        {
+            // 直接结束这一次循环体，进入下一次循环
+            continue;   // ------>直接进入下一次循环
+        }
+        
+        printf("做第%d次俯卧撑\n", count);
     }
     
-    // 4.提示用户输入两个计算的数值
-    printf("请连续输入两个需要进行运算的整数，并且以空格隔开\n");
+    // while (count < 50)
+    // {
+    //     ++count;
+        
+    //     printf("做第%d次俯卧撑\n", count);
+        
+    //     if (count == 20)
+    //     {
+    //         break; // ------>直接中断while循环；
+    //     }
+    //     printf("在while里面");
+    // }
+    //     printf("在while外面");    
     
-    // 5.定义2个变量存储数值
-    int num1, num2;
-    scanf("%d %d", &num1, &num2);
-    
-    // 6.计算
-    int result;
-    if (type == 1) {
-        result = num1 + num2;
-        printf("%d + %d = %d\n", num1, num2, result);
-    } else if (type == 2) {
-        result = num1 - num2;
-        printf("%d - %d = %d\n", num1, num2, result);
-    }
     return 0;
 }
 
-
+/**************************************************/
 
 
 
