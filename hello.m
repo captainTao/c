@@ -708,10 +708,15 @@ xcode的方法：
 4. 标记和注释，// #pragma mark - 今天就写到这儿....  (这是xcode特有的，- 是用来分组的)
 5. 多文件查看（不同的视图）
 
+*/
+
+
 
 一、点语法：（为其他语言程序员快速上手） 转为set和get方法， 是方法调用
+
 p.age=10       // [p setAge:10]  相当于set方法
 int a = p.age  // [p age]        相当于get方法
+/*
 
 访问成员变量用： self->_age;
 
@@ -723,12 +728,15 @@ return self.age;
 
 只能写成 return self->_age;
 
-
 点语法一般用在main函数中,不能写在方法的实现中：
 
+*/
 
 
 
+
+xcode自动生成的都是private类型；比如  @property NSString *name;  
+/*
 @public：   可以对外在任何地方访问；
 @private:   只能在当前类的对象方法中直接访问；如果要访问，用set或者get方法
 @protected: 能在当前类和子类的对象方法中访问； 什么都不写的时候，访问的就是这种模式
@@ -737,7 +745,11 @@ return self.age;
 声明里面不写，默认是protected;
 实现里面不写，默认是private;
 
+xcode自动生成的都是private类型；比如  @property NSString *name;  
+
 implementation中不能定义和声明interface中一样的成员变量
+
+
 
    父类\超类 superclass
    子类 subclass\subclasses
@@ -745,25 +757,27 @@ implementation中不能定义和声明interface中一样的成员变量
 oc是单继承，c++,python是多继承
 
 
-二、// @property：可以自动生成某个成员变量的setter和getter声明 ,写在@interface中；
+二、 @property：可以自动生成某个成员变量的setter和getter声明 ,写在@interface中；(声明)
 
 
 note: 最新版本的property可以自动生成成员变量和对应的声明和实现；缺点是这个变量是private私有类型，只能当前对象访问；
 
 
 @property int age; 
-//- (void)setAge:(int)age;
-//- (int)age;
+相当于下面两句：
+- (void)setAge:(int)age;
+- (int)age;
+
 
 NSString *_name;
 
 @property NSString *name;  
+相当于下面两句：
+- (void)setName:(NSString *)Name;
+- (NSString *)Name;
 
-// - (void)setName:(NSString *)Name;
-// - (NSString *)Name;
 
-
-三、// @synthesize自动生成age的setter和getter实现，并且会访问_age这个成员变量,如果成员变量不存在，就会自动生成对应的@private类型的成员变量
+三、 @synthesize自动生成age的setter和getter实现，并且会访问_age这个成员变量,如果成员变量不存在，就会自动生成对应的@private类型的成员变量（实现）
 
 @synthesizes是写在implamentation中；
 
@@ -821,4 +835,22 @@ Person *p2 = [p1 init];
 Person *p3 = [[Person alloc] init];
 
 init方法就是构造方法；
+
+// 重写init方法：在类的实现中写：
+
+@implementation Person
+- (id)init
+{
+    if(self = [super init])
+    {
+        _age = 10;
+    }
+    return self;
+}
+@end
+
+// 创建对象的时候可以用下面两种方法，效果是一样的；
+
+Person *p3 = [[Person alloc] init];  // ---以后推荐都用这种
+Person *p3 = [Person new]
 
