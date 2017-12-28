@@ -542,7 +542,7 @@ int main(int argc, char const *argv[])
 
 // 继承：
 
-// 1.每一个对象里面有一个isa指针，它指向类；
+// 1.每一个对象里面有一个isa指针，它指向类本身；
 // 2.而每个类中有一个superclass指针，它指向它的父类；
 
 /*
@@ -735,7 +735,7 @@ return self.age;
 
 
 
-xcode自动生成的都是private类型；比如  @property NSString *name;  
+xcode自动生成的都是private类型；比如  @property NSString *name;  private类型在子类中不能进行直接赋值。
 /*
 @public：   可以对外在任何地方访问；
 @private:   只能在当前类的对象方法中直接访问；如果要访问，用set或者get方法
@@ -823,6 +823,8 @@ id  d = [Person new]; //这一句等同于上一句。。。
 
 /********************* 构造方法 *****************************/
 
+// 1.重写init:-----------------
+
 Person *p =[Person new];
 
 // 1.调用+alloc分配存储空间
@@ -841,7 +843,7 @@ init方法就是构造方法；
 @implementation Person
 - (id)init
 {
-    if(self = [super init])
+    if(self = [super init])  //如果对象初始化成功，则进行赋值。。
     {
         _age = 10;
     }
@@ -851,6 +853,83 @@ init方法就是构造方法；
 
 // 创建对象的时候可以用下面两种方法，效果是一样的；
 
-Person *p3 = [[Person alloc] init];  // ---以后推荐都用这种
+Person *p3 = [[Person alloc] init];  // -----这儿为调用, 以后推荐都用这种
 Person *p3 = [Person new]
+
+/*
+重写构造方法的目的：为了让对象创建出来，成员变量就有一些固定的值；
+注意点：
+1.先调用父类的构造方法（[super init]）
+2.再进行子类内部成员变量的初始化
+*/
+
+
+
+// 2.自定义init构造方法：--------------------
+/*
+ 自定义构造方法的规范
+ 1.一定是对象方法，一定以 - 开头
+ 2.返回值一般是id类型
+ 3.方法名一般以initWith开头
+ 4.父类的属性交给父类去处理，子类的属性交给子类处理；
+*/
+
+@interface Person:NSObject
+- (id)initWithName:(NSString *)name;
+@end
+
+
+@implementation Person
+- (id)initWithName:(NSString *)name
+{
+    if ( self = [super init] )
+    {
+        _name = name;
+    }    
+    return self;
+}
+@end
+
+Person *p3 = [[Person alloc] initWithName:@"Rose"];  // ------这儿为调用  
+
+
+// 如果要传两个参数：  （比python麻烦多了）
+- (id)initWithName:(NSString *)name andAge:(int)age;
+
+- (id)initWithName:(NSString *)name andAge:(int)age
+{
+    if ( self = [super init] )
+    {
+        _name = name;
+        _age = age;
+    }
+    return self;
+}
+
+Person *p3 = [[Person alloc] initWithName:@"Jack" andAge: 20];  // ---调用
+
+
+/*
+
+/Applications/Xcode.app/Contents/Developer/Library/Xcode/Templates
+
+* File Templates 文件模板：可以修改类文件等
+
+* Project Templates  项目模板：可以修改一些项目描述
+
+*/
+
+
+
+/********************* Category 分类 *****************************/
+
+/*
+ 分类的作用：在不改变原来类内容的基础上，可以为类增加一些方法
+ 
+ 使用注意：
+ 1.分类只能增加方法，不能增加成员变量
+ 2.分类方法实现中可以访问原来类中声明的成员变量
+ 3.分类可以重新实现原来类中的方法，但是会覆盖掉原来的方法，会导致原来的方法没法再使用
+ 4.分类中通方法名调用的优先级：分类(最后参与编译的分类优先) --> 原来类  --> 父类
+ */
 
