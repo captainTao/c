@@ -446,7 +446,7 @@ int main(int argc, char const *argv[])
 }
 
 
-/*******************************************/
+/******************对象的封装：-set, get*************************/
 
 // 对象的封装：-set, get：
 
@@ -503,7 +503,7 @@ int main(int argc, char const *argv[])
 */
 
 
-/*******************************************/
+/********************类方法***********************/
 
 // 类方法：
 
@@ -532,7 +532,7 @@ int main(int argc, char const *argv[])
 // 工具类：基本没有任何成员变量，里面的方法基本都是类方法
 
 
-/*******************************************/
+/********************self, super***********************/
 
 // self, super:
 
@@ -551,7 +551,7 @@ int main(int argc, char const *argv[])
  */
 
 
-/*******************************************/
+/********************继承，多态，组合***********************/
 
 // 继承，多态，组合：
 
@@ -842,7 +842,7 @@ NSString *_name;
 */
 
 
-/********************* id *****************************/
+/************************ id *****************************/
 
 // 1. id是万能指针，可以指向任何OC对象；
 // 2. id已经包括了*, 所以在书写的时候，不需要*， id = NSObject *
@@ -968,5 +968,192 @@ Person *p3 = [[Person alloc] initWithName:@"Jack" andAge: 20];  // ---调用
  2.分类方法实现中可以访问原来类中声明的成员变量
  3.分类可以重新实现原来类中的方法，但是会覆盖掉原来的方法，会导致原来的方法没法再使用
  4.分类中通方法名调用的优先级：分类(最后参与编译的分类优先) --> 原来类  --> 父类
+ 5.分类命名一般以功能来命名；
+ 6.开发的过程中一般会给系统自带的类去增加分类来扩充它的方法；
  */
+
+// 类库：很多类的集合，网上有很多开源的类库，可以拷贝过来，导入头文件，直接引用；
+
+
++ (int)numberCountOfString:(NSString *)str
+{
+    // 1.定义变量计算数字的个数
+   int count = 0;
+   
+   for (int i = 0; i<str.length; i++)
+   {
+       unichar c = [str characterAtIndex:i];  // 从哪一个index开始计算；
+       
+       if ( c>='0' && c<='9')
+       {
+           count++;
+       }
+   }
+   return count;
+    
+}
+
+
+/********************* 类的本质 *****************************/
+
+// 类其实也是一个对象；
+// 类本身也是一个对象，是个Class类型的对象，简称类对象
+
+typedef struct objc_class *Class;
+
+/*
+利用 Class 创建  Person类对象
+利用 Person类对象 创建 Person类型的对象
+
+    a.// 获取内存中的类对象的第一种方法，通过类的对象来获取：
+    Class c = [p class];   // Class后边不放指针的*
+    
+    Class c2 = [p2 class];
+    
+    b.// 获取内存中的类对象的第二种方法，通过类的对象来获取：
+    Class c3 = [Person class];
+
+    NSLog(@"c=%p, c2=%p, c3=%p", c, c2, c3); //获取Class类指针的地址,注意后面没有加 & 地址符号，这几个地址是相等的，表明只有一个类对象；
+
+类对象 就是 类，两个等价；
+
+    Person *p = [[Person alloc] init];
+    [Person test];
+
+1. 上面调用类对象的test方法跟下面调用类的test方法是等价的
+
+    Class c = [p class];
+    [c test];
+
+2.创建对象也可以用Class类来创建：
+    Person *p2 = [[c new] init];
+*/
+
+
+/*
+ 1.当程序启动时，就会加载项目中所有的类和分类，而且加载后会调用每个类和分类的+load方法。只会调用一次。load方法只有在类被加载的时候才调用。
+
+ 2.当第一次使用某个类时，就会调用当前类的+initialize方法
+ 
+ 3.先加载父类，再加载子类（先调用父类的+load方法，再调用子类的+load方法）
+   先初始化父类，再初始化子类（先调用父类的+initialize方法，再调用子类的+initialize方法）
+
+ 4.对于类和分类，加载的时候，都进行了+(void)load,（先进行了父类的load,再进行了分类的load）; 初始化的时候，只进行了分类的 +(void)initialize方法
+*/
+
+
+
+/********************* description *****************************/
+
+
+// 打印一个对象的所有属性，用%@符号进行占位，  NSString也是一个对象；
+
+ NSLog(@"%@", p);  // 默认情况下，利用NSLog和%@输出对象时，结果是：<类名：内存地址>
+// 上面的这句的执行步骤如下：
+// 1.会调用对象p的-description方法
+// 2.拿到-description方法的返回值（NSString *）显示到屏幕上
+// 3.-description方法默认返回的是“类名+内存地址”
+
+// 改变NSLog的输出，就是重写-description方法：
+
+// - description决定了实例对象的输出结果:
+- (NSString *)description
+{
+    // 下面代码会引发死循环------不要在description中使用self NSLog
+    // NSLog(@"%@", self);
+    return [NSString stringWithFormat:@"age=%d, name=%@", _age, _name];
+    //return @"3424324";
+}
+
+
+
+
+//上面是 - 的description，下面的是 + 的description
+Class c = [Person class];
+
+NSLog(@"%@", c);
+// 1.会调用类的+description方法
+// 2.拿到+description方法的返回值（NSString *）显示到屏幕上
+
+// + description 决定了类对象的输出结果:
++ (NSString *)description
+{
+    return @"Abc";
+}
+
+
+
+// 指针变量的地址
+NSLog(@"%p", &p);
+// 对象的地址,  跟下面这个是一致的。
+NSLog(@"%p", p);
+// <类名：对象地址>
+NSLog(@"%@", p);
+
+
+
+
+// 日志增强：
+
+// 输出当前函数名
+NSLog(@"%s\n", __func__);
+
+// 输出行号
+NSLog(@"%d", __LINE__);
+
+// NSLog输出C语言字符串的时候，不能有中文
+// NSLog(@"%s", __FILE__);
+
+// 输出源文件的名称
+printf("%s\n", __FILE__);
+
+
+/********************* SEL *****************************/
+
+typedef struct objc_selector   *SEL;
+/*
+ SEL其实是对方法的一种包装，将方法包装成一个SEL类型的数据，去找对应的方法地址。找到方法地址就可以调用方法
+ 其实消息就是SEL, 发消息就是发SEL;
+
+ 一个方法对应一个SEL,不管是类方法还是对象方法；
+*/
+
+// 无参数：
+[p test2];
+// 1.把test2包装成SEL类型的数据
+// 2.根据SEL数据找到对应的方法地址
+// 3.根据方法地址调用对应的方法
+
+// 间接调用test2方法
+[p performSelector:@selector(test2)];  // 这儿就是通过sel去寻找对应的方法，其中selector就是sel
+
+
+
+// 有参数：（方法一）
+[p test3:@"123"];
+// 如果有参数，则调用下面的方法：
+[p performSelector:@selector(test3:) withObject:@"456"]; // 注意test3后面有个冒号。其中  SEL s = @selector(test3:);
+
+
+
+// 有参数：（方法二）
+NSString *name = @"test2";
+
+SEL s = NSSelectorFromString(name);  //把一个字符串先转换为sel类型，然后调用performSelector方法；
+
+[p performSelector:s];
+
+
+
+// 每一个方法中都存在一个_cmd方法，它是SEL类型，也代表着它当前的方法的selector;
+- (void)test2
+{
+    // _cmd代表着当前方法 
+    NSString *str = NSStringFromSelector(_cmd);   // 把SEL转换为字符串；
+    
+    // 会引发死循环
+    // [self performSelector:_cmd];
+    
+    NSLog(@"调用了test2方法-----%@", str);
+}
 
