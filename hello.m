@@ -18,7 +18,7 @@ int main()
 运行./a.out
 
 
-#import <Foundation/Foundation.h>
+#import <Foundation/Foundation.h>     //系统自带的用<>,不是自带的用引号""；在.m文件见中尽量用import，不用include.
 int main()
 {
     NSLog(@"第2个OC程序");
@@ -516,7 +516,7 @@ int main(int argc, char const *argv[])
  类方法
  1> 加号 + 开头
  2> 只能由类（名）来调用
- 3> 类方法中不能访问成员变量（实例变量）
+ 3> 类方法中不能访问成员变量（_age; _weight; 实例变量）
  
  
  类方法的好处和使用场合
