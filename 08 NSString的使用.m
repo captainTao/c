@@ -15,6 +15,8 @@ NSString常用创建初始化方法
     NSString *string3 = [NSString  stringWithUTF8String:utf8];
 */
 
+
+
 #import <Foundation/Foundation.h>
 
 @interface Person : NSObject
@@ -33,15 +35,15 @@ int main()
     char *name = "itcast";
     
     
-    NSLog(@"我在%@上课", str);
-    //NSLog(@"%s", name);
+    NSLog(@"我在%@上课", str);   // 一个是%@
+    //NSLog(@"%s", name);       // 一个是%s
     */
     
     int age = 15;
     int no = 5;
     NSString *name = @"哈哈jack";
     // length方法算的是字数
-    int size = [name length]; //计算字数，包括中文字数，与传统意义上的length不一样,传统一个汉字的长度为3，在这里为1；
+    int size = [name length]; //计算字数，包括中文字数，与传统意义上的length不一样,传统一个汉字的长度为3，在这里为1； 
     
     NSLog(@"%d", size);
     

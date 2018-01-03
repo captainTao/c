@@ -729,6 +729,15 @@ int main()
 
 /*
 
+xcode文档的安装：
+
+1.直接放到Xcode中
+/Applications/Xcode.app/Contents/Developer/Documentation/DocSets
+
+2.放到硬盘的某个路径
+/Users/用户名/Library/Developer/Shared/Documentation/DocSets
+
+
 xcode的方法：
 1. 新建类
 2. 断点调试

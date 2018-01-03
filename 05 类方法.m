@@ -120,7 +120,7 @@ int main()
 
 + (int)averageOfNum1:(int)num1 andNum2:(int)num2
 {
-    int sum = [JiSusnQi sumOfNum1:num1 andNum2:num2];  //JiSusnQi可以替换为self, self代表当前对象，代表类
+    int sum = [JiSusnQi sumOfNum1:num1 andNum2:num2];  //JiSusnQi可以替换为self, self代表当前对象，当前类
     return sum / 2;
 }
 @end
