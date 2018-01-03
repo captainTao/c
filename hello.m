@@ -48,6 +48,10 @@ b. 此框架中包含了很多常用的API（应用编程接口）
 c. 框架中包含了很多头文件，若想使用整个框架的内容，包含它的主头文件即可 
 #import <Foundation/Foundation.h>
 
+Foundation框架头文件的路径
+1> 右击Xcode.app --> 显示包内容
+2> Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/Foundation.framework
+ 
 
 6. BOOL的使用
 a. BOOL类型的本质
@@ -66,6 +70,30 @@ NSLog(@"%d %d", YES, NO);
 */
 
 
+/*******************BOOL************************/
+#import <Foundation/Foundation.h>
+
+BOOL test(BOOL mybool)
+{
+    return NO;
+}
+
+int main()
+{
+    BOOL b = YES;
+    
+    BOOL b2 = NO;
+    
+    BOOL b3 = 1; // YES
+    
+    BOOL b4 = 0; // NO
+    
+    
+    //NSLog(@"%i", b);
+    
+    NSLog(@"%d", test(YES));
+    return 0;
+}
 
 /*******************************************/
 // oc 类：
