@@ -724,6 +724,35 @@ int main()
 // Note: 以后在OC中用NSString 类代替字符char类型
 
 
+/********************** oc多文件工作 ****************************/
+/*
+ 总结
+ 1.只有利用类名调用类方法的时候，不需要在类名后面写*。其他情况下，类名后面统一加上一个*
+ Circle *c1 = [Circle new];
+ - (BOOL)isInteractWithOther:(Circle *)other;
+ 
+ 2.返回值是BOOL类型的方法，方法名一般都以is开头
+ - (BOOL)isInteractWithOther:(Circle *)other;
+ 
+ 3.想要拥有某个对象，就先创建对象，然后调用set方法将对象传递给内部的成员变量
+ // 创建圆心对象
+ Point2D *p2 = [Point2D new];
+ [p2 setX:12 andY:19];
+ // 设置圆心
+ [c2 setPoint:p2];
+ 
+ - (void)setPoint:(Point2D *)point
+ {
+    _point = point;
+ }
+ 
+ 
+ 4.定义一个类分2个文件：.h声明文件、.m实现文件
+ .h : 成员变量、方法的声明
+ .m : 方法的实现
+ 
+ 5.如果想使用某一个类，只需要#import类的.h文件即可
+ */
 
 /********************** Xcode Project ****************************/
 
@@ -765,7 +794,6 @@ return self.age;
 
 只能写成 return self->_age;
 
-点语法一般用在main函数中,不能写在方法的实现中：
 
 */
 
@@ -776,11 +804,12 @@ xcode自动生成的都是private类型；比如  @property NSString *name;  pri
 /*
 @public：   可以对外在任何地方访问；
 @private:   只能在当前类的对象方法中直接访问；如果要访问，用set或者get方法
-@protected: 能在当前类和子类的对象方法中访问； 什么都不写的时候，访问的就是这种模式
-@package：  同一个“体系内”（框架）可以访问，介于@private和@public之间
+@protected: 能在当前类和子类的对象方法中访问，不能在main函数中访问； 什么在声明中都不写的时候，访问的就是这种模式
+@package：  同一个“体系内”（框架）就能直接访问对象的成员变量，介于@private和@public之间
 
-声明里面不写，默认是protected;
-实现里面不写，默认是private;
+写在main函数后面的成员变量不管什么类型，都不能直接访问；
+声明里面不写关键词，默认是protected;
+实现里面不写关键词，默认是private;
 
 xcode自动生成的都是private类型；比如  @property NSString *name;  
 
@@ -823,6 +852,7 @@ NSString *_name;
 @synthesize age  //这句话只能默认访问age这个成员变量，不是访问的_age这个成员变量；
 
 
+@synthesize age = _age; 
 相当于下面的内容：
 - (void)setAge:(int)age
 {
@@ -833,6 +863,12 @@ NSString *_name;
 {
     return _age;
 }
+
+@property和@synthesize可以一行实现多个变量的声明或实现：
+
+//@property double weight, NSString *name;  //同类型转换,不同类型不能放在一句当中，这行报错
+@property int age, height;
+@synthesize weight = _weight, name = _name;
 
 细节：
 1.如手动实现了setter方法，编译器只会生成getter方法和成员变量；
