@@ -1257,7 +1257,7 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 // 有参数的调用方法：
 [p test3:@"123"];
 // 如果有参数，则调用下面的方法：
-[p performSelector:@selector(test3:) withObject:@"456"]; // 注意test3后面有个冒号。其中  SEL s = @selector(test3:);
+[p performSelector:@selector(test3:) withObject:@"456"]; // 注意test3后面有个冒号（因为这儿有参数要传）。其中  SEL s = @selector(test3:);
 
 
 
@@ -1298,6 +1298,8 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 5.如果对象的计数器不为0，那么在整个程序运行过程，它占用的内存就不可能被回收，除非整个程序已经退出
 
 
+// ---------------------------------retain, release；
+
 // 引用计数器操作：
 6.给对象发送一条retain消息,可以使引用计数器值+1（retain方法返回对象本身）
 7.给对象发送一条release消息,可以使引用计数器值-1
@@ -1305,27 +1307,33 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 9.调用一次retain 方法，及应该调用一次release，调用一次alloc就应该调用一次release;如果多调用了release方法，程序会报错；
   release完之后，需要把指针赋值为空指针；
 
+
+*/
   // 指针p变成空指针
   [p release];
-  p = nil;
+   p = nil;  // release完之后，对象变成了一个僵尸对象，这个时候的指针还有指向，需要把指针赋值为空指针；
 
 
 // 获取计数器的值
  Person *p = [[Person alloc] init];
  NSUInteger c = [p retainCount];  // 这儿或者 int c = (int) [p retainCount];  强制转换
- NSLog(@"计数器：%ld", c);
+ NSLog(@"计数器：%ld", c);  // 输出为ld类型，长整型？
 
 
  [p retain];  // retain方法返回的是对象本身
 
 
+
+
+// ---------------------------------dealloc；
+/*
 // 对象销毁：
 10.当一个对象被销毁时，系统会自动向对象发送一条dealloc消息
 11.一般会重写dealloc方法，在这里释放相关资源，dealloc就像对象的遗言
 12.一旦重写了dealloc方法，就必须调用[super dealloc]，并且放在最后面调用
 13.不要直接调用dealloc方法
 14.一旦对象被回收了，它占用的内存就不再可用，坚持使用会导致程序崩溃（野指针错误）
-
+*/
 
 - (void)dealloc
 {
@@ -1341,7 +1349,7 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 // 野指针错误
 // OC不存在空指针错误，给空指针发送消息，不报错
 
-*/
+
 
 
 /*
@@ -1370,6 +1378,173 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
  3.谁retain，谁release
  4.谁alloc，谁release
  */
+
+
+
+
+// ------------------------------多个对象之间的内存管理；
+// 组合关系：书和人
+
+@implementation Person
+- (void)setBook:(Book *)book
+{
+    _book = [book retain];   //占有一次书，对他的引用计数器进行+1；
+
+}
+
+- (Book *)book
+{
+    return _book;
+}
+
+- (void)dealloc
+{
+    [_book release];        // 释放的时候，对占用的书对象进行释放；
+    NSLog(@"Person对象被回收");  
+    [super dealloc];
+}
+@end
+
+
+
+
+// ---------------------------set方法的内存管理：
+
+/*
+ 内存管理代码规范：
+ 1.只要调用了alloc，必须有release（autorelease）
+   对象不是通过alloc产生的，就不需要release
+ 
+ 2.set方法的代码规范
+ 1> 基本数据类型：直接复制
+ - (void)setAge:(int)age
+ { 
+    _age = age;
+ }
+ 
+ 2> OC对象类型
+ - (void)setCar:(Car *)car
+ {
+    // 1.先判断是不是新传进来对象
+    if ( car != _car )
+    {
+        // 2.对旧对象做一次release
+        [_car release];
+ 
+        // 3.对新对象做一次retain
+        _car = [car retain];
+    }
+ }
+ 
+ 3.dealloc方法的代码规范
+ 1> 一定要[super dealloc]，而且放到最后面
+ 2> 对self（当前）所拥有的其他对象做一次release
+ - (void)dealloc
+ {
+    [_car release];
+    [super dealloc];
+ }
+ */
+
+@implementation Person
+- (void)setCar:(Car *)car
+{
+    if (car != _car) // 传进来的对象不是当前对象的时候
+    {
+        // 对当前正在使用的车（旧车）做一次release
+        [_car release];
+        
+        // 对新车做一次retain操作
+        _car = [car retain];
+    }
+}
+- (Car *)car
+{
+    return _car;
+}
+
+- (void)setAge:(int)age
+{ // 基本数据类型不需要管理内存
+    _age = age;
+}
+- (int)age
+{
+    return _age;
+}
+
+- (void)dealloc
+{
+    // 当人不在了，代表不用车了
+    // 对车做一次release操作
+    [_car release];
+    
+    NSLog(@"%d岁的Person对象被回收了", _age);
+    
+    [super dealloc];
+}
+
+@end
+
+
+/******************************* @property参数 *****************************/
+
+// ---------------------------------简写retain:
+
+
+@interface Person : NSObject
+@property int age;
+@property (retain) Book *book;  // 这里的retain : 自动生成的set方法里面，release旧值，retain新值
+@property (retain) NSString *name;
+@end
+
+
+@implementation Person
+- (void)dealloc         // 但在实现中dealloc还是需要手动来写；
+{
+    [_book release];
+    [_name release];
+    [super dealloc];
+}
+@end
+
+
+
+// --------------------------------property参数：
+
+/*
+ 1.set方法内存管理相关的参数
+ * retain : release旧值，retain新值（适用于OC对象类型）
+ * assign : 直接赋值（默认，适用于非OC对象类型）
+ * copy   : release旧值，copy新值
+ 
+ 2.是否要生成set方法
+ * readwrite : 同时生成setter和getter的声明、实现(默认)
+ * readonly  : 只会生成getter的声明、实现
+ 
+ 3.多线程管理
+ * nonatomic : 性能高 (一般就用这个)
+ * atomic    : 性能低（默认）
+ 
+ 4.setter和getter方法的名称
+ * setter : 决定了set方法的名称，一定要有个冒号 : （因为要穿传参数，所以需要个冒号）
+ * getter : 决定了get方法的名称(一般用在BOOL类型)
+ */
+
+
+// 上面4个类型的参数，只能从每个类型中选一个参数，或者某个类型不写，就传默认值；
+
+
+@interface Person : NSObject
+
+// 返回BOOL类型的方法名一般以is开头
+@property (getter = isRich) BOOL rich;   // 一般重命名getter用在返回bool类型的声明里 
+
+@property (getter = abc, setter = setAbc:) int height;   // setAbc后面需要冒号
+ 
+@property (nonatomic, assign, readwrite) int weight;   // 以后在写的时候都需要些高性能的nonatomic参数
+
+@property (retain) NSString *name;
+@end
 
 
 
