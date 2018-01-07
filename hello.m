@@ -896,7 +896,7 @@ id  d = [Person new]; //这一句等同于上一句。。。
 
 /********************* 构造方法 *****************************/
 
-// -------------------------------------1.重写init:
+// ----------------------------------------1.重写init:
 
 Person *p =[Person new];
 
@@ -988,12 +988,27 @@ Person *p3 = [[Person alloc] initWithName:@"Rose"];  // ------这儿为调用
 Person *p3 = [[Person alloc] initWithName:@"Jack" andAge: 20];  // ---调用
 
 
+
+
+
+// 父类的属性交给父类方法去处理，子类方法处理子类自己的属性
+- (id)initWithName:(NSString *)name andAge:(int)age andNo:(int)no
+{
+    // 将name、age传递到父类方法中进行初始化
+    if ( self = [super initWithName:name andAge:age])
+    {
+        _no = no;
+    }
+    
+    return self;
+}
+
+Student *p = [[Student alloc] initWithName:@"Jim" andAge:29 andNo:10]; // ---调用
 /*
 
 /Applications/Xcode.app/Contents/Developer/Library/Xcode/Templates
 
 * File Templates 文件模板：可以修改类文件等
-
 * Project Templates  项目模板：可以修改一些项目描述
 
 */
@@ -1007,9 +1022,9 @@ Person *p3 = [[Person alloc] initWithName:@"Jack" andAge: 20];  // ---调用
  
  使用注意：
  1.分类只能增加方法，不能增加成员变量
- 2.分类方法实现中可以访问原来类中声明的成员变量
- 3.分类可以重新实现原来类中的方法，但是会覆盖掉原来的方法，会导致原来的方法没法再使用
- 4.分类中通方法名调用的优先级：分类(最后参与编译的分类优先) --> 原来类  --> 父类
+ 2.分类方法实现中可以访问原来类中声明的成员变量  (分类中的成员变量的权限是否与原来类中的成员变量保持一致？)
+ 3.分类可以重新实现原来类中的方法，但是会覆盖掉原来的方法，会导致原来的方法没法再使用，如果在分类中重写方法，就不用再次声明了；但我们一般不在分类中重写；
+ 4.分类中通方法名调用的优先级：分类(最后参与编译的分类优先) --> 原来类  --> 父类， 优先去分类中查找，然后再去原来类中找，最后再去父类中找
  5.分类命名一般以功能来命名；
  6.开发的过程中一般会给系统自带的类去增加分类来扩充它的方法；
  */
@@ -1048,22 +1063,22 @@ typedef struct objc_class *Class;
 利用 Person类对象 创建 Person类型的对象
 
     a.// 获取内存中的类对象的第一种方法，通过类的对象来获取：
-    Class c = [p class];   // Class后边不放指针的*
+    Class c1 = [p1 class];   // Class后边不放指针的*
     
     Class c2 = [p2 class];
     
     b.// 获取内存中的类对象的第二种方法，通过类的对象来获取：
     Class c3 = [Person class];
 
-    NSLog(@"c=%p, c2=%p, c3=%p", c, c2, c3); //获取Class类指针的地址,注意后面没有加 & 地址符号，这几个地址是相等的，表明只有一个类对象；
+    NSLog(@"c1=%p, c2=%p, c3=%p", c1, c2, c3); //获取Class类指针的地址,注意后面没有加 & 地址符号，这几个地址是相等的，表明只有一个类对象；
+
+
 
 类对象 就是 类，两个等价；
-
     Person *p = [[Person alloc] init];
     [Person test];
 
 1. 上面调用类对象的test方法跟下面调用类的test方法是等价的
-
     Class c = [p class];
     [c test];
 
@@ -1072,15 +1087,31 @@ typedef struct objc_class *Class;
 */
 
 
+
+
+// 程序调用的两个方法：-----------------load  initialize
+
++ (void)load
++ (void)initialize
 /*
  1.当程序启动时，就会加载项目中所有的类和分类，而且加载后会调用每个类和分类的+load方法。只会调用一次。load方法只有在类被加载的时候才调用。
 
  2.当第一次使用某个类时，就会调用当前类的+initialize方法
  
- 3.先加载父类，再加载子类（先调用父类的+load方法，再调用子类的+load方法）
+ 3.先加载父类，再加载子类（先调用父类的+load方法，再调用子类的+load方法），再依次调用继承的子类的分类load方法，最后再调用第一个父类的分类中的+load方法；
    先初始化父类，再初始化子类（先调用父类的+initialize方法，再调用子类的+initialize方法）
 
  4.对于类和分类，加载的时候，都进行了+(void)load,（先进行了父类的load,再进行了分类的load）; 初始化的时候，只进行了分类的 +(void)initialize方法
+*/
+
+/*
+比如有几个对象：人，学生，好学生，属于继承关系，人,学生，好学生有一个分类为MJ一类；
+都写了各自的load和initialize方法；
+
+则：
+1.当程序加载，只有一开始main函数的时候，就执行了每一个类的 + (void)load方法；顺序为：主类（父类->子类）+分类(子类->父类)；
+2.当main函数执行 [GoodStudent alloc] 时候,就在先执行了上述的load方法之后，再执行了各自的：  分类方法:(父类->子类);
+
 */
 
 
@@ -1103,7 +1134,7 @@ typedef struct objc_class *Class;
 {
     // 下面代码会引发死循环------不要在description中使用self NSLog
     // NSLog(@"%@", self);
-    return [NSString stringWithFormat:@"age=%d, name=%@", _age, _name];
+    return [NSString stringWithFormat:@"age=%d, name=%@", _age, _name];  //如果这儿在子类中，获取不到的时候，就用当前对象的get方法;
     //return @"3424324";
 }
 
