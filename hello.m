@@ -1144,7 +1144,7 @@ typedef struct objc_class *Class;
 //上面是 - 的description，下面的是 + 的description
 Class c = [Person class];
 
-NSLog(@"%@", c);
+NSLog(@"%@", c);                       //  -----------------------但在实际操作中,这儿输出的为Person，并不是+description中的信息；
 // 1.会调用类的+description方法
 // 2.拿到+description方法的返回值（NSString *）显示到屏幕上
 
@@ -1156,6 +1156,10 @@ NSLog(@"%@", c);
 
 
 
+
+// 地址输出，用%p；
+
+Person *p = [[Person alloc] init];
 // 指针变量的地址
 NSLog(@"%p", &p);
 // 对象的地址,  跟下面这个是一致的。
@@ -1181,7 +1185,11 @@ NSLog(@"%d", __LINE__);
 printf("%s\n", __FILE__);
 
 
-/********************* SEL *****************************/
+
+
+/*************************** SEL *****************************/
+
+//:以后还会学习直接用方法的地址去执行程序，这样会提高执行效率；
 
 typedef struct objc_selector   *SEL;
 /*
@@ -1197,24 +1205,25 @@ typedef struct objc_selector   *SEL;
 // 2.根据SEL数据找到对应的方法地址
 // 3.根据方法地址调用对应的方法
 
-// 间接调用test2方法
+
+//1. 直接调用selector：先转换再调用）
+NSString *name = @"test2";
+
+SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类型，然后调用performSelector方法；
+
+[p performSelector:s];
+
+
+//2. 间接调用test2方法
 [p performSelector:@selector(test2)];  // 这儿就是通过sel去寻找对应的方法，其中selector就是sel
 
 
 
-// 有参数：（方法一）
+// 有参数的调用方法：
 [p test3:@"123"];
 // 如果有参数，则调用下面的方法：
 [p performSelector:@selector(test3:) withObject:@"456"]; // 注意test3后面有个冒号。其中  SEL s = @selector(test3:);
 
-
-
-// 有参数：（方法二）
-NSString *name = @"test2";
-
-SEL s = NSSelectorFromString(name);  //把一个字符串先转换为sel类型，然后调用performSelector方法；
-
-[p performSelector:s];
 
 
 
