@@ -1514,7 +1514,7 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 /*
  1.set方法内存管理相关的参数
  * retain : release旧值，retain新值（适用于OC对象类型）
- * assign : 直接赋值（默认，适用于非OC对象类型）
+ * assign : 直接赋值（默认，适用于非OC对象类型：int, double, 枚举类型, 结构体...）
  * copy   : release旧值，copy新值
  
  2.是否要生成set方法
@@ -1541,10 +1541,33 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 
 @property (getter = abc, setter = setAbc:) int height;   // setAbc后面需要冒号
  
-@property (nonatomic, assign, readwrite) int weight;   // 以后在写的时候都需要些高性能的nonatomic参数
+@property (nonatomic, assign, readwrite) int weight;   // 以后在写的时候都需要些高性能的nonatomic参数,不是OC对象，包括常见的整型，枚举类型都应该写assign类型；
 
 @property (retain) NSString *name;
 @end
 
 
 
+
+// 从1970-01-01 00:00:00 开始，一共度过了多少毫秒
+@property (nonatomic, assign) long time;
+@property (nonatomic) time_t time;   // 这两句的意义一致，对于时间的类型，time_t;
+
+
+
+/******************************* class相互引用 *****************************/
+两个类的循环引用：
+
+/*
+ 1.@class的作用：仅仅告诉编译器，某个名称是一个类
+ @class Person; // 仅仅告诉编译器，Person是一个类
+ 
+ 2.开发中引用一个类的规范
+ 1> 在.h文件中用@class来声明类， 这样可以提高性能，为了防止更改某一个头文件的名字后，在每一个文件中去修改名字（当然在.m文件中，使用的时候还是要导入对应头文件）；也是为了提高性能；
+ 2> 在.m文件中用#import来包含类的所有东西
+ 
+ 3.两端循环引用解决方案
+ 1> 一端class用retain
+ 2> 一端class用assign
+ 
+ */
