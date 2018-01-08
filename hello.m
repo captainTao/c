@@ -1,4 +1,4 @@
-/*
+
 1. 常见区别
 关键字以@开头
 nil相当于NULL,0
@@ -70,7 +70,7 @@ NSLog(@"%d %d", YES, NO);
 */
 
 
-/*******************BOOL************************/
+/*****************************BOOL*********************************/
 #import <Foundation/Foundation.h>
 
 BOOL test(BOOL mybool)
@@ -95,7 +95,7 @@ int main()
     return 0;
 }
 
-/*******************************************/
+/******************************** oc 类*******************************/
 // oc 类：
 
 
@@ -159,7 +159,7 @@ Car *c2 = c1;
 c2->wheels = 3;
 [c1 run];
 
-/*******************************************/
+/******************************* 类的语法细节 *************************************/
 
 /*
 
@@ -222,7 +222,7 @@ NSLog(@“我的名字是%@”,  name);
 */
 
 
-/*******************************************/
+/****************************** 类的定义 **************************************/
 
 // 类的定义：
 
@@ -261,7 +261,7 @@ void test2(Car *newC){  //创建car类的指针，car类似于int,char类型
 
 
 
-/*******************************************/
+/**************************** 类的合理设计 **********************************/
 
 // 类的合理设计
 
@@ -399,7 +399,7 @@ int main(){
 }
 
 
-/*******************************************/
+/******************************** 匿名对象 *******************************/
 
 
 // 匿名对象：类新建对象的时候，不用指针命名
@@ -503,7 +503,7 @@ int main(int argc, char const *argv[])
 */
 
 
-/********************类方法***********************/
+/*********************** 类方法 **************************/
 
 // 类方法：
 
@@ -798,8 +798,6 @@ return self.age;
 */
 
 
-
-
 xcode自动生成的都是private类型；比如  @property NSString *name;  private类型在子类中不能进行直接赋值。
 /*
 @public：   可以对外在任何地方访问；
@@ -895,7 +893,7 @@ Person *p = [Person new];
 id  d = [Person new]; //这一句等同于上一句。。。比如这儿如果调用d的方法就不能用点语法
 
 
-/********************* 构造方法 *****************************/
+/********************************* 构造方法 *****************************/
 
 // ----------------------------------------1.重写init:
 
@@ -1540,7 +1538,7 @@ NSString *str = NSStringFromSelector(@selector(test));
 /*
  1.set方法内存管理相关的参数
  * retain : release旧值，retain新值（适用于OC对象类型）
- * assign : 直接赋值（默认，适用于非OC对象类型：int, double, 枚举类型, 结构体...）
+ * assign : 直接赋值（默认，适用于非OC对象类型：int, double, 枚举enum类型, 结构体struct类型...）
  * copy   : release旧值，copy新值（一般用于NSString *）
  
  2.是否要生成set方法
@@ -1571,7 +1569,6 @@ NSString *str = NSStringFromSelector(@selector(test));
 
 @property (retain) NSString *name;
 @end
-
 
 
 
@@ -1607,17 +1604,196 @@ NSString *str = NSStringFromSelector(@selector(test));
 
 /******************************* autorelease *****************************/
 
-// 自动释放池的创建
+// autorelease ：半自动释放，延时了release时间，适用于小内存占用的管理,不能精确控制释放的时间，如果占用内存大的对象，一般手动release;
 
-// >  ios 5.0后:
+/*
+ 1.autorelease的基本用法
+ 1> 会将对象放到一个自动释放池中
+ 2> 当自动释放池被销毁时，会对池子里面的所有对象做一次release操作
+ 3> 会返回对象本身
+ 4> 调用完autorelease方法后，对象的计数器不变
+ 
+ @autoreleasepool
+ {
+    // 1
+    Person *p = [[[Person alloc] init] autorelease];
+ }
+ 
+ 2.autorelease的好处
+ 1> 不用再关心对象释放的时间
+ 2> 不用再关心什么时候调用release
+ 
+
+ 3.autorelease的使用注意
+ 1> 占用内存较大的对象不要随便使用autorelease
+ 2> 占用内存较小的对象使用autorelease，没有太大影响
+ 
+ 
+ 4.错误写法
+ 1> alloc之后调用了autorelease，又调用release
+ @autoreleasepool
+ {
+    // 1
+    Person *p = [[[Person alloc] init] autorelease];
+ 
+    // 0
+    [p release];
+ }
+ 
+ 2> 连续调用多次autorelease
+ @autoreleasepool
+ {
+    Person *p = [[[[Person alloc] init] autorelease] autorelease];
+ }
+ 
+ 5.自动释放池
+ 1> 在iOS程序运行过程中，会自动创建无数个池子。这些池子都是以栈结构存在（先进后出）
+ 2> 当一个对象调用autorelease方法时，会将这个对象放到栈顶的释放池
+ 
+ 
+ */
+
+// 6. 自动释放池的创建：
+
+// a>  ios 5.0后:
 @autoreleasepool
 {
+    Person *p = [[[Person alloc] init] autorelease];
     // ....
 }
 
 
-// >   ios 5.0前:
+// b>   ios 5.0前:
 NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 // .....
 [pool release]; // 或[pool drain];
+
+
+
+
+// -------------------------------------------自动创建autorelease对象：
+/*
+ 1.系统自带的方法里面没有包含alloc、new、copy，说明返回的对象都是autorelease的
+ 
+ 2.开发中经常会提供一些类方法，快速创建一个已经autorelease过的对象，这个对象就不需要我们手动再去release一次了，比如 [NSDate date];
+
+
+ 1> 创建对象时不要直接用类名，一般用self，这样子类调用父类的方法的时候就创建的子类，就不需要重写父类的方法了；
+ + (id)person
+ {
+    return [[[self alloc] init] autorelease];
+ }
+
+ */
+
+
+@interface Person : NSObject         // 声明
+@property (nonatomic, assign) int age;  
+
++ (id)person;      // 创建一个自动release的person
+
++ (id)personWithAge:(int)age;  // 创建一个自动release的有年龄的person
+@end
+
+
+@implementation Person         // 实现
+
++ (id)person
+{
+    // return [[[Person alloc] init] autorelease];
+    return [[[self alloc] init] autorelease];  // 一般用self,不用类名,以便子类调用创建的是子类对象
+}
+
++ (id)personWithAge:(int)age
+{
+    /*
+    Person *p = [[[Person alloc] init] autorelease];
+    p.age = age;
+    return p
+    */
+    Person *p = [self person];  // 一般用self,不用类名
+    p.age = age;
+    return p;
+}
+@end
+
+int main(int argc, char const *argv[])  // 主函数
+{
+    /*
+    // 以前的创建方法：
+    Person *p = [[Person alloc]init];
+    p.age = 200;
+    [p release];
+    */
+
+    @autoreleasepool
+    {
+        Person *p1 = [[[Person alloc] init] autorelease];  
+        p1.age = 100;
+
+        Person *p2 = [Person person]; // 嫌弃上面的创建代码太长，可以自定义一个person类来创建；
+        p2.age = 100;
+
+        Person *p3 = [Person personWithAge:100]; // 创建一个有初始化变量的autorelease对象；；
+
+    // 类方法的命名应该以类名称person开头，这也跟其他语言中的包有类似之处:
+    // 包方法      包名
+    // Student    com.mj.test
+    // Student    com.mj.test2
+    
+        NSString *str = @"123123";     // 系统自带类，没有alloc,就不用release，因为创建的是一个autorelease对象
+        
+        NSString *str2 = [NSString stringWithFormat:@"age is %d", 10];
+
+
+        NSNumber *num = [[NSNumber alloc] initWithInt:10];
+        [num release]; //有alloc就应该有release
+        
+        NSNumber *num2 = [NSNumber numberWithInt:100];
+    }
+    return 0;
+}
+ 
+
+/******************************* ARC *****************************/
+ 
+// ARC: Automatic Reference Counting
+
+
+/*
+ ARC的判断准则：只要没有强指针指向对象，就会释放对象
+ 
+ 
+ 1.ARC特点:
+ 1> 不允许调用release、retain、retainCount
+ 2> 允许重写dealloc，但是不允许调用[super dealloc]
+ 3> @property的参数
+  * strong ：成员变量是强指针（适用于OC对象类型）
+  * weak ：成员变量是弱指针（适用于OC对象类型）
+  * assign : 适用于非OC对象类型
+ 4> 以前的retain改为用strong
+ 
+ 指针分2种：
+ 1> 强指针：默认情况下，所有的指针都是强指针 __strong
+ 2> 弱指针：__weak
+ 
+ */
+
+// ARC中不允许用retain,release, retainCount,[super dealloc], 但可以重写 - (void) dealloc;
+
+// 弱指针创建对象后就被销毁，这样的写法没有意义；
+__weak Person *p = [[Person alloc] init];  
+// 一个对象只有有强指针，就不销毁，只有没有强指针，就被销毁，不会管弱指针；
+
+// 如果指向对象的指针赋值为空，那么这个对象也会自动被销毁；
+Person *p = [[Person alloc] init];
+p = nil;  //指针赋值为空，指向person对象的强指针不存在，则person对象被销毁了；
+
+
+Person *p1 = [[Person alloc] init];
+Person *p2 = p1;  // 这儿是把p1指针中的地址赋值了给p2;
+
+
+
+
 
