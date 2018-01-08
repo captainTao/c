@@ -1028,6 +1028,10 @@ Student *p = [[Student alloc] initWithName:@"Jim" andAge:29 andNo:10]; // ---调
  4.分类中通方法名调用的优先级：分类(最后参与编译的分类优先) --> 原来类  --> 父类， 优先去分类中查找，然后再去原来类中找，最后再去父类中找
  5.分类命名一般以功能来命名；
  6.开发的过程中一般会给系统自带的类去增加分类来扩充它的方法；
+
+7.Category可以访问原始类的实例变量，但不能添加变量，只能添加方法。如果想添加变量，可以考虑通过继承创建子类 
+8.Category可以实现原始类的方法，但不推荐这么做，因为它是直接替换掉原来的方法，这么做的后果是再也不能访问原来的方法
+9.多个Category中如果实现了相同的方法，只有最后一个参与编译的才会有效
  */
 
 // 类库：很多类的集合，网上有很多开源的类库，可以拷贝过来，导入头文件，直接引用；
@@ -1103,6 +1107,18 @@ typedef struct objc_class *Class;
    先初始化父类，再初始化子类（先调用父类的+initialize方法，再调用子类的+initialize方法）
 
  4.对于类和分类，加载的时候，都进行了+(void)load,（先进行了父类的load,再进行了分类的load）; 初始化的时候，只进行了分类的 +(void)initialize方法
+
+
+-  +load
+-   在程序启动的时候会加载所有的类和分类，并调用所有类和分类的+load方法
+-   先加载父类，再加载子类；也就是先调用父类的+load，再调用子类的+load
+-   先加载元原始类，再加载分类
+-   不管程序运行过程有没有用到这个类，都会调用+load加载
+
+-   +initialize
+-   在第一次使用某个类时（比如创建对象等），就会调用一次+initialize方法
+-   一个类只会调用一次+initialize方法，先调用父类的，再调用子类的
+
 */
 
 
@@ -1278,6 +1294,13 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 
 /******************************* 内存管理 *****************************/
 
+// ARC: Automatic Reference Counting
+
+// 默认情况下，Xcode是不会管僵尸对象的，使用一块被释放的内存也不会报错。为了方便调试，应该开启僵尸对象监控：
+// 开启僵尸对象检测：点击运行按钮旁边的终端按钮，选择edit Scheme,然后选择Diagnostict，选择Memory Management，勾选僵尸对象；
+
+
+
 1.栈 ：局部变量，全局变量   // 系统自动回收
 2.堆 ：对象，             // 动态分配，手动回收
 
@@ -1449,7 +1472,7 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 @implementation Person
 - (void)setCar:(Car *)car
 {
-    if (car != _car) // 传进来的对象不是当前对象的时候
+    if (car != _car) // 传进来的对象不是当前对象的时候 ，先判断是不是新传进来对象
     {
         // 对当前正在使用的车（旧车）做一次release
         [_car release];
@@ -1515,7 +1538,7 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
  1.set方法内存管理相关的参数
  * retain : release旧值，retain新值（适用于OC对象类型）
  * assign : 直接赋值（默认，适用于非OC对象类型：int, double, 枚举类型, 结构体...）
- * copy   : release旧值，copy新值
+ * copy   : release旧值，copy新值（一般用于NSString *）
  
  2.是否要生成set方法
  * readwrite : 同时生成setter和getter的声明、实现(默认)
@@ -1556,9 +1579,15 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 
 
 /******************************* class相互引用 *****************************/
+
 两个类的循环引用：
 
 /*
+循环retain：
+1. 比如A对象retain了B对象，B对象retain了A对象
+2. 这样会导致A对象和B对象永远无法释放
+
+
  1.@class的作用：仅仅告诉编译器，某个名称是一个类
  @class Person; // 仅仅告诉编译器，Person是一个类
  
@@ -1571,3 +1600,21 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
  2> 一端class用assign
  
  */
+
+
+/******************************* autorelease *****************************/
+
+// 自动释放池的创建
+
+// >  ios 5.0后:
+@autoreleasepool
+{
+    // ....
+}
+
+
+// >   ios 5.0前:
+NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+// .....
+[pool release]; // 或[pool drain];
+
