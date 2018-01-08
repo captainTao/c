@@ -1291,6 +1291,9 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 }
 
 
+// 将SEL对象转为NSString对象
+NSString *str = NSStringFromSelector(@selector(test));
+
 
 /******************************* 内存管理 *****************************/
 
