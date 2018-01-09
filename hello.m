@@ -233,6 +233,7 @@ void test2();
     @public   //@public可以让Car对象的wheels和speed属性被外界访问
     int wheels; // 多少个轮子
     int speed; // 时速
+    // 成员变量不能在类声明中进行初始化，比如：double height = 1.55;
 }
 - (void)run; // 跑的行为
 @end//  默认会初始化为0
@@ -247,13 +248,15 @@ void test2();
 int main()
 {
     // 创建车子对象
-    Car *c = [Car new];//Car new]每次都会创建出新的对象，并且返回对象的地址，那么就应该用一个指针变量保存对象的地址
+    Car *c = [Car new]; //Car new]每次都会创建出新的对象，并且返回对象的地址，那么就应该用一个指针变量保存对象的地址
     c->wheels = 3;  //设置指针c， car对象的属性
     c->speed = 300;
     test2(c);
     [c run];  //结果：6,250
     return 0;
 }
+
+// 方法不能独立于类存在，类外面只能定义函数
 void test2(Car *newC){  //创建car类的指针，car类似于int,char类型
     newC->speed = 250;
     newC->wheels = 6;
@@ -907,7 +910,7 @@ typedef struct objc_object {
 
 Person *p = [Person new];
 
-id  d = [Person new]; //这一句等同于上一句。。。比如这儿如果调用d的方法就不能用点语法
+id  d = [Person new]; //这一句等同于上一句。。。比如这儿如果调用d的方法就不能用点语法，id后面也没有*号；
 
 
 /********************************* 构造方法 *****************************/
@@ -1100,11 +1103,11 @@ typedef struct objc_class *Class;
 
 1.类对象 就是 类，两个等价；
     Person *p = [[Person alloc] init];
-    [Person test];
+    [Person test];   // 类的 +test方法
 
  上面调用类对象的test方法跟下面调用类的test方法是等价的
     Class c = [p class];
-    [c test];
+    [c test];    // 类的 +test方法
 
 
 
@@ -1131,13 +1134,13 @@ typedef struct objc_class *Class;
  4.对于类和分类，加载的时候，都进行了+(void)load,（先进行了父类的load,再进行了分类的load）; 初始化的时候，只进行了分类的 +(void)initialize方法
 
 
--  +load
+-  +load  主类（父类->子类）+分类(子类->父类)；
 -   在程序启动的时候会加载所有的类和分类，并调用所有类和分类的+load方法
 -   先加载父类，再加载子类；也就是先调用父类的+load，再调用子类的+load
 -   先加载元原始类，再加载分类
 -   不管程序运行过程有没有用到这个类，都会调用+load加载
 
--   +initialize
+-   +initialize  分类方法优先:(父类->子类);
 -   在第一次使用某个类时（比如创建对象等），就会调用一次+initialize方法
 -   一个类只会调用一次+initialize方法，先调用父类的，再调用子类的
 

@@ -99,7 +99,7 @@
 
     // 方法二：
     // 不要再傻乎乎算一遍了，直接调用类方法即可
-    return [Point2D distanceBetweenPoint1:self andPoint2:other];
+    return [Point2D distanceBetweenPoint1:self andPoint2:other]; // 类方法中有两个对象，一个对象为self，另外一个为other
 }
 
 // 计算两个点之间的距离
@@ -108,7 +108,7 @@
 
     /*
     // 方法一：
-    return [p1 distanceWithOther: p2];
+    return [p1 distanceWithOther: p2];   // p1为当前对象，distanceWithother为对象方法；
     */
 
     // 方法二：
