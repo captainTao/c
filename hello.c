@@ -427,7 +427,7 @@ int main()
 }
 
 
-/******************自增，自减*******************************/
+/*************************自增，自减************************/
 /*
 i++  ：先引用后增加
 ++i  ：先增加后引用
@@ -524,6 +524,7 @@ int main()
 
 /******************** 或||且&&非！*******三目**********************/
 
+// 逻辑运算：
 
 /*
 main函数
@@ -1523,7 +1524,6 @@ void printLine()
  
  */
 
-
 #include <stdio.h>
 int main()
 {
@@ -1540,7 +1540,7 @@ int main()
     int number4 = 0xc;
     
     // %d以10进制整数的形式输出一个数值
-    printf("%x\n", number);
+    printf("%x\n", number);  // 以16进制输出
     
     return 0;
 }
@@ -1568,13 +1568,16 @@ int main()
  0 ~ 2的31次方-1
  */
 
+
+
+// --------------------------------二进制形式输出
 #include <stdio.h>
 int main()
 {
     void putBinary(int);
     
     putBinary(-12);
-    
+    putBinary(12);
     putBinary(13);
 
     return 0;
@@ -1588,6 +1591,66 @@ void putBinary(int n)
         printf("%d", n>>bits&1);         //一个整数&1可以来判断奇偶性，偶数的结果为0，奇数的结果为1；
         if (bits%4==0) printf(" ");
     }
+    printf("\n");
+}
+
+/*
+1111 1111 1111 1111 1111 1111 1111 0100 
+0000 0000 0000 0000 0000 0000 0000 1100 
+0000 0000 0000 0000 0000 0000 0000 1101
+*/
+
+
+
+// --------------------------------二进制输出分割线
+/*
+写一个函数，用来输出整数在内存中的二进制形式
+*/
+
+#include <stdio.h>
+void printBinary(int number);
+
+int main()
+{
+    /*
+     0000 0000 0000 0000 0000 0000 0000 0000
+     0000 0000 0000 0000 0000 0000 0000 1111
+     
+     9 : 0000 0000 0000 0000 0000 0000 0000 1001
+     -10 : 1111 1111 1111 1111 1111 1111 1111 0110
+     */
+    
+    
+    //printf("%d\n", ~9);
+    
+    
+    printBinary(-10);
+    return 0;
+}
+
+void printBinary(int number)
+{
+    
+    // 记录现在挪到第几位
+    // (sizeof(number)*8) - 1 == 31
+    int temp = ( sizeof(number)<<3 ) - 1;
+    
+    while ( temp >= 0 )
+    {
+        // 先挪位，再&1，取出对应位的值
+        int value = (number>>temp) & 1;
+        printf("%d", value);
+        
+        // 
+        temp--;
+        
+        // 每输出4位，就输出一个空格
+        if ( (temp + 1) % 4 == 0 )
+        {
+            printf(" ");
+        }
+    }
+    
     printf("\n");
 }
 
@@ -1622,6 +1685,75 @@ int main()
 }
 
 
+
+/*********************** 符号类型说明 ***************************/
+#include <stdio.h>
+/*
+ int 4个字节  %d
+ short 2个字节 %d
+ long 8个字节  %ld
+ long long 8个字节 %lld
+ 
+ 
+ signed
+ unsigned  %u
+ */
+int main()
+{
+    // 0000 0000 0000 0000 0000 0000 0000 0000
+    // 2的31次方-1
+    // 2的32次方-1
+    int num;
+    
+    /*
+     signed和unsigned的区别：
+      signed 最高位要当做符号位
+     unsigned 最高位不要当做符号位
+    */
+    // signed == signed int
+    // signed 有符号:正数、0、负数
+    signed int a = 10;
+    signed a2 = 10;
+    
+    // unsigned int == unsigned
+    // unsigned 无符号：0、正数
+    unsigned int b = 10;
+    unsigned b2 = 10;
+    
+    long unsigned int c = 34343;
+    long unsigned c2 = 423432;
+    
+    short unsigned int d = 4343;
+    short unsigned d2 = 43243;
+    
+    short signed int e = 54354;
+    short signed e2 = 434;
+    
+    
+    return 0;
+}
+
+void longAndShort()
+{
+    // long == long int
+    long int a = 100645654654645645l;
+    long a2 = 100645654654645645l;
+    
+    // long long int == long long
+    long long int c = 100645654654645645ll;
+    long long c2 = 4535435435435ll;
+    
+    // short == short int
+    short int d = 5454;
+    short d2 = 43434;
+    
+    //printf("%lld\n", c);
+    
+    int s = sizeof(long long int);
+    printf("%d\n", s);  // 8
+}
+
+
 /*********************** 位运算 ***************************/
 /*
      按位与 &
@@ -1638,10 +1770,16 @@ int main()
      4.a^b^a == a^a^b == 0^b == b
 
      按位取反 ~
+     ~0000 0000 0000 0000 0000 0000 0000 1001
+      1111 1111 1111 1111 1111 1111 1111 0110
+     printf("%d\n", ~9);
 
      左移 <<
 
      右移 >>
+
+     9<<n -> 9 * 2的n次方
+     8>>n -> 8/2的n次方
 
      判断一个数是否是奇偶性：
      1.用是否被2整除
