@@ -1607,9 +1607,9 @@ NSString *str = NSStringFromSelector(@selector(test));
 两个类的循环引用：
 
 /*
-循环retain：
-1. 比如A对象retain了B对象，B对象retain了A对象
-2. 这样会导致A对象和B对象永远无法释放
+ 循环retain：
+ 1. 比如A对象retain了B对象，B对象retain了A对象
+ 2. 这样会导致A对象和B对象永远无法释放
 
 
  1.@class的作用：仅仅告诉编译器，某个名称是一个类
@@ -1623,6 +1623,9 @@ NSString *str = NSStringFromSelector(@selector(test));
  1> 一端class用retain
  2> 一端class用assign
  
+ // person和card的关系：
+ @property (nonatomic, retain) Card *card;
+ @property (nonatomic, assign) Person *person;
  */
 
 
@@ -1699,7 +1702,8 @@ NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 /*
  1.系统自带的方法里面没有包含alloc、new、copy，说明返回的对象都是autorelease的
  
- 2.开发中经常会提供一些类方法，快速创建一个已经autorelease过的对象，这个对象就不需要我们手动再去release一次了，比如 [NSDate date];
+ 2.开发中经常会提供一些类方法，快速创建一个已经autorelease过的对象，这个对象就不需要我们手动再去release一次了；
+   自带的类对象就是如此，比如 [NSDate date];
 
 
  1> 创建对象时不要直接用类名，一般用self，这样子类调用父类的方法的时候就创建的子类，就不需要重写父类的方法了；
@@ -1714,9 +1718,9 @@ NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 @interface Person : NSObject         // 声明
 @property (nonatomic, assign) int age;  
 
-+ (id)person;      // 创建一个自动release的person
++ (id)person;      // 创建一个自动release的person, 用id类型
 
-+ (id)personWithAge:(int)age;  // 创建一个自动release的有年龄的person
++ (id)personWithAge:(int)age;  // 创建一个自动release的有年龄的person, 用id类型
 @end
 
 
