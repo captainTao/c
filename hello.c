@@ -1906,8 +1906,8 @@ int main()
 }
 
 
-/*************************************************/
-指针
+/********************************** 指针 **********************************/
+// 指针：
 定义：
 int a = 10;
 int *p = &a;
@@ -1937,9 +1937,13 @@ p = NULL;
 习题：
 1.编写一个int string_len(char *s)，返回字符串s的字符长度
 
+
 返回指针的函数的一般形式为：类型名 * 函数名(参数列表)
 指向函数的指针一般形式：函数的返回值类型 (*指针变量名)(形参1, 形参2, ...);
 
+
+
+// ------------------------------------------数组名和指针的区别：
 // 循环遍历数组：
 #include <stdio.h>
 int main(int argc, char const *argv[])
@@ -1960,6 +1964,7 @@ int main(int argc, char const *argv[]){
     return 0;
 }
 
+// 遍历指针地址：（修改pa+i的值）
 #include <stdio.h>
 int main(int argc, char const *argv[]){
     int i, *pa, a[] = {3,4,5,6,7,3,7,4,4,6}; 
@@ -1969,6 +1974,7 @@ int main(int argc, char const *argv[]){
     return 0;
 }
 
+// 遍历指针地址：(修改pa本身的地址值)
 #include <stdio.h>
 int main(int argc, char const *argv[]){
     int i, *pa, a[] = {3,4,5,6,7,3,7,4,4,6}; 
@@ -1980,13 +1986,15 @@ int main(int argc, char const *argv[]){
     return 0;
 }
 
+// 遍历数组地址：
 #include <stdio.h>
 int main(int argc, char const *argv[]){
     int i, a[] = {3,4,5,6,7,3,7,4,4,6}; 
     for (i = 0; i <= 9; i++){
-        printf("%d\n", *(a+i)); } //可以直接取a,数组名也就是指针,前面没定义指针a
+        printf("%d\n", *(a+i)); } //可以直接取a,数组名也就是指针,前面没定义指针a；这儿不能使用a++，因为a是常量;
     return 0;
 }
+
 
 // 数组名和指针的区别：（某种意义上可以认为一样）
 // 指针是一个指针变量，可以被修改；而数组是一个指针常量，不能被修改；

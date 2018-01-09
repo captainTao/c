@@ -399,7 +399,7 @@ int main(){
 }
 
 
-/******************************** 匿名对象 *******************************/
+/***************************** 带参数和不带参数的类方法 ****************************/
 
 
 // 匿名对象：类新建对象的时候，不用指针命名
@@ -451,9 +451,9 @@ int main(int argc, char const *argv[])
 // 对象的封装：-set, get：
 
 //   封装的好处
-//     过滤不合理的值
-//     屏蔽内部的赋值过程
-//     让外界不必关注内部的细节
+// 1. 过滤不合理的值
+// 2. 屏蔽内部的赋值过程
+// 3. 让外界不必关注内部的细节
 
 
 // 一般步骤：
@@ -471,18 +471,18 @@ int main(int argc, char const *argv[])
 面向对象的三大特性：
 封装，继承，多态
 
-    set方法
+set方法:
 1.有参数，参数类型与成员变量保持一致
 2.返回值为void
 3.命名以set开始，后面成员变量名的首字母必须大写
 
 1)  作用：用来设置成员变量，可以在方法里面过滤掉一些不合理的值
 2)  命名规范：
-   方法都是以set开头，而且后面跟上成员变量名，成员变量名的首字母必须大写
-   形参名称不要跟成员变量同名
+  # 方法都是以set开头，而且后面跟上成员变量名，成员变量名的首字母必须大写
+  # 形参名称不要跟成员变量同名
 
 
-    get方法
+get方法:
 1.没有参数
 2.有返回值
 3.命名与成员变量同名，但差一个下划线
@@ -491,12 +491,13 @@ int main(int argc, char const *argv[])
 1)  作用：返回对象内部的成员变量
 2)  命名规范：get方法的名称一般就跟成员变量同名
 4.  成员变量的命名规范
-   成员变量都以下划线 _ 开头
-   可以跟get方法的名称区分开
-   可以跟其他局部变量区分开，一看到下划线开头的变量，肯定是成员变量
+  # 成员变量都以下划线 _ 开头
+  # 可以跟get方法的名称区分开
+  # 可以跟其他局部变量区分开，一看到下划线开头的变量，肯定是成员变量
 */
 
-/*成员变量的命名规范：一定要以下划线 _ 开头
+/*
+  成员变量的命名规范：一定要以下划线 _ 开头
   作用：
   1.让成员变量和get方法的名称区分开
   2.可以跟局部变量区分开，一看到下划线开头的变量，一般都是成员变量
@@ -539,6 +540,12 @@ int main(int argc, char const *argv[])
 // self对象：
 
 /*
+成员变量和局部变量同名:
+1.当成员变量和局部变量同名时，采取就近原则，访问的是局部变量
+2.用self访问成员变量，区分同名的局部变量
+*/
+
+/*
  self的用途：
  1> 谁调用了当前方法，self就代表谁
  * self出现在对象方法中，self就代表对象
@@ -551,21 +558,22 @@ int main(int argc, char const *argv[])
  */
 
 
-/******************** 继承，多态，组合 ***********************/
-
-// 继承，多态，组合：
-
-// super:
+// super对象:
 
 /*
  super的作用
  1.直接调用父类中的某个方法
+
  2.super处在对象方法中，那么就会调用父类的对象方法
    super处在类方法中，那么就会调用父类的类方法
  
  3.使用场合：子类重写父类的方法时想保留父类的一些行为
  */
 
+
+/******************** 继承，多态，组合 ***********************/
+
+// 继承，多态，组合：
 
 
 // 继承：
@@ -574,6 +582,13 @@ int main(int argc, char const *argv[])
 // 2.而每个类中有一个superclass指针，它指向它的父类；
 
 /*
+-   父类\超类 superclass
+-   子类 subclass\subclasses
+
+
+ oc是单继承，c++,python是多继承
+
+
  1.继承的好处：
  1> 抽取重复代码
  2> 建立了类之间的关系
@@ -581,7 +596,9 @@ int main(int argc, char const *argv[])
  
  2.注意点
  1> 基本上所有类的根类是NSObject
- */
+
+*/
+
 
 /*
  1.重写：子类重新实现父类中的某个方法，覆盖父类以前的做法
@@ -592,15 +609,16 @@ int main(int argc, char const *argv[])
  
  2.坏处：耦合性太强
 
+*/
 
- 继承的使用场合
- 1> 当两个类拥有相同属性和方法的时候，就可以将相同的东西抽取到一个父类中
- 2> 当A类完全拥有B类中的部分属性和方法时，可以考虑让B类继承A类
- */
+
+// 组合：
+
+// 组合：（一个类拥有另外一个类，但两个类的属性不一致，比如学生没法继承分数，只能拥有）
 
 
 /*
-1.继承的使用场合
+1.继承的使用场合：
  1> 当两个类拥有相同属性和方法的时候，就可以将相同的东西抽取到一个父类中
  2> 当A类完全拥有B类中的部分属性和方法时，可以考虑让B类继承A类
  A
@@ -632,12 +650,10 @@ int main(int argc, char const *argv[])
 */
 
 
-// 组合：
-
-// 组合：（一个类拥有另外一个类，但两个类的属性不一致，比如学生没法继承分数，只能拥有）
 
 // 类：其实可以理解为一个类型，跟int, double, char 等类型相似
 // 枚举：其实枚举也可以理解为一个类型，只是这个类型只能取它定义的几个值而已
+
 
 /*
 enum Season {spring, summer, autumn, winter};
@@ -649,7 +665,7 @@ enum {spring, summer, autumn, winter} s;
 
 宏定义枚举类型的第一种方式：
 enum Season {spring, summer, autumn, winter};
-typedef enum Season Season;// 给枚举类型起别名
+typedef enum Season Season; // 给枚举类型起别名
 
 定义枚举类型的第二种方式：
 typedef enum Season {spring, summer, autumn, winter} Season
@@ -657,7 +673,7 @@ typedef enum Season {spring, summer, autumn, winter} Season
 定义的第三种方式：
 typedef enum {spring, summer, autumn, winter} Season;
 
-typedef enum {  //枚举类型
+typedef enum {  // 枚举类型,常用第三种方式
     SexMan,
     SexWoman
 } Sex;
@@ -666,13 +682,19 @@ typedef enum {  //枚举类型
 
 
 /*
- 多态
+ 多态：
+
  1.没有继承就没有多态
+
  2.代码的体现：父类类型的指针指向子类对象
+
  3.好处：如果函数\方法参数中使用的是父类类型，可以传入父类、子类对象
  
  4.局限性：
- 1> 父类类型的变量 不能 直接调用子类特有的方法。必须强转为子类类型变量后，才能直接调用子类特有的方法
+    1> 父类类型的变量 不能 直接调用子类特有的方法。必须强转为子类类型变量后，才能直接调用子类特有的方法
+
+ 5.细节：
+   动态绑定：在运行时根据对象的类型确定动态调用的方法
  */
 
 
@@ -725,6 +747,7 @@ int main()
 
 
 /********************** oc多文件工作 ****************************/
+
 /*
  总结
  1.只有利用类名调用类方法的时候，不需要在类名后面写*。其他情况下，类名后面统一加上一个*
@@ -813,12 +836,6 @@ xcode自动生成的都是private类型；比如  @property NSString *name;
 
 implementation中不能定义和声明interface中一样的成员变量
 
-
-
-   父类\超类 superclass
-   子类 subclass\subclasses
-
-oc是单继承，c++,python是多继承
 
 
 二、 @property：可以自动生成某个成员变量的setter和getter声明 ,写在@interface中；(声明)
@@ -925,7 +942,7 @@ init方法就是构造方法；
 
 // 创建对象的时候可以用下面两种方法，效果是一样的；
 
-Person *p3 = [[Person alloc] init];  // -----这儿为调用, 以后推荐都用这种
+Person *p3 = [[Person alloc] init];  // -----这儿为新建对象, 以后推荐都用这种方式
 Person *p3 = [Person new]
 
 
@@ -1003,8 +1020,9 @@ Person *p3 = [[Person alloc] initWithName:@"Jack" andAge: 20];  // ---调用
 }
 
 Student *p = [[Student alloc] initWithName:@"Jim" andAge:29 andNo:10]; // ---调用
-/*
 
+/*
+自定义模板路径：
 /Applications/Xcode.app/Contents/Developer/Library/Xcode/Templates
 
 * File Templates 文件模板：可以修改类文件等
@@ -1027,9 +1045,9 @@ Student *p = [[Student alloc] initWithName:@"Jim" andAge:29 andNo:10]; // ---调
  5.分类命名一般以功能来命名；
  6.开发的过程中一般会给系统自带的类去增加分类来扩充它的方法；
 
-7.Category可以访问原始类的实例变量，但不能添加变量，只能添加方法。如果想添加变量，可以考虑通过继承创建子类 
-8.Category可以实现原始类的方法，但不推荐这么做，因为它是直接替换掉原来的方法，这么做的后果是再也不能访问原来的方法
-9.多个Category中如果实现了相同的方法，只有最后一个参与编译的才会有效
+ 7.Category可以访问原始类的实例变量，但不能添加变量，只能添加方法。如果想添加变量，可以考虑通过继承创建子类 
+ 8.Category可以实现原始类的方法，但不推荐这么做，因为它是直接替换掉原来的方法，这么做的后果是再也不能访问原来的方法
+ 9.多个Category中如果实现了相同的方法，只有最后一个参与编译的才会有效
  */
 
 // 类库：很多类的集合，网上有很多开源的类库，可以拷贝过来，导入头文件，直接引用；
@@ -1062,37 +1080,43 @@ Student *p = [[Student alloc] initWithName:@"Jim" andAge:29 andNo:10]; // ---调
 typedef struct objc_class *Class;
 
 /*
-利用 Class 创建  Person类对象
-利用 Person类对象 创建 Person类型的对象
+    利用 Class 创建  Person类对象
+    利用 Person类对象 创建 Person类型的对象
 
-    a.// 获取内存中的类对象的第一种方法，通过类的对象来获取：
+
+    // a.获取内存中的类对象的第一种方法，通过类的对象来获取：
     Class c1 = [p1 class];   // Class后边不放指针的*
     
     Class c2 = [p2 class];
     
-    b.// 获取内存中的类对象的第二种方法，通过类的对象来获取：
+    
+    // b.获取内存中的类对象的第二种方法，通过类的对象来获取：
     Class c3 = [Person class];
 
+    
     NSLog(@"c1=%p, c2=%p, c3=%p", c1, c2, c3); //获取Class类指针的地址,注意后面没有加 & 地址符号，这几个地址是相等的，表明只有一个类对象；
 
 
 
-类对象 就是 类，两个等价；
+1.类对象 就是 类，两个等价；
     Person *p = [[Person alloc] init];
     [Person test];
 
-1. 上面调用类对象的test方法跟下面调用类的test方法是等价的
+ 上面调用类对象的test方法跟下面调用类的test方法是等价的
     Class c = [p class];
     [c test];
 
+
+
 2.创建对象也可以用Class类来创建：
-    Person *p2 = [[c new] init];
+    Class c = [Person class]
+    Person *p2 = [[c alloc] init];
 */
 
 
 
 
-// 程序调用的两个方法：-----------------load  initialize
+// 程序调用的两个方法：---------------------load  initialize
 
 + (void)load
 + (void)initialize
@@ -1132,7 +1156,7 @@ typedef struct objc_class *Class;
 
 
 
-/********************* description *****************************/
+/*************************** description *****************************/
 
 
 // 打印一个对象的所有属性，用%@符号进行占位，  NSString也是一个对象；
@@ -1145,6 +1169,7 @@ typedef struct objc_class *Class;
 
 // 改变NSLog的输出，就是重写-description方法：
 
+
 // - description决定了实例对象的输出结果:
 - (NSString *)description
 {
@@ -1153,7 +1178,6 @@ typedef struct objc_class *Class;
     return [NSString stringWithFormat:@"age=%d, name=%@", _age, _name];  //如果这儿在子类中，获取不到的时候，就用当前对象的get方法;
     //return @"3424324";
 }
-
 
 
 
@@ -1171,7 +1195,7 @@ NSLog(@"%@", c);        //  实际操作中,如果没定义+description方法，
 }
 
 
-// 看如下程序输出的description：类的descripiton貌似又是对的。。。
+// 如下程序description的举例：
 #import <Foundation/Foundation.h>
 @interface Person : NSObject
 @property int age;
@@ -1190,12 +1214,12 @@ NSLog(@"%@", c);        //  实际操作中,如果没定义+description方法，
 
 int main()
 {
-    Person *p = [Person new];
-    Person *p2 = [[Person class] new];
+    Person *p = [Person new];  // 对象
+    Person *p2 = [[Person class] new]; // 对象
     NSLog(@"%@", p);
     NSLog(@"%@", p2);
-    NSLog(@"%@", [Person class]);
-    NSLog(@"%@", [p class]);
+    NSLog(@"%@", [Person class]);   // 类本身
+    NSLog(@"%@", [p class]);  // 类本身
     return 0;
 }
 
@@ -1350,6 +1374,7 @@ NSString *str = NSStringFromSelector(@selector(test));
 
 
 // ---------------------------------dealloc；
+
 /*
 // 对象销毁：
 10.当一个对象被销毁时，系统会自动向对象发送一条dealloc消息
@@ -1369,8 +1394,7 @@ NSString *str = NSStringFromSelector(@selector(test));
 
 
 // 野指针：指向僵尸对象（不可用内存）的指针
-// EXC_BAD_ACCESS : 访问了一块坏的内存（已经被回收、已经不可用的内存
-// 野指针错误
+// EXC_BAD_ACCESS : 野指针错误， 访问了一块坏的内存（已经被回收、已经不可用的内存
 // OC不存在空指针错误，给空指针发送消息，不报错
 
 
@@ -1728,9 +1752,11 @@ int main(int argc, char const *argv[])  // 主函数
 
     @autoreleasepool
     {
+        // 方式一：
         Person *p1 = [[[Person alloc] init] autorelease];  
         p1.age = 100;
 
+        // 方式二：
         Person *p2 = [Person person]; // 嫌弃上面的创建代码太长，可以自定义一个person类来创建；
         p2.age = 100;
 
@@ -1777,13 +1803,27 @@ int main(int argc, char const *argv[])  // 主函数
  1> 强指针：默认情况下，所有的指针都是强指针 __strong
  2> 弱指针：__weak
  
+ * 默认所有实例变量和局部变量都是Strong指针
+ * 弱指针指向的对象被回收后，弱指针会自动变为nil指针，不会引发野指针错误
+
+
+note:
+ * 不能调用release、retain、autorelease、retainCount
+ * 可以重写dealloc，但是不能调用[super dealloc]
+ * @property : 想长期拥有某个对象，应该用strong，其他对象用weak
+ * 其他基本数据类型依然用assign
+ * 两端互相引用时，一端用strong、一端用weak
+
  */
+
 
 // ARC中不允许用retain,release, retainCount,[super dealloc], 但可以重写 - (void) dealloc;
 
 // 弱指针创建对象后就被销毁，这样的写法没有意义；
 __weak Person *p = [[Person alloc] init];  
 // 一个对象只有有强指针，就不销毁，只有没有强指针，就被销毁，不会管弱指针；
+// 只要还有一个强指针变量指向对象，对象就会保持在内存中
+
 
 // 如果指向对象的指针赋值为空，那么这个对象也会自动被销毁；
 Person *p = [[Person alloc] init];
