@@ -1609,6 +1609,7 @@ NSString *str = NSStringFromSelector(@selector(test));
 
 两个类的循环引用：
 
+// 以后用 "@class 类名;" 来引用另外一个类。
 /*
  循环retain：
  1. 比如A对象retain了B对象，B对象retain了A对象
@@ -1619,7 +1620,8 @@ NSString *str = NSStringFromSelector(@selector(test));
  @class Person; // 仅仅告诉编译器，Person是一个类
  
  2.开发中引用一个类的规范
- 1> 在.h文件中用@class来声明类， 这样可以提高性能，为了防止更改某一个头文件的名字后，在每一个文件中去修改名字（当然在.m文件中，使用的时候还是要导入对应头文件）；也是为了提高性能；
+ 1> 在.h文件中用@class来声明类， 这样可以提高性能，为了防止更改某一个头文件的名字后，在每一个文件中去修改名字也是为了提高性能；
+    （当然在.m文件中，只有使用的时候还是要导入对应头文件）
  2> 在.m文件中用#import来包含类的所有东西
  
  3.两端循环引用解决方案
@@ -1632,7 +1634,42 @@ NSString *str = NSStringFromSelector(@selector(test));
  */
 
 
+// 相互引用导致谁也释放不了谁；如果只有一方占有，则可以直接释放
+int main()
+{
+    // 后面的数字为引用计数；
+    // p - 1
+    Person *p = [[Person alloc] init];
+    // c - 1
+    Card *c = [[Card alloc] init];
+    
+    // c - 2
+    p.card = c;   // 人拥有了身份证
+    
+    // p - 1
+    c.person = p;  // 身份证拥有了人
+    
+    // c - 1
+    [c release];
+    
+    // p - 0  c - 0
+    [p release];
+    return 0;
+}
+
+
 /******************************* autorelease *****************************/
+
+
+// 在dealloc中就不用手动去释放对象了，重写dealloc,还是需要在结尾写[super dealloc]; 
+- (void)dealloc
+{
+    NSLog(@"%d岁的人被销毁了", _age);
+    
+    [super dealloc];   
+}
+@end
+
 
 // autorelease ：半自动释放，延时了release时间，适用于小内存占用的管理,不能精确控制释放的时间，如果占用内存大的对象，一般手动release;
 
@@ -1702,6 +1739,7 @@ NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
 
 // -------------------------------------------自动创建autorelease对象：
+
 /*
  1.系统自带的方法里面没有包含alloc、new、copy，说明返回的对象都是autorelease的
  
@@ -1792,6 +1830,11 @@ int main(int argc, char const *argv[])  // 主函数
  
 // ARC: Automatic Reference Counting
 
+/*
+跟非ARC模式区别：
+1. 不用手动创建autorelease对象了
+2. 在重写dealloc中不能用[super dealalloc];
+*/
 
 /*
  ARC的判断准则：只要没有强指针指向对象，就会释放对象
@@ -1799,11 +1842,14 @@ int main(int argc, char const *argv[])  // 主函数
  
  1.ARC特点:
  1> 不允许调用release、retain、retainCount
+ 
  2> 允许重写dealloc，但是不允许调用[super dealloc]
+ 
  3> @property的参数
-  * strong ：成员变量是强指针（适用于OC对象类型）
-  * weak ：成员变量是弱指针（适用于OC对象类型）
-  * assign : 适用于非OC对象类型
+  * strong ：成员变量是强指针（适用于OC对象类型）, 相当于原来的retain;
+  * weak ：成员变量是弱指针（适用于OC对象类型）, 相当于原来的assign;
+  * assign : 适用于非OC对象类型, 在ARC中还是可以用；
+ 
  4> 以前的retain改为用strong
  
  指针分2种：
@@ -1826,6 +1872,17 @@ note:
 
 // ARC中不允许用retain,release, retainCount,[super dealloc], 但可以重写 - (void) dealloc;
 
+
+// 重写dealloc,不能写[super dealloc]; 
+- (void)dealloc
+{
+    NSLog(@"%d岁的人被销毁了", _age);
+    
+    // [super dealloc];    // ARC中不能写这一句了
+}
+@end
+
+
 // 弱指针创建对象后就被销毁，这样的写法没有意义；
 __weak Person *p = [[Person alloc] init];  
 // 一个对象只有有强指针，就不销毁，只有没有强指针，就被销毁，不会管弱指针；
@@ -1844,3 +1901,323 @@ Person *p2 = p1;  // 这儿是把p1指针中的地址赋值了给p2;
 
 
 
+// xcode老版本非ARC模式转换为新的ARC模式：
+点击: edit--->convert--->To OC ARC，然后下一步，后续会有预览图，看哪些代码会被删除；
+
+// 查看一个项目是不是ARC模式：
+“点击项目文件，选择build setting---->搜索框中输入 auto 或者 arc, 看下方ARC的值是yes，则是ARC模式，如果没有搜索到ARC或者是no,则不是arc模式”
+
+// 如果要让一个项目既兼容ARC, 又要兼容非ARC：
+1.则需要  点击项目文件，选择build Phases---->compile Sources--->选择不需要的ARC的文件，按enter,在compiler Flags里面输入  -fno-objc-arc
+  然后在对应的.m文件中就能使用release,retain等方法了；
+
+
+2.如果要在非ARC项目中选择支持arc的文件，则输入： -f-objc-arc
+
+
+
+
+/*--------------------------- ARC中class相互引用------------------------*/
+
+
+// ARC中class类的相互引用：
+
+// 相互引用导致谁也释放不了谁；如果只有一方占有，则可以直接释放
+
+int main()
+{
+    Person *p = [[Person alloc] init]; 
+    Dog *d = [[Dog alloc] init];
+      
+    p.dog = d;          //两个对象相互引用，导致对象释放不了
+    d.person = p;
+
+    return 0;
+}
+
+// 当main函数一执行完，他的局部变量就被销毁，这里的*p, *d都被销毁了；
+
+
+/*
+ 当两端循环引用的时候，解决方案：
+ 1> ARC
+ 1端用strong，另1端用weak
+ 
+ 2> 非ARC
+ 1端用retain，另1端用assign
+ */
+
+
+// person.h
+
+#import <Foundation/Foundation.h>
+
+@class Dog;
+
+@interface Person : NSObject
+
+@property (nonatomic, strong) Dog *dog;  // 这儿用strong,
+
+@end
+
+
+// dog.h
+#import <Foundation/Foundation.h>
+
+@class Person;
+
+@interface Dog : NSObject
+
+@property (nonatomic, weak) Person *person;  // 这里用weak.
+
+@end
+
+
+
+
+/*******************************block*****************************/
+
+
+/*
+ block要掌握的东西
+ 1> 如何定义block变量
+ int (^sumBlock)(int, int);
+ void (^myBlock)();
+ 
+ 2> 如何利用block封装代码
+ ^(int a, int b) {
+    return a - b;
+ };
+ 
+ ^() {
+    NSLog(@"----------");
+ };
+ 
+ ^ {
+    NSLog(@"----------");
+ };
+ 
+ 3> block访问外面变量
+ * block内部可以访问外面的变量
+ * 默认情况下，block内部不能修改外面的局部变量
+ * 给局部变量加上__block关键字，这个局部变量就可以在block内部修改
+ 
+ 4>　利用typedef定义block类型
+ typedef int (^MyBlock)(int, int);
+
+ // 以后就可以利用MyBlock这种类型来定义block变量
+
+ MyBlock block;
+ MyBlock b1, b2;
+ 
+ b1 = ^(int a, int b) {
+    return a - b;
+ };
+ 
+ MyBlock b3 = ^(int a, int b) {
+    return a - b;
+ };
+ */
+
+
+
+
+// -------------------------没有参数,没有返回值的block:
+int main()
+{  
+    // block用来保存一段代码,
+    // block跟普通的代码块有区别，普通代码块会执行，block调用的时候才会执行
+    // block的标志：^
+    /*
+     block跟函数很像：
+     1.可以保存代码
+     2.有返回值
+     3.有形参
+     4.调用方式一样
+     */
+    
+    // 定义block变量
+    /*
+    void (^myblock)() = ^(){
+        NSLog(@"----------------");
+        NSLog(@"----------------");
+    };*/
+    
+    // 如果block没有形参，可以省略后面的()
+    void (^myblock)() = ^{
+        NSLog(@"----------------");
+        NSLog(@"----------------");
+    };
+    
+    // 利用block变量调用block内部的代码
+    myblock();
+    
+    myblock();  // 这里执行了两次
+
+}
+
+
+// 指针指向函数：
+int sum（int a, int b）
+{
+    return a + b;
+}
+
+int (*p) (int, int) = sum;  // 指针指向函数名
+p(10, 6) // 指针调用
+
+
+
+
+
+// -------------------------有参数，有返回值的block调用：
+int main()
+{
+    int (^sumblock)(int, int) = ^(int a, int b){
+        return a + b;
+    };
+    
+    int c = sumblock(10, 11);
+}
+
+
+int main()
+{
+    void (^lineBlock)(int) =  ^(int n)
+    {
+        for (int i = 0; i<n; i++) {
+            NSLog(@"----------------");
+        }
+    };
+
+    lineBlock(5);
+}
+
+
+// -------------------------block与局部变量的的关系：
+int main()
+{
+    int a = 10;
+    __block int b = 20;
+    
+    void (^block)();   // 函数可以分开写，就如先定义函数名，再定义函数内部；
+    
+    block = ^{
+        // block内部可以访问外面的变量
+        //NSLog(@"a = %d", a);
+        
+        // 默认情况下，block内部不能修改外面的局部变量
+        // a = 20;
+        
+        // 给局部变量加上__block关键字，这个局部变量就可以在block内部修改
+        b = 25;
+    };
+      
+    block();
+}
+
+
+/*
+// 函数可以分开声明和定义，也可以写在一起
+int (^sumBlock)(int, int);
+
+sumBlock = ^(int a, int b) {
+    return a + b;
+};
+
+
+int (^minusBlock)(int, int) = ^(int a, int b) {
+    return a - b;
+};
+*/
+
+
+// ----------------------------block与typedef：
+/*
+ 函数指针的typedef
+ typedef int (*SumP)(int, int);
+
+ int (*p)(int, int) = sum;
+ int (*p2)(int, int) = sum;
+
+ SumP p = sum;
+ SumP p2 = sum;
+*/ 
+
+
+// block的typedef:
+typedef int (^MyBlock)(int, int);
+
+int main()
+{
+    MyBlock sumBlock;
+    sumBlock = ^(int a, int b) {
+        return a + b;
+    };
+    
+    MyBlock minusBlock = ^(int a, int b) {
+        return a - b;
+    };
+    
+    MyBlock multiplyBlock = ^(int a, int b) {
+        return a * b;
+    };
+    
+    NSLog(@"%d - %d - %d", multiplyBlock(2, 4),  sumBlock(10 , 9), minusBlock(10, 8)); // typedef的调用；直接在函数名后加参数即可；
+     
+    return 0;
+}
+
+
+/*******************************protocol*****************************/
+
+
+/*
+ 1.协议的定义
+ @protocol 协议名称 <NSObject>
+  // 方法声明列表....
+ @end
+ 
+ 
+ 2.如何遵守协议
+ 1> 类遵守协议
+ @interface 类名 : 父类名 <协议名称1, 协议名称2>
+ 
+ @end
+ 
+ 2> 协议遵守协议
+ @protocol 协议名称 <其他协议名称1, 其他协议名称2>
+ 
+ @end
+ 
+ 3.协议中方法声明的关键字
+ 1> @required (默认)
+   要求实现，如果没有实现，会发出警告
+ 
+ 2> @optional
+   不要求实现，怎样不会有警告
+ 
+ 4.定义一个变量的时候，限制这个变量保存的对象遵守某个协议
+ 类名<协议名称> *变量名;
+ id<协议名称> 变量名;
+ NSObject<MyProtocol> *obj;
+ id<MyProtocol> obj2;
+ 
+ 如果没有遵守对应的协议，编译器会警告
+ 
+ 5.@property中声明的属性也可用做一个遵守协议的限制
+ @property (nonatomic, strong) 类名<协议名称> *属性名;
+ @property (nonatomic, strong) id<协议名称> 属性名;
+
+ @property (nonatomic, strong) Dog<MyProtocol> *dog;
+ @property (nonatomic, strong) id<MyProtocol> dog2;
+ 
+ 6.协议可用定义在单独.h文件中，也可用定义在某个类中
+ 1> 如果这个协议只用在某个类中，应该把协议定义在该类中
+ 
+ 2> 如果这个协议用在很多类中，就应该定义在单独文件中
+ 
+ 7.分类可用定义在单独.h和.m文件中，也可用定义在原来类中
+ 1> 一般情况下，都是定义在单独文件
+ 2> 定义在原来类中的分类，只要求能看懂语法
+ */
