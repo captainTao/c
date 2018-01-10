@@ -2178,7 +2178,8 @@ int main()
   // 方法声明列表....
  @end
  
- 
+ 基协议：NSObject, NSObject协议中声明很多最基本的方法，比如description、retain、release等
+
  2.如何遵守协议
  1> 类遵守协议
  @interface 类名 : 父类名 <协议名称1, 协议名称2>
@@ -2195,8 +2196,9 @@ int main()
    要求实现，如果没有实现，会发出警告
  
  2> @optional
-   不要求实现，怎样不会有警告
+   不要求实现，不会有警告
  
+
  4.定义一个变量的时候，限制这个变量保存的对象遵守某个协议
  类名<协议名称> *变量名;
  id<协议名称> 变量名;
@@ -2209,15 +2211,70 @@ int main()
  @property (nonatomic, strong) 类名<协议名称> *属性名;
  @property (nonatomic, strong) id<协议名称> 属性名;
 
+ // 举例：
  @property (nonatomic, strong) Dog<MyProtocol> *dog;
  @property (nonatomic, strong) id<MyProtocol> dog2;
  
  6.协议可用定义在单独.h文件中，也可用定义在某个类中
  1> 如果这个协议只用在某个类中，应该把协议定义在该类中
- 
  2> 如果这个协议用在很多类中，就应该定义在单独文件中
  
  7.分类可用定义在单独.h和.m文件中，也可用定义在原来类中
  1> 一般情况下，都是定义在单独文件
  2> 定义在原来类中的分类，只要求能看懂语法
+ 
+ @interface Person (MJ)    // ()是分类，:是继承，<>是协议；
+ // ----分类的方法
+ @end
+
+ @implementation Person (MJ)
+ // ----分类的方法的实现
+ @end
  */
+
+
+
+// 常见协议定义：
+#import <Foundation/Foundation.h>
+@protocol MyProtocol <NSObject>  // 定义了一个名叫MyProtocol的协议
+
+- (void)test4;
+
+@required
+- (void)test;
+- (void)test2;
+
+@optional
+- (void)test3;
+
+@end
+
+
+
+
+// 一个协议遵守了另外一个协议，就可以拥有另一个协议的所有方法声明
+#import <Foundation/Foundation.h>
+#import "MyProtocol.h"
+
+@protocol MyProtocol3 <MyProtocol>
+  // 方法声明列表....
+@end
+
+
+// 更@class类一样，还有一种声明协议的方法，不需要导入协议的.h文件
+// 直接先用 @protocol 协议名; 来声明，当在类的实现中用到的时候，再在头文件中导入协议的.h文件
+
+@protocol MyProtocol2, MyProtocol3;
+
+
+//  要求创建的对象遵守某一个协议：
+Person<MyProtocol> *obj = [[Person alloc] init];
+
+// NSObject类型的对象，并且要遵守NSCopying协议
+NSObject<NSCopying> *obj;
+
+// 任何OC对象，并且要遵守NSCoding协议
+id<NSCoding> obj2;
+
+
+
