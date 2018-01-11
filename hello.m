@@ -1,4 +1,4 @@
-/*
+
 1. 常见区别
 关键字以@开头
 nil相当于NULL,0
@@ -2234,7 +2234,19 @@ int main()
 
 
 
-// 常见协议定义：
+//  要求创建的对象遵守某一个协议：
+Person<MyProtocol> *obj = [[Person alloc] init];
+
+// NSObject类型的对象，并且要遵守NSCopying协议
+NSObject<NSCopying> *obj;
+
+// 任何OC对象，并且要遵守NSCoding协议
+id<NSCoding> obj2;
+
+
+
+// ----------------------------------------1.协议文件定义：
+
 #import <Foundation/Foundation.h>
 @protocol MyProtocol <NSObject>  // 定义了一个名叫MyProtocol的协议
 
@@ -2251,6 +2263,7 @@ int main()
 
 
 
+// ----------------------------------------2.协议文件遵从另外一个协议：
 
 // 一个协议遵守了另外一个协议，就可以拥有另一个协议的所有方法声明
 #import <Foundation/Foundation.h>
@@ -2261,25 +2274,33 @@ int main()
 @end
 
 
-// 更@class类一样，还有一种声明协议的方法，不需要导入协议的.h文件
+// 跟@class类一样，还有一种声明协议的方法，不需要导入协议的.h文件
 // 直接先用 @protocol 协议名; 来声明，当在类的实现中用到的时候，再在头文件中导入协议的.h文件
 
 @protocol MyProtocol2, MyProtocol3;
 
 
-//  要求创建的对象遵守某一个协议：
-Person<MyProtocol> *obj = [[Person alloc] init];
 
-// NSObject类型的对象，并且要遵守NSCopying协议
-NSObject<NSCopying> *obj;
 
-// 任何OC对象，并且要遵守NSCoding协议
-id<NSCoding> obj2;
+// ----------------------------------------3.类中的某个类型变量遵守某个协议：
 
+ @property (nonatomic, strong) 类名<协议名称> *属性名;
+ @property (nonatomic, strong) id<协议名称> 属性名;
+
+ // 举例：
+ @property (nonatomic, strong) Dog<MyProtocol> *dog;
+ @property (nonatomic, strong) id<MyProtocol> dog2;
+
+
+
+
+// ----------------------------------------4.某个类遵守某个协议：
+#import "TicketDelegate.h"
+@interface Agent : NSObject <TicketDelegate>
 
 
 /*******************************protocol代理*****************************/
 
+// 协议常用于代理，  满足代理需要遵从代理的协议：
 
-
-/*******************************RunLoop*****************************/
+/*******************************RunLoop****************************
