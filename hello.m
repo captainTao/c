@@ -2223,6 +2223,7 @@ int main()
  1> 一般情况下，都是定义在单独文件
  2> 定义在原来类中的分类，只要求能看懂语法
  
+
  @interface Person (MJ)    // ()是分类，:是继承，<>是协议；
  // ----分类的方法
  @end
@@ -2301,6 +2302,205 @@ id<NSCoding> obj2;
 
 /*******************************protocol代理*****************************/
 
-// 协议常用于代理，  满足代理需要遵从代理的协议：
+// 协议常用于代理， 一个类满足代理需要遵从代理的协议：
 
-/*******************************RunLoop****************************
+
+
+
+
+/*******************************RunLoop*******************************/
+
+
+
+
+
+
+
+/******************************* Foundation *******************************/
+
+/*
+ NSRange(location length)
+ NSPoint\CGPoint
+ NSSize\CGSize
+ NSRect\CGRect (CGPint CGSize)
+ */
+    
+
+
+NSRange：
+
+    // @"i love oc"  // love的范围
+    
+    //NSRange r1 = {2, 4}; // 不用
+    //NSRange r2 = {.location = 2, .length = 4};// 不用
+    NSRange r3 = NSMakeRange(2, 4); // 掌握
+    NSString *str = @"i love oc";
+    
+    
+    // 查找某个字符串在str中的范围
+    // 如果找不到，length=0，location=NSNotFound==-1
+    NSRange range = [str rangeOfString:@"java"];
+    NSLog(@"loc = %ld, length=%ld", range.location, range.length);
+
+
+NSPoint\CGPoint：
+
+    CGFloat 就是double类型；
+    一般用CGPoint,因为它是跨平台的；一般用CG开头的函数
+
+    // 设置点
+    CGPoint p1 = NSMakePoint(10, 10);
+    NSPoint p2 = CGPointMake(20, 20);// 最常用
+
+
+NSSize\CGSize：
+
+    // 设置宽度，长度
+    NSSize s1 = CGSizeMake(100, 50);
+    NSSize s2 = NSMakeSize(100, 50);
+    CGSize s3 = NSMakeSize(200, 60);
+
+    
+NSRect\CGRect (CGPint CGSize)：
+
+    // 同时设置点，宽度，长度，是上面两个结构体的嵌套
+    CGRect r1 = CGRectMake(0, 0, 100, 50);
+    
+    CGRect r2 = { {0, 0}, {100, 90}};
+    
+    CGRect r3 = {p1, s2}; // 用两个结构体赋值；
+    
+   
+// 设置原点：
+    // 使用CGPointZero等的前提是添加CoreGraphics框架
+    CGRect r4 = {CGPointZero, CGSizeMake(100, 90)};
+    
+    // CGPointZero 原点常量
+    // CGSizeZero  矩形常量
+    // CGRectZero  原点矩形常量
+    
+    // 表示原点
+    CGPointZero == CGPointMake(0, 0)
+    
+   
+// 打印一个结构体，一般我们先用NSString转换为一个字符串来查看：
+
+    // 不用这种方式，太冗长；
+    // NSLog(@"x=%f, y=%f, width=%f, height=%f", r1.origin.x, r1.origin.y, r1.size.width, r1.size.height);
+    
+
+    // 将结构体转为字符串：
+    NSString *str = NSStringFromPoint(p1); // 点
+    
+    NSString *str = NSStringFromSize(s3);  // 矩形
+    
+    NSString *str = NSStringFromRect(r1);  // 点，矩形
+    
+    NSLog(@"%@", str);
+    
+
+
+
+//-------------------------------常用函数：
+    
+    // 使用这些CGPointEqualToPoint、CGRectContainsPoint等函数的前提是添加CoreGraphics框架
+    // CG开头方法的一般依赖于CoreGraphics框架
+    // NS开头的方法依赖于NSObject框架
+
+    // NextStep  Foundation 
+    
+    
+    // 比较两个点是否相同（x、y）
+    BOOL b = CGPointEqualToPoint(CGPointMake(10, 10), CGPointMake(10, 10));
+    CGRectEqualToRect(<#CGRect rect1#>, <#CGRect rect2#>)  // 两个矩形是否相等
+    CGSizeEqualToSize(<#CGSize size1#>, <#CGSize size2#>)  // 两个尺寸是否相等
+    
+    
+    // 判断一个矩形返回是否包含一个点？
+    // x (50, 150) y (40 , 90)
+    BOOL b2 = CGRectContainsPoint(CGRectMake(50, 40, 100, 50), CGPointMake(60, 45)); 
+    
+    NSLog(@"%d", b2);
+
+
+
+
+//  -----------------------------------字符串的创建的几种方式：
+
+    NSString *s1 = @"jack";
+    
+    //NSString *s2 = [[NSString alloc] initWithString:@"jack"];
+    
+    NSString *s3 = [[NSString alloc] initWithFormat:@"age is %d", 10];
+    
+    // C字符串 --> OC字符串
+    NSString *s4 = [[NSString alloc] initWithUTF8String:"jack"];
+    // OC字符串 --> C字符串
+    const char *cs = [s4 UTF8String];
+    
+ 
+
+
+//  -----------------------------------读取文件：
+
+    // NSUTF8StringEncoding 用到中文就可以用这种编码 （把一个文件或者网页内容转为字符串）
+    NSString *s5 = [[NSString alloc] initWithContentsOfFile:@"/Users/apple/Desktop/1.txt" encoding:NSUTF8StringEncoding error:nil];
+    
+ 
+    // URL : 资源路径
+    // 协议头://路径
+
+    // file:// 本地文件
+    // ftp:// ftp服务器
+    // http://weibo.com/a.png  http服务器
+    
+
+    // （把一个文件或者网页内容转为字符串）
+    NSURL *url = [[NSURL alloc] initWithString:@"file:///Users/apple/Desktop/1.txt"];
+    NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/1.txt"]; // 或者这样写，这个是表示文件资源的一个方法
+    
+    NSString *s6 = [[NSString alloc] initWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+    NSLog(@"s6=\n%@", s6);
+    
+/*
+ 上面都是对象方法，都有对应的类方法：
+
+ 一般都会有一个类方法跟对象方法配对：
+ [NSURL URLWithString:<#(NSString *)#>];
+ [NSString stringWithFormat:@""];
+ [NSString stringWithContentsOfFile:<#(NSString *)#> encoding:<#(NSStringEncoding)#> error:<#(NSError *__autoreleasing *)#>];
+ 
+ */
+
+
+
+
+//  -----------------------------------文件写入：
+    // 字符串的导出
+    [@"Jack\nJack" writeToFile:@"/Users/apple/Desktop/my.txt" atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    
+
+    NSString *str = @"4234234";
+    NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/my2.txt"];
+    [str writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+
+
+/*
+ NSString : 不可变字符串 （添加，删除）
+ 
+ NSMutableString : 可变字符串
+ */
+
+   
+    NSMutableString *s1 = [NSMutableString stringWithFormat:@"my age is 10"]; // NSMutableString,可变类型
+    // 拼接内容到s1的后面
+    [s1 appendString:@" 11 12"];
+    
+    // 获取is的范围
+    NSRange range = [s1 rangeOfString:@"is"];
+    [s1 deleteCharactersInRange:range]; // 删除is
+    
+    NSString *s2 = [NSString stringWithFormat:@"age is 10"]; // NSString,不可变类型
+    
+    NSString *s3 = [s2 stringByAppendingString:@" 11 12"];  // 有返回值，这个是新建一个字符串
