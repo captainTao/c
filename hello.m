@@ -67,7 +67,7 @@ NSLog(@"%d %d", YES, NO);
 面向过程 Procedure Oriented
 面向对象 Object Oriented，简称OO
 面向对象编程 Object Oriented Programming，简称OOP
-*/
+
 
 
 /***************************** BOOL *********************************/
