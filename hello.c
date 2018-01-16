@@ -1892,29 +1892,45 @@ int a[3][4] = {{},{},{}};
 int a[][5] = {3,21,31,2,32,1};
 
 
-    // 错误写法
-    // int ages[];
+// 错误写法
+// int ages[];
+
+// 错误写法
+/* 只能在定义数组的同时进行初始化
+int ages[5];
+ages = {10, 11, 12, 14}; 
+*/
+
+// 正确写法,注意与上面的对比：
+/*
+int count = 5;
+int ages[count];
+ages[0] = 10;
+ages[1] = 11;
+ages[2] = 18;
+*/
+
+// 如果想再定义数组的同时进行初始化，数组元素个数必须是常量，或者不写
+// int ages[count] = {10, 11, 12};      // 错误写法
+int ages[] = {10, 11, 12, 78};    // 正确写法
+
+
+
+// 遍历数组元素，以及长度；
+int main()
+{
+    int ages[] = {10, 11, 12, 78};
     
-  
-    /* 只能在定义数组的同时进行初始化
-    int ages[5];
-    ages = {10, 11, 12, 14};     // 错误写法
-    */
+    int count = sizeof(ages)/sizeof(int);  // 计算length
+    // printf("%ld\n",sizeof(ages));  // 16
+    // printf("%ld\n",sizeof(int));  // 4
 
-    // 正确写法,注意与上面的对比：
-    /*
-    int count = 5;
-    int ages[count];
-    ages[0] = 10;
-    ages[1] = 11;
-    ages[2] = 18;
-    */
-
-    // 如果想再定义数组的同事进行初始化，数组元素个数必须是常量，或者不写
-    // int ages[count] = {10, 11, 12};      // 错误写法
-    // int ages[] = {10, 11, 12, 78};    // 正确写法
-
-
+    for (int i = 0; i<count; i++)
+    {
+        printf("ages[%d]=%d\n", i, ages[i]);
+    }
+    return 0;
+}
 
 
 /*
@@ -1960,6 +1976,28 @@ int main()
 }
 
 
+
+
+int main()
+{
+    char cs[5]= {'a', 'A', 'D', 'e', 'f'};
+    
+    printf("%p\n", cs); // 输出的是这个数组的起始地址
+    
+    for (int i = 0; i<5; i++) {
+        printf("cs[%d]的地址是:%p\n", i, &cs[i]);  // 字符串的占用内存为一个字节；
+    }
+    
+    
+    int ages[3]= {10 , 19, 18};
+    
+    printf("%p\n", ages);
+    
+    for (int i = 0; i<3; i++) {
+        printf("ages[%d]的地址是:%p\n", i, &ages[i]);
+    }
+    return 0;
+}
 
 /***********************数组函数**************************/
 
