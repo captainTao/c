@@ -1874,6 +1874,7 @@ void printBinary(int number)
     // char c = A; // 错误写法
 
 /*********************** 数组 ***************************/
+
 // 数组：
 int ages[5] = {19, 19, 20, 21, 25}
 
@@ -1952,7 +1953,6 @@ int main()
 int main()
 {
     
-    
     // 1.定义一个数组来存储成绩
     int scores[5];
     
@@ -1970,8 +1970,6 @@ int main()
     
     // 3.计算平均分，并且输出
     printf("平均分是%f\n", sum/5.0);
-
-
     return 0;
 }
 
@@ -1985,7 +1983,7 @@ int main()
     printf("%p\n", cs); // 输出的是这个数组的起始地址
     
     for (int i = 0; i<5; i++) {
-        printf("cs[%d]的地址是:%p\n", i, &cs[i]);  // 字符串的占用内存为一个字节；
+        printf("cs[%d]的地址是:%p\n", i, &cs[i]);  // 字符char的占用内存为一个字节；
     }
     
     
@@ -1994,10 +1992,23 @@ int main()
     printf("%p\n", ages);
     
     for (int i = 0; i<3; i++) {
-        printf("ages[%d]的地址是:%p\n", i, &ages[i]);
+        printf("ages[%d]的地址是:%p\n", i, &ages[i]);  // int类型占用内存为4个字节；
     }
     return 0;
 }
+
+/*
+0x7ffeefbff643
+cs[0]的地址是:0x7ffeefbff643
+cs[1]的地址是:0x7ffeefbff644
+cs[2]的地址是:0x7ffeefbff645
+cs[3]的地址是:0x7ffeefbff646
+cs[4]的地址是:0x7ffeefbff647
+0x7ffeefbff64c
+ages[0]的地址是:0x7ffeefbff64c
+ages[1]的地址是:0x7ffeefbff650
+ages[2]的地址是:0x7ffeefbff654
+*/
 
 /***********************数组函数**************************/
 
