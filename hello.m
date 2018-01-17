@@ -2316,9 +2316,11 @@ id<NSCoding> obj2;
 
 
 
-/******************************* Foundation *******************************/
+/*----------------------------- Foundation -----------------------------*/
 
+/******************************* OC 结构体*******************************/
 /*
+结构体：
  NSRange(location length)
  NSPoint\CGPoint
  NSSize\CGSize
@@ -2333,13 +2335,13 @@ NSRange：
     
     //NSRange r1 = {2, 4}; // 不用
     //NSRange r2 = {.location = 2, .length = 4};// 不用
-    NSRange r3 = NSMakeRange(2, 4); // 掌握
+    NSRange r3 = NSMakeRange(2, 4); // 掌握， love的位置
     NSString *str = @"i love oc";
     
     
-    // 查找某个字符串在str中的范围
+    // 查找某个字符串在str中的范围，返回的是一个结构体
     // 如果找不到，length=0，location=NSNotFound==-1
-    NSRange range = [str rangeOfString:@"java"];
+    NSRange range = [str rangeOfString:@"java"]; // 查找java在str中的位置：
     NSLog(@"loc = %ld, length=%ld", range.location, range.length);
 
 
@@ -2350,7 +2352,7 @@ NSPoint\CGPoint：
 
     // 设置点
     CGPoint p1 = NSMakePoint(10, 10);
-    NSPoint p2 = CGPointMake(20, 20);// 最常用
+    NSPoint p2 = CGPointMake(20, 20);// 最常用，括号中的类型都是float类型
 
 
 NSSize\CGSize：
@@ -2371,7 +2373,7 @@ NSRect\CGRect (CGPint CGSize)：
     CGRect r3 = {p1, s2}; // 用两个结构体赋值；
     
    
-// 设置原点：
+// -------------------------------设置原点：
     // 使用CGPointZero等的前提是添加CoreGraphics框架
     CGRect r4 = {CGPointZero, CGSizeMake(100, 90)};
     
@@ -2382,7 +2384,9 @@ NSRect\CGRect (CGPint CGSize)：
     // 表示原点
     CGPointZero == CGPointMake(0, 0)
     
-   
+
+
+//-------------------------------结构体转为字符串：
 // 打印一个结构体，一般我们先用NSString转换为一个字符串来查看：
 
     // 不用这种方式，太冗长；
@@ -2425,11 +2429,14 @@ NSRect\CGRect (CGPint CGSize)：
 
 
 
+
+/******************************* OC NSString*******************************/ 
+
 //  -----------------------------------字符串的创建的几种方式：
 
     NSString *s1 = @"jack";
     
-    //NSString *s2 = [[NSString alloc] initWithString:@"jack"];
+    //NSString *s2 = [[NSString alloc] initWithString:@"jack"];  // 与上面等价，一般写上面那个
     
     NSString *s3 = [[NSString alloc] initWithFormat:@"age is %d", 10];
     
@@ -2460,7 +2467,7 @@ NSRect\CGRect (CGPint CGSize)：
     NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/1.txt"]; // 或者这样写，这个是表示文件资源的一个方法
     
     NSString *s6 = [[NSString alloc] initWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
-    NSLog(@"s6=\n%@", s6);
+    NSLog(@"s6=\n%@", s6); // 换行再输出
     
 /*
  上面都是对象方法，都有对应的类方法：
@@ -2476,31 +2483,190 @@ NSRect\CGRect (CGPint CGSize)：
 
 
 //  -----------------------------------文件写入：
-    // 字符串的导出
-    [@"Jack\nJack" writeToFile:@"/Users/apple/Desktop/my.txt" atomically:YES encoding:NSUTF8StringEncoding error:nil];
-    
+// 字符串的导出
+[@"Jack\nJack" writeToFile:@"/Users/apple/Desktop/my.txt" atomically:YES encoding:NSUTF8StringEncoding error:nil];  
+// 这其中Yes，代表：如果文件写入有错误，则停止创建文件； NO表示，会继续创建，即使错误；
 
-    NSString *str = @"4234234";
-    NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/my2.txt"];
-    [str writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+NSString *str = @"4234234";
+NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/my2.txt"];
+[str writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+
 
 
 
 /*
  NSString : 不可变字符串 （添加，删除）
  
- NSMutableString : 可变字符串
+ NSMutableString : 可变字符串，它是上面的NSString的子类
+*/
+
+ NSMutableString *s1 = [NSMutableString stringWithFormat:@"my age is 10"]; // NSMutableString,可变类型，没有返回值，直接改变原来的值
+// 拼接内容到s1的后面
+[s1 appendString:@" 11 12"];     // 增
+
+// 获取is的范围
+NSRange range = [s1 rangeOfString:@"is"];
+[s1 deleteCharactersInRange:range]; // 删除is  删
+
+NSString *s2 = [NSString stringWithFormat:@"age is 10"]; // NSString,不可变类型
+
+NSString *s3 = [s2 stringByAppendingString:@" 11 12"];  // 有返回值，这个是新建一个字符串   // 增
+
+
+
+
+
+/******************************* OC NSArray*******************************/ 
+
+集合类：
+NSArray
+NSMutableArray  // 可变
+
+NSSet
+NSMutableSet  // 可变
+
+NSDictionary
+NSMutableDictionary  // 可变
+
+NSDate
+
+
+// c语言的数组只能放一种类型的对象
+// oc的数组是面向对象数组，不能存放非oc对象类型，比如int, stuct, enum ; 里面对象的属性可以不一样；
+
+
+/*
+ int a = 5;
+ 
+ int ages[10] = {1, 90, 89, 17};
+ 
+ Person *p = [[Person alloc] init];
+ Person *persons[5] = {p,  [[Person alloc] init]};
  */
 
-   
-    NSMutableString *s1 = [NSMutableString stringWithFormat:@"my age is 10"]; // NSMutableString,可变类型
-    // 拼接内容到s1的后面
-    [s1 appendString:@" 11 12"];
+// OC数组不能存放nil值
+// OC数组只能存放OC对象、不能存放非OC对象类型，比如int、struct、enum等
+
+// 这个array永远是空数组
+// NSArray *array = [NSArray array];
+
+
+/*
+ 1.NSArray的创建-------------------------------------
+ */
+NSArray *array2 = [NSArray arrayWithObject:@"jack"];
+
+// nil是数组元素结束的标记
+NSArray *array3 = [NSArray arrayWithObjects:@"jack", @"rose", nil]; // 创建两个及以上的数组必须写nil
+
+
+//NSArray *array4 = [NSArray arrayWithObjects:@"jack", @"rose", @"4324324", nil];
+
+// 快速创建一个NSArray对象
+NSArray *array4 = @[@"jack", @"rose", @"4324324"];
+
+
+/*
+ 2.NSArray的元素个数-------------------------------------
+ */
+// [array2 count]; 这个是set语法,可以
+NSLog(@"%ld", array3.count); // 点语法也可以
+
+
+/*
+ 3.NSArray中元素的访问-------------------------------------
+ */
+NSLog(@"%@", [array3 objectAtIndex:1]);
+
+//array3[1]; // 或者像数组一样访问也可以
+NSLog(@"%@", array3[0]);
+
+
+/*
+ 3.NSArray中数组的遍历-------------------------------------
+ */
+Person *p = [[Person alloc] init];
+NSArray *array = @[p, @"rose", @"jack"];
+
+
+// 最普通的遍历
+for (int i = 0; i<array.count; i++)
+{
+    NSLog(@"%@", array[i]);
+}
+
+
+// for .. in遍历
+// id obj代表着数组中的每一个元素
+int i = 0;
+for (id obj in array)
+{
+    // 找出obj元素在数组中的位置
+    NSUInteger i = [array indexOfObject:obj]; // i的类型为NSUInteger,数组索引为ndexOfObject:obj
+
+    NSLog(@"%ld - %@", i, obj);
+    //i++;
+
+    if (i==1)
+    {
+        break;
+    }
+}
+
+
+// 利用自带的函数进行block遍历：
+[array enumerateObjectsUsingBlock:
+ 
+ // 每遍历到一个元素，就会调用一次block
+ // 并且当前元素和索引位置当做参数传给block
+ ^(id obj, NSUInteger idx, BOOL *stop)  // 这个block接受三个参数
+ {
+     NSLog(@"%ld - %@", idx, obj);
+     
+     if (idx == 0)
+     {
+         // 停止遍历
+         *stop = YES;  // 停止遍历，相当于c中的break, break只用于switch和for中，不能用于oc数组
+     }
+     
+ }];
+
+
+
+
+// 4.可变数组的基本使用------------------------------------增删改查
+NSMutableArray *array = [NSMutableArray arrayWithObjects:@"rose", @"jim", nil];
+
+// 添加元素
+[array addObject:[[Person alloc] init]];
+
+[array addObject:@"jack"];
+
+// 删除元素
+//[array removeAllObjects];
+// 删除指定的对象
+// [array removeObject:@"jack"];
+[array removeObjectAtIndex:0];
+
+// 错误写法
+// [array addObject:nil];
+
+
+NSLog(@"%@", array);
+
+NSLog(@"%ld", array.count);
+
+
+
+
+    // @[] 只创建不可变数组NSArray
+    /* 错误写法
+    NSMutableArray *array = @[@"jack", @"rose"];
     
-    // 获取is的范围
-    NSRange range = [s1 rangeOfString:@"is"];
-    [s1 deleteCharactersInRange:range]; // 删除is
+    [array addObject:@"jim"];
+    */
     
-    NSString *s2 = [NSString stringWithFormat:@"age is 10"]; // NSString,不可变类型
     
-    NSString *s3 = [s2 stringByAppendingString:@" 11 12"];  // 有返回值，这个是新建一个字符串
+    //NSArray *array = @[@"jack", @"rose"];
