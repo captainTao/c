@@ -1,3 +1,18 @@
+meteclass是放在哪里？
+oc的cache呢
+说道签名 了吗？
+消息转发流程是吧
+oc的runtime使用场景
+runloop runtime
+用present
+就是两个vc跳转
+
+任我行。当然薪资可能不理想5000-10000
+
+你先看基础的
+然后底层看
+
+
 
 1. 常见区别
 关键字以@开头
