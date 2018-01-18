@@ -1,4 +1,7 @@
 meteclass是放在哪里？
+http://blog.csdn.net/windyitian/article/details/19810875
+http://blog.csdn.net/jijunyuan/article/details/46780257
+
 oc的cache呢
 说道签名 了吗？
 消息转发流程是吧
