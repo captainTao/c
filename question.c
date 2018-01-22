@@ -150,3 +150,105 @@ void printBinary(int number)
 }
 
 /************************************************.05*/
+
+/*
+编写一个函数char_contains(char str[],char c)，
+ 如果字符串str中包含字符c则返回数值1，否则返回数值0
+*/
+
+#include <string.h>
+#include <stdio.h>
+
+// 可读性 -> 性能 -> 精简（重构）
+
+int char_contains(char str[], char c);
+
+int main()
+{
+    //int result = char_contains("itc8ast", '8');
+    
+    char name[] = "itcast";
+    
+    int result = char_contains(name, 'o');
+    
+    printf("%d\n", result);
+    return 0;
+}
+
+// "itc"  '7'
+int char_contains(char str[], char c)
+{
+    int i = -1;
+    
+    /*
+     i  3
+     str[++i] 'c'
+     c  '7'
+     */
+    
+    // 1.遍历整个字符串
+    while ( str[++i] != c && str[i] != '\0' ) ;
+    
+    //return str[i] == '\0' ? 0 : 1;   // 这一句不懂
+    return str[i] != '\0';
+}
+
+/*
+int char_contains(char str[], char c)
+{
+    int i = -1;
+    
+    // 1.遍历整个字符串
+    while ( str[++i] )
+    {
+        // 如果发现某个字符等于参数c，直接返回1，退出函数
+        if (str[i] == c)
+        {
+            return 1;
+        }
+    }
+    
+    // 2.说明str里面不包含字符c
+    return 0;
+}*/
+
+/*
+int char_contains(char str[], char c)
+{
+    int i = 0;
+    
+    // 1.遍历整个字符串
+    while ( str[i] != '\0' )
+    {
+        // 如果发现某个字符等于参数c，直接返回1，退出函数
+        if (str[i] == c)
+        {
+            return 1;
+        }
+        
+        i++;
+    }
+    
+    // 2.说明str里面不包含字符c
+    return 0;
+}*/
+
+/*
+// 对自己来说，最常用的应该是这一种；
+int char_contains(char str[], char c)
+{
+    // 1.遍历整个字符串
+    for (int i = 0; i<strlen(str); i++)
+    {
+        // 如果发现某个字符等于参数c，直接返回1，退出函数
+        if ( str[i] == c )
+        {
+            return 1;
+        }
+    }
+    
+    // 2.说明str里面不包含字符c
+    return 0;
+}*/
+
+/************************************************.06*/

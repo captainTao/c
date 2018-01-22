@@ -2140,7 +2140,7 @@ p = NULL;
 指向函数的指针一般形式：函数的返回值类型 (*指针变量名)(形参1, 形参2, ...);
 
 
-/*
+
 指针总结：
 --------------------------------------------
 
@@ -2175,7 +2175,9 @@ void change(int *n)
 1.将数组当做函数参数传入时，会自动转为指针
 
 
+// ------------------------------------------字符串：
 四、指针与字符串
+
 1.定义字符串的2种方式
 1> 利用数组
 char name[] = {'i', 't', 'c', 'H', 's', 't', '\0'}; //两种定义方式
@@ -2201,34 +2203,64 @@ char *names[2] = {"jack", "rose"};
 \0的ASCII码值是0
 字符串输出为%s
 字符输出为%c
-*/
 
-
-#include <stdio.h>
 
 /*
  \0的作用
  1.字符串结束的标记
  2.printf("%s", name2); 
  会从name2这个地址开始输出字符，直到遇到\0为止
- */
-
+*/
+#include <stdio.h>
 int main()
 {
     char name[] = "itc\0ast";
     
     char name2[] = {'o', 'k'};
     
-    //printf("%s\n", name2);
+    printf("%s\n", name);
     
     printf("%s\n", &name2[1]);
     
     return 0;
 }
 /*
-ok
+itc
 k
 */
+
+
+// ------------------------------------------strlen
+/*
+ strlen函数：计算字符串长度
+ 1.计算的是字符数，并不是字数。一个汉字算作3个字符
+ 2.计算的字符不包括\0
+ 3.从某个地址开始数字符的个数，直到遇到\0为止
+ */
+
+// strlen函数声明在string.h文件中
+#include <string.h>
+#include <stdio.h>
+
+int main()
+{
+    int size = strlen("哈haha");
+    printf("%d\n", size);  // 7
+    
+    char name[] = "itcast";
+    printf("%ld\n",strlen(name)); // 6
+    
+    char name2[] = {'0', '\0', '6'};
+    unsigned long size1 = strlen(name2);
+    printf("%ld\n", size1); // 1
+    
+    char name3[] = "itcast";
+    printf("%s\n", name3); // itcast
+    printf("%c\n", name[3]); // a
+    
+    return 0;
+}
+
 
 // ------------------------------------------数组名和指针的区别：
 // 循环遍历数组：
