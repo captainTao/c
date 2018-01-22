@@ -2380,7 +2380,7 @@ pi=&i;
 // *ppi的值就是*pi的值作为地址，然后去寻值
 
 
-双指针的运用栗子：
+// 双指针的运用栗子：
 
 #include <stdio.h>
 void find1(char array[], char search, char *pa)
