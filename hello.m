@@ -2334,7 +2334,8 @@ id<NSCoding> obj2;
 
 
 
-/*----------------------------- Foundation -----------------------------*/
+
+================================Foundation====================================
 
 /******************************* OC 结构体*******************************/
 /*
@@ -2579,8 +2580,7 @@ NSArray *array2 = [NSArray arrayWithObject:@"jack"];
 // nil是数组元素结束的标记
 NSArray *array3 = [NSArray arrayWithObjects:@"jack", @"rose", nil]; // 创建两个及以上的数组必须写nil
 
-
-//NSArray *array4 = [NSArray arrayWithObjects:@"jack", @"rose", @"4324324", nil];
+NSArray *array4 = [NSArray arrayWithObjects:@"jack", @"rose", @"4324324", nil];
 
 // 快速创建一个NSArray对象
 NSArray *array4 = @[@"jack", @"rose", @"4324324"];
@@ -2596,14 +2596,14 @@ NSLog(@"%ld", array3.count); // 点语法也可以
 /*
  3.NSArray中元素的访问-------------------------------------
  */
-NSLog(@"%@", [array3 objectAtIndex:1]);
+NSLog(@"%@", [array3 objectAtIndex:1]); // 访问的第二个元素
 
 //array3[1]; // 或者像数组一样访问也可以
 NSLog(@"%@", array3[0]);
 
 
 /*
- 3.NSArray中数组的遍历-------------------------------------
+ 4.NSArray中数组的遍历-------------------------------------
  */
 Person *p = [[Person alloc] init];
 NSArray *array = @[p, @"rose", @"jack"];
@@ -2622,12 +2622,12 @@ int i = 0;
 for (id obj in array)
 {
     // 找出obj元素在数组中的位置
-    NSUInteger i = [array indexOfObject:obj]; // i的类型为NSUInteger,数组索引为ndexOfObject:obj
+    NSUInteger i = [array indexOfObject:obj]; // i的类型为NSUInteger,数组索引为ndexOfObject:obj，这个是数组对象的方法
 
     NSLog(@"%ld - %@", i, obj);
     //i++;
 
-    if (i==1)
+    if (i==0)  // 遍历1次就退出循环
     {
         break;
     }
@@ -2635,15 +2635,14 @@ for (id obj in array)
 
 
 // 利用自带的函数进行block遍历：
-[array enumerateObjectsUsingBlock:
- 
- // 每遍历到一个元素，就会调用一次block
- // 并且当前元素和索引位置当做参数传给block
- ^(id obj, NSUInteger idx, BOOL *stop)  // 这个block接受三个参数
- {
+// 每遍历到一个元素，就会调用一次block
+// 并且当前元素和索引位置当做参数传给block
+
+[array enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)  // 这个block接受三个参数
+{
      NSLog(@"%ld - %@", idx, obj);
      
-     if (idx == 0)
+     if (idx == 0)  
      {
          // 停止遍历
          *stop = YES;  // 停止遍历，相当于c中的break, break只用于switch和for中，不能用于oc数组
@@ -2653,20 +2652,16 @@ for (id obj in array)
 
 
 
-// 字符分割：
 
-NSString *str = @"jack\nrose\njim\njake";
+/******************************* OC NSMutableArray*******************************/ 
+NSArray ：不可变数组
+NSMutableArray : 可变数组
 
-[str writeToFile:@"/Users/apple/Desktop/abc.txt" atomically:YES encoding:NSUTF8StringEncoding error:nil];
-
-
-NSArray *array = [str componentsSeparatedByString:@"\n"];
-
-for (NSString *line in array)
-{
-    NSLog(@"%@", line);
-}
-
+// @[] 只创建不可变数组NSArray
+/*错误写法：
+NSMutableArray *array = @[@"jack", @"rose"];
+[array addObject:@"jim"];
+*/
 
 
 // 4.可变数组的基本使用------------------------------------增删改查
@@ -2678,28 +2673,107 @@ NSMutableArray *array = [NSMutableArray arrayWithObjects:@"rose", @"jim", nil];
 [array addObject:@"jack"];
 
 // 删除元素
-//[array removeAllObjects];
+[array removeAllObjects];
 // 删除指定的对象
-// [array removeObject:@"jack"];
+[array removeObject:@"jack"];
 [array removeObjectAtIndex:0];
 
 // 错误写法
 // [array addObject:nil];
 
-
+// 打印数组
 NSLog(@"%@", array);
-
 NSLog(@"%ld", array.count);
 
 
 
 
-    // @[] 只创建不可变数组NSArray
-    /* 错误写法
-    NSMutableArray *array = @[@"jack", @"rose"];
+
+// 练习运用：
+
+计算文件的代码行数：------文件的读写：
+--------------------------------------------------------
+
+// 计算文件的代码行数
+/*
+ path : 文件的全路径(可能是文件夹、也可能是文件)
+ 返回值 int ：代码行数
+*/
+NSUInteger codeLineCount(NSString *path)
+{
+    // 1.获得文件管理者
+    NSFileManager *mgr = [NSFileManager defaultManager];
     
-    [array addObject:@"jim"];
-    */
+    // 2.标记是否为文件夹
+    BOOL dir = NO; // 标记是否为文件夹
+    // 标记这个路径是否存在
+    BOOL exist = [mgr fileExistsAtPath:path isDirectory:&dir];
     
+    // 3.如果不存在，直接返回0
+    if(!exist)
+    {
+        NSLog(@"文件路径不存在!!!!!!");
+        return 0;
+    }
     
-    //NSArray *array = @[@"jack", @"rose"];
+    // 代码能来到着，说明路径存在
+    if (dir)
+    { // 文件夹
+        // 获得当前文件夹path下面的所有内容（文件夹、文件）
+        NSArray *array = [mgr contentsOfDirectoryAtPath:path error:nil];
+        
+        // 定义一个变量保存path中所有文件的总行数
+        int count = 0;
+        
+        // 遍历数组中的所有子文件（夹）名
+        for (NSString *filename in array)
+        {
+            // 获得子文件（夹）的全路径
+            NSString *fullPath = [NSString stringWithFormat:@"%@/%@", path, filename];
+            
+            // 累加每个子路径的总行数
+            count += codeLineCount(fullPath);
+        }
+        
+        return count;
+    }
+    else
+    { // 文件
+        // 判断文件的拓展名(忽略大小写)
+        NSString *extension = [[path pathExtension] lowercaseString];
+        if (![extension isEqualToString:@"h"]
+            && ![extension isEqualToString:@"m"]
+            && ![extension isEqualToString:@"c"])
+        {
+            // 文件拓展名不是h，而且也不是m，而且也不是c
+            return 0;
+        }
+        
+        // 加载文件内容
+        NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+        
+        // 将文件内容切割为每一行
+        NSArray *array = [content componentsSeparatedByString:@"\n"];
+        
+        // 删掉文件路径前面的/Users/apple/Desktop/iOS课堂共享/0722课堂共享/
+        NSRange range = [path rangeOfString:@"/Users/apple/Desktop/iOS课堂共享/0722课堂共享/"];
+        NSString *str = [path stringByReplacingCharactersInRange:range withString:@""];
+        
+        // 打印文件路径和行数
+        NSLog(@"%@ - %ld", str, array.count);
+        
+        return array.count;
+    }
+}
+
+
+
+// 字符分割：
+
+NSString *str = @"jack\nrose\njim\njake";
+[str writeToFile:@"/Users/apple/Desktop/abc.txt" atomically:YES encoding:NSUTF8StringEncoding error:nil];
+NSArray *array = [str componentsSeparatedByString:@"\n"];
+for (NSString *line in array)
+{
+    NSLog(@"%@", line);
+}
