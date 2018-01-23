@@ -2653,6 +2653,21 @@ for (id obj in array)
 
 
 
+// 字符分割：
+
+NSString *str = @"jack\nrose\njim\njake";
+
+[str writeToFile:@"/Users/apple/Desktop/abc.txt" atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+
+NSArray *array = [str componentsSeparatedByString:@"\n"];
+
+for (NSString *line in array)
+{
+    NSLog(@"%@", line);
+}
+
+
 
 // 4.可变数组的基本使用------------------------------------增删改查
 NSMutableArray *array = [NSMutableArray arrayWithObjects:@"rose", @"jim", nil];
