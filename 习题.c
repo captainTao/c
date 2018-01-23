@@ -430,3 +430,150 @@ int char_contains(char str[], char c)
 
 
 /**************************************************09/
+/*
+编写一个函数，判断某个字符串是否为回文。
+回文就是从左边开始读 和 从右边开始读 都是一样的，比如"abcba"
+*/
+
+#include <string.h>
+#include <stdio.h>
+int isHuiwen(char *str);
+
+int main()
+{
+    printf("%d\n", isHuiwen("a"));
+    return 0;
+}
+
+/*
+ 返回1代表是回文
+ 返回0代表不是回文
+ */
+int isHuiwen(char *str)
+{
+    // 1.定义一个指向变量left指向字符串的首字符
+    char *left = str;
+    // 2.定义一个指向变量right指向字符串的末字符
+    char *right = str + strlen(str) - 1;
+    
+    while (left < right)
+    {
+        // 如果左边和右边的字符不一样
+        if (*left++ != *right--)
+        {
+            return 0;
+        }
+    }
+    
+    return 1;
+}
+
+/**************************************************10/
+/*
+编写一个函数void strlink(char s[], char t[])
+ 将字符串t连接到字符串s的尾部
+*/
+#include <stdio.h>
+
+void strlink(char s[], char t[]);
+
+int main()
+{
+    char s1[20] = "michael ";
+    char s2[] = "jackson";
+    
+    strlink(s1, s2);
+    
+    printf("%s\n", s1);
+    
+    return 0;
+}
+
+void strlink(char s[], char t[])
+{
+    int i = 0;
+    
+    // 判断s[i]是否为字符串的尾部
+    while ( s[i] != '\0' )
+    {
+        i++;
+    }
+    
+    int j = 0;
+    // 拷贝t的内容到s的后面
+    while ( (s[i] = t[j]) != '\0' )
+    {
+        i++;
+        j++;
+    }
+}
+
+/*
+ 更加精简的写法，仅作为参考(会有警告信息)
+void strlink2(char s[], char t[])
+{
+    int i = -1;
+    
+    // 判断s[i]是否为字符串的尾部
+    while (s[++i]) ;
+    
+    int j = 0;
+    // 拷贝t的内容到s的后面
+    while (s[i++] = t[j++]) ;
+}*/
+
+/**************************************************11/
+/*
+编写一个函数void strlink(char *s, char *t)
+ 将字符串t连接到字符串s的尾部
+*/
+#include <stdio.h>
+
+void strlink(char *s, char *t);
+
+int main()
+{
+    char s1[20] = "michael ";
+    char s2[] = "jackson";
+    
+    strlink2(s1, s2);
+    
+    printf("%s\n", s1);
+    
+    return 0;
+}
+
+void strlink(char *s, char *t)
+{
+    // 判断s[i]是否为字符串的尾部
+    while ( *s != '\0' )
+    {
+        s++;
+    }
+    
+    // 拷贝t的内容到s的后面
+    while ( (*s = *t) != '\0' )
+    {
+        s++;
+        t++;
+    }
+}
+
+
+
+/*
+ 更加精简的写法，仅作为参考(会有警告信息)
+ void strlink2(char *s, char *t)
+ {
+     // 判断s[i]是否为字符串的尾部
+     while (*s++);
+     
+     // 减回一次
+     s--;
+     
+     // 拷贝t的内容到s的后面
+     while ( *s++ = *t++ ) ;
+ }*/
+
+
+/**************************************************12/

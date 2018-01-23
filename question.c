@@ -26,7 +26,7 @@ int main()
         printf("%d", score); //30
     }
     
-    printf("%d\n", score); //260
+    printf("%d\n", score); //260              // ----------------  这看不懂，为啥不是120？
     return 0;
 }
 /*
@@ -83,7 +83,7 @@ return 0;
 // 输出一个整数的二进制存储形式
 void putBinary(int n)
 {
-    int bits = sizeof(n) * 8;
+    int bits = sizeof(n) * 8;              // ----------------  这看不懂
     while (bits-->0) {
         printf("%d", n>>bits&1);
         if (bits%4==0) printf(" ");
@@ -128,7 +128,7 @@ void printBinary(int number)
     
     // 记录现在挪到第几位
     // (sizeof(number)*8) - 1 == 31
-    int temp = ( sizeof(number)<<3 ) - 1;
+    int temp = ( sizeof(number)<<3 ) - 1;              // ----------------  这看不懂
     
     while ( temp >= 0 )
     {
@@ -189,7 +189,7 @@ int char_contains(char str[], char c)
     // 1.遍历整个字符串
     while ( str[++i] != c && str[i] != '\0' ) ;
     
-    //return str[i] == '\0' ? 0 : 1;   // 这一句不懂
+    //return str[i] == '\0' ? 0 : 1;                 // ----------------  这看不懂
     return str[i] != '\0';
 }
 
@@ -252,3 +252,150 @@ int char_contains(char str[], char c)
 }*/
 
 /************************************************.06*/
+
+#include <stdio.h>
+void change(int array[]);
+int main()
+{
+    // 20个字节
+    int ages[5] = {10, 11, 19, 78, 67};
+    
+    change(ages);
+    
+    return 0;
+}
+
+// 利用一个指针来接收一个数组，指针变量array指向了数组的首元素
+void change(int *array)
+{
+    printf("%d\n", array[2]);
+    printf("%d\n", *(array+2));  //这两个输出的都是19
+}
+
+/*
+--为什么这儿返回的是2，如果在main函数中直接运用返回的是5？            // ----------------  这看不懂
+void change(int array[])
+{
+    int s = sizeof(array);
+    
+    printf("%d\n", s);
+}*/
+
+void test()
+{
+    double d = 10.8;
+    double *dp;
+    dp = &d;
+    
+    printf("dp = %p\n", dp);
+    printf("dp + 1 = %p\n", dp + 1);
+    
+    int ages[5] = {10, 9, 8, 67, 56};
+    
+    int *p;
+    // 指针变量p指向了数组的首元素
+    p = &ages[0];
+    // 数组名就是数组的地址，也是数组首元素的地址
+    //p = ages;
+    
+    /*
+     p ---> &ages[0]
+     p + 1 ---> &ages[1]
+     p + 2 ---> &ages[2]
+     p + i ---> &ages[i]
+     */
+    
+    //printf("%d\n",  *(p+2));
+    
+    printf("%d\n",  p[2]);
+    
+    /*
+     for (int i = 0; i<5; i++) {
+     printf("ages[%d] = %d\n", i, *(p+i));
+     }*/
+    
+    
+    //    printf("%p\n", p);
+    //    printf("%p\n", p + 1);
+    //    printf("%p\n", p + 2);
+}
+
+/************************************************.07*/
+#include <stdio.h>
+/*
+ (不包括\0)
+ 编写一个int string_len(char *s)，返回字符串s的字符长度
+ 
+ */
+int string_len(char *s);
+
+int main()
+{
+    //char *name = "itcast";
+    
+   // 男 \u434\u4343\u434
+    
+    int size = string_len("tre777");
+    
+    printf("%d\n", size);
+    return 0;
+}
+
+int string_len(char *s)
+{
+    // 1.定义一个新的指针变量指向首字符
+    char *p = s;
+    
+    /*
+    while ( *s != '\0' )
+    {
+        s++;
+    }*/
+    
+    while ( *s++ ) ; 
+    
+    return s - p - 1;                // ----------------  这看不懂
+}
+
+/*
+int string_len(char *s)
+{
+    // 记录字符的个数
+    int count = 0;
+    
+    // 如果指针当前指向的字符不是'\0'
+    // 首先*s取出指向的字符
+    // 然后s++
+    while ( *s++ )
+    {
+        // 个数+1
+        count++;
+        
+        // 让指针指向下一个字符
+        //s = s + 1;
+        //s++;
+    }
+    
+    return count;
+}
+*/
+
+/*
+int string_len(char *s)
+{
+    // 记录字符的个数
+    int count = 0;
+    
+    // 如果指针当前指向的字符不是'\0'
+    while ( *s != '\0')
+    {
+        // 个数+1
+        count++;
+        
+        // 让指针指向下一个字符
+        //s = s + 1;
+        s++;
+    }
+    
+    return count;
+}*/
