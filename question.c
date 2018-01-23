@@ -399,3 +399,55 @@ int string_len(char *s)
     
     return count;
 }*/
+
+/************************************************.08*/
+
+// 全局变量：a、b、c
+// 局部变量：v1、v2、e、f
+
+#include <stdio.h>
+// 变量a的初值是10
+int a = 10;
+
+// 变量b的初值是0
+// 变量c的初值是20
+int b , c = 20;
+
+
+int sum(int v1, int v2)
+{
+    return v1 + v2;
+}
+
+void test()
+{
+    b++; 
+    
+    int i = 0;
+    i++;
+    
+    printf("b=%d, i=%d\n", b, i);
+}
+
+int main()
+{
+    test();
+    test();
+    test();               // ----------------  这看不懂
+    
+    int e = 10;
+    
+    {
+        {
+            int f = 30;
+        }
+    }
+    
+    return 0;
+}
+
+/*
+b=1, i=1
+b=2, i=1
+b=3, i=1   // 这里b不是全局变量么，怎么值改变了？
+*/
