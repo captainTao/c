@@ -1927,8 +1927,11 @@ ages[2] = 18;
 int ages[] = {10, 11, 12, 78};    // 正确写法
 
 
+// --------------------------------------------数组的遍历和长度：
+// 遍历数组元素，以及数组长度；
+同种类型：sizeof(ages)/sizeof(int)
+字符串类型：strlen(ArrayName)
 
-// 遍历数组元素，以及长度；
 int main()
 {
     int ages[] = {10, 11, 12, 78};
@@ -1985,8 +1988,9 @@ int main()
 }
 
 
+/*********************** 数组的存储形式 **************************/
 
-
+#include <stdio.h>
 int main()
 {
     char cs[5]= {'a', 'A', 'D', 'e', 'f'};
@@ -2097,7 +2101,7 @@ int main()
     //int size = sizeof(ages);
     
     //printf("ages=%d\n", size);
-    int max = maxOfArray(ages, sizeof(ages)/sizeof(int));
+    int max = maxOfArray(ages, sizeof(ages)/sizeof(int));  
     
     printf("%d\n", max);
     return 0;
@@ -2126,6 +2130,14 @@ int main(int argc, char const *argv[])
 p = 0;
 p = NULL;
 
+// 清空指针
+p = 0;
+// p = NULL;
+
+// 清空指针后，不能再间接访问其他存储空间
+// *p = 100.7;  这儿会报野指针错误；
+
+
 指针探究：
 1.指针变量所占用的存储空间？
 2.为何指针变量要分类型？
@@ -2140,6 +2152,7 @@ p = NULL;
 指向函数的指针一般形式：函数的返回值类型 (*指针变量名)(形参1, 形参2, ...);
 
 
+/********************************** 指针总结 **********************************/
 
 指针总结：
 --------------------------------------------
@@ -2148,6 +2161,33 @@ p = NULL;
 1. 格式：变量类型 *指针变量名;
 2. 举例：int *p;   char *p2;
 3. 注意：定义变量时的*仅仅是指针变量的象征
+4. 任何指针都占用8个字节的存储空间
+
+/*
+ %d int
+ %f float\double
+ %ld long
+ %lld long long
+ %c char
+ %s 字符串
+ %zd  unsigned long
+ */
+int main()
+{
+    char c; // 1
+    int a;  // 4
+    long b; // 8
+    
+    // 任何指针都占用8个字节的存储空间
+    char *cp; // 8
+    int *ap;  // 8
+    long *bp; // 8
+    
+    printf("cp=%zd, ap=%zd, bp=%zd\n",
+           sizeof(cp),
+           sizeof(ap),
+           sizeof(bp));
+}
 
 二、利用指针变量简单修改其他变量的值
 1.指向某个变量
@@ -2262,7 +2302,10 @@ int main()
 }
 
 
-// ------------------------------------------数组名和指针的区别：
+
+/********************************** 指针和数组 **********************************/
+
+------------------------------------------数组名和指针的区别：
 // 循环遍历数组：
 #include <stdio.h>
 int main(int argc, char const *argv[])
@@ -2300,7 +2343,7 @@ int main(int argc, char const *argv[]){
     pa = a; //数组名a直接赋值给了指针*pa
     for (i = 0; i <= 9; i++) {
         printf("%d\n", *pa); //直接取指针
-        pa++; //地址加1
+        pa++; //指针变量+1，地址值究竟加多少，取决于指针的类型
         }  //通过*(pa+i)取值
     return 0;
 }
@@ -2337,7 +2380,91 @@ int const i=5
 const int *p  //p的值可以被修改
 int *const p  //p的值不能被修改
 
-==============================================
+
+------------------------------------------
+#include <stdio.h>
+/*
+ 1.数组元素的访问方式
+ int ages[5];
+ int *p;
+ p = ages;
+ 1> 数组名[下标]  ages[i]
+ 2> 指针变量名[下标] p[i]
+ 3> *(p + i)
+ 
+ 2.指针变量+1，地址值究竟加多少，取决于指针的类型
+  int *   4
+  char *  1
+  double * 8
+ */
+void change(int array[]);
+
+int main()
+{
+    // 20个字节
+    int ages[5] = {10, 11, 19, 78, 67};
+    
+    change(ages);
+    
+    return 0;
+}
+
+// 利用一个指针来接收一个数组，指针变量array指向了数组的首元素
+void change(int *array)
+{
+    printf("%d\n", array[2]);
+    printf("%d\n", *(array+2));  //这两个输出的都是19
+}
+
+/*
+void change(int array[])
+{
+    int s = sizeof(array);
+    
+    printf("%d\n", s);
+}*/
+
+void test()
+{
+    double d = 10.8;
+    double *dp;
+    dp = &d;
+    
+    printf("dp = %p\n", dp);
+    printf("dp + 1 = %p\n", dp + 1);
+    
+    int ages[5] = {10, 9, 8, 67, 56};
+    
+    int *p;
+    // 指针变量p指向了数组的首元素
+    p = &ages[0];
+    // 数组名就是数组的地址，也是数组首元素的地址
+    //p = ages;
+    
+    /*
+     p ---> &ages[0]
+     p + 1 ---> &ages[1]
+     p + 2 ---> &ages[2]
+     p + i ---> &ages[i]
+     */
+    
+    //printf("%d\n",  *(p+2));
+    
+    printf("%d\n",  p[2]);
+    
+    /*
+     for (int i = 0; i<5; i++) {
+     printf("ages[%d] = %d\n", i, *(p+i));
+     }*/
+    
+    
+    //    printf("%p\n", p);
+    //    printf("%p\n", p + 1);
+    //    printf("%p\n", p + 2);
+}
+
+
+-------------------------------------------------地址交换与局部变量：
 
 #include <stdio.h>
 void Exchg2(int *px, int *py){
@@ -2370,7 +2497,86 @@ int main(){
     return(0);  //4,6 前一个函数引起的只是x,y形参的变化，不影响实参a,b
 }
 
--------------------------------------------------
+
+
+// 例2：
+#include <stdio.h>
+void swap(int *v1, int *v2);
+
+int main()
+{
+    /*
+    int a = 10;
+    int b = 11;
+    
+    swap(&a, &b);
+    */
+    
+    
+    int a2 = 90;
+    int b2 = 89;
+    
+    swap(&a2, &b2);
+    
+    printf("a2=%d, b2=%d\n", a2, b2);
+    return 0;
+}
+
+/* 不能交换外面实参的值，仅仅是交换了内部指针的指向
+void swap(int *v1, int *v2)
+{
+    int *temp;
+    temp = v1;
+    v1 = v2;
+    v2 = temp;
+}*/
+
+// 完成两个整型变量值的互换
+void swap(int *v1, int *v2)
+{
+    int temp = *v1;
+    *v1 = *v2;
+    *v2 = temp;
+}
+
+/* 交换的只是内部v1、v2的值 --- 以前用的局部变量：
+void swap(int v1, int v2)
+{
+    int temp = v1;
+    v1 = v2;
+    v2 = temp;
+}*/
+-------------------------------------------------指向的运用：
+
+// 返回多个值的时候，可以用 地址传递（指针）来解决， 或者用数组，结构体；
+#include <stdio.h>
+int sumAndMinus(int n1, int n2, int *n3);
+
+int main()
+{
+    int a = 10;
+    int b = 7;
+    
+    // 存储和
+    int he;
+    // 存储差
+    int cha;
+    c
+    he = sumAndMinus(a, b, &cha);
+    
+    printf("和是%d, 差是%d\n", he, cha);
+    
+    return 0;
+}
+
+// 返回值是
+int sumAndMinus(int n1, int n2, int *n3)
+{
+    *n3 = n1 - n2;
+    
+    return n1 + n2;
+}
+-------------------------------------------------指向指针的指针：
 指向指针的指针
 int **ppi;
 int *pi;
@@ -2464,7 +2670,8 @@ int main()
 // ppa 指向指针 p 的地址。
 // 对*ppa 的修改就是对 p 值的修改。
 
-======================================================
+
+======================================================函数名与指针:
 
 函数名与指针：
 note:
