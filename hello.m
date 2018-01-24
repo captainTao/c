@@ -2483,7 +2483,7 @@ NSRect\CGRect (CGPint CGSize)：
 
     // （把一个文件或者网页内容转为字符串）
     NSURL *url = [[NSURL alloc] initWithString:@"file:///Users/apple/Desktop/1.txt"];
-    NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/1.txt"]; // 或者这样写，这个是表示文件资源的一个方法
+    NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/1.txt"]; // 或者这样写，fileUrl是表示文件资源的一个方法
     
     NSString *s6 = [[NSString alloc] initWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
     NSLog(@"s6=\n%@", s6); // 换行再输出
@@ -2525,16 +2525,27 @@ NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/my2.txt"];
 // 拼接内容到s1的后面
 [s1 appendString:@" 11 12"];     // 增
 
+
 // 获取is的范围
 NSRange range = [s1 rangeOfString:@"is"];
 [s1 deleteCharactersInRange:range]; // 删除is  删
 
+// 对比NSString和NSMutableString新增方法的区别：
 NSString *s2 = [NSString stringWithFormat:@"age is 10"]; // NSString,不可变类型
-
 NSString *s3 = [s2 stringByAppendingString:@" 11 12"];  // 有返回值，这个是新建一个字符串   // 增
 
 
 
+-------------------------------------
+练习简单的爬baidu教程：
+// 请求baidu
+NSURL *url = [NSURL URLWithString:@"http://news.baidu.com/?tn=news"];
+NSString *str = [[NSString alloc]initWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+// 写入文件
+[str writeToFile:@"/Users/captain/desktop/baidu.txt" atomically:YES encoding:NSUTF8StringEncoding error:nil];
+NSURL *path = [NSURL fileURLWithPath:@"/Users/captain/desktop/baidu.txt"];
+// 读取文件
+NSLog(@"%@",[[NSString alloc]initWithContentsOfURL:path encoding:NSUTF8StringEncoding error:nil]);
 
 
 /******************************* OC NSArray*******************************/ 
@@ -2629,7 +2640,7 @@ for (id obj in array)
 
     if (i==0)  // 遍历1次就退出循环
     {
-        break;
+        break;  // 停止遍历
     }
 }
 
@@ -2674,6 +2685,7 @@ NSMutableArray *array = [NSMutableArray arrayWithObjects:@"rose", @"jim", nil];
 
 // 删除元素
 [array removeAllObjects];
+
 // 删除指定的对象
 [array removeObject:@"jack"];
 [array removeObjectAtIndex:0];
