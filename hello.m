@@ -16,7 +16,7 @@ runloop runtime
 然后底层看
 
 
-
+--------------------------------------
 1. 常见区别
 关键字以@开头
 nil相当于NULL,0
@@ -2548,6 +2548,8 @@ NSURL *path = [NSURL fileURLWithPath:@"/Users/captain/desktop/baidu.txt"];
 NSLog(@"%@",[[NSString alloc]initWithContentsOfURL:path encoding:NSUTF8StringEncoding error:nil]);
 
 
+
+
 /******************************* OC NSArray*******************************/ 
 
 集合类：
@@ -2580,7 +2582,7 @@ NSDate
 // OC数组只能存放OC对象、不能存放非OC对象类型，比如int、struct、enum等
 
 // 这个array永远是空数组
-// NSArray *array = [NSArray array];
+NSArray *array = [NSArray array];
 
 
 /*
@@ -2620,14 +2622,14 @@ Person *p = [[Person alloc] init];
 NSArray *array = @[p, @"rose", @"jack"];
 
 
-// 最普通的遍历
+// 最普通的遍历一：
 for (int i = 0; i<array.count; i++)
 {
     NSLog(@"%@", array[i]);
 }
 
 
-// for .. in遍历
+// for .. in遍历二：
 // id obj代表着数组中的每一个元素
 int i = 0;
 for (id obj in array)
@@ -2645,7 +2647,7 @@ for (id obj in array)
 }
 
 
-// 利用自带的函数进行block遍历：
+// 利用自带的函数进行block遍历三：
 // 每遍历到一个元素，就会调用一次block
 // 并且当前元素和索引位置当做参数传给block
 
@@ -2690,11 +2692,12 @@ NSMutableArray *array = [NSMutableArray arrayWithObjects:@"rose", @"jim", nil];
 [array removeObject:@"jack"];
 [array removeObjectAtIndex:0];
 
-// 错误写法
+// 错误写法,不能添加空值
 // [array addObject:nil];
 
 // 打印数组
 NSLog(@"%@", array);
+NSLog(@"%@",@[@"jack", @"rose"]);
 NSLog(@"%ld", array.count);
 
 
@@ -2789,3 +2792,246 @@ for (NSString *line in array)
 {
     NSLog(@"%@", line);
 }
+
+
+
+/******************************* OC Set*******************************/ 
+
+NSSet
+NSMutableSet  // 可变
+
+// set: 无序的集合：
+/*
+ NSSet和NSArray的对比
+ 1> 共同点
+ * 都是集合，都能存放多个OC对象
+ * 只能存放OC对象，不能存放非OC对象类型（基本数据类型：int、char、float等，结构体，枚举）
+ * 本身都不可变，都有一个可变的子类
+ 
+ 2> 不同点
+ * NSArray有顺序，NSSet没有顺序
+ */
+
+// set的基本使用
+1.初始化
+NSSet *s = [NSSet set]; // 空的集合
+NSSet *s2 = [NSSet setWithObjects:@"jack",@"rose", @"jack2",@"jack3",nil];
+
+2.取元素，只能随机取一个
+NSString *str =  [s2 anyObject];// 随机拿出一个元素
+NSLog(@"%@", str);
+
+3.集合的长度
+NSLog(@"%ld", s2.count);
+
+
+
+//可变set:
+1.初始化
+NSMutableSet *s = [NSMutableSet set];
+
+2.添加元素
+[s addObject:@"hack"];
+
+3.删除元素
+[s removeObject:<#(id)#>];
+
+
+/******************************* OC Dictionary*******************************/ 
+
+NSDictionary
+NSMutableDictionary  // 可变
+
+/*
+ 集合
+ 1.NSArray\NSMutableArray
+ * 有序
+ * 快速创建（不可变）：@[obj1, obj2, obj3]
+ * 快速访问元素：数组名[i]
+ 
+ 2.NSSet\NSMutableSet
+ * 无序
+ 
+ 3.NSDictionary\NSMutableDictionary
+ * 无序
+ * 快速创建（不可变）：@{key1 : value1,  key2 : value2}
+ * 快速访问元素：字典名[key]
+ */
+
+
+// 定义一：
+NSDictionary *dict = [NSDictionary dictionaryWithObject:@"jack" forKey:@"name"];
+
+// 定义二：
+NSArray *keys = @[@"name", @"address"];
+NSArray *objects = @[@"jack", @"北京"];
+
+NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+
+// 定义三：
+NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+@"jack", @"name",
+@"北京", @"address",
+@"32423434", @"qq", nil]; // value - key
+
+// 定义四：一般用这种
+NSDictionary *dict = @{@"name" : @"jack", @"address" : @"北京"}; // key - value
+
+// 查值：
+id obj = [dict objectForKey:@"name"]; // 方法一
+id obj = dict[@"name"]; // 方法二，一般用这个
+
+// 返回的是键值对的个数
+NSLog(@"%ld", dict.count);
+
+
+
+----------------------------------------------NSMutableDictionary： 
+
+NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+
+// 添加键值对
+[dict setObject:@"jack" forKey:@"name"];
+[dict setObject:@"北京" forKey:@"address"];
+[dict setObject:@"rose" forKey:@"name"]; // 覆盖
+
+
+// 移除键值对
+[dict removeObjectForKey:<#(id)#>];
+
+// 查
+NSString *str = dict[@"name"];
+
+// 打印
+NSLog(@"%@", dict);
+NSLog(@"%@", @[@"jack", @"rose"]);
+
+// 改
+NSMutableDictionary *dict = @{@"name" : @"jack"};
+//[dict setObject:@"rose" forKey:@"name"]; 这儿报错，不能把不可变的字典用可变字典的方法：
+
+
+
+// 字典遍历
+NSDictionary *dict = @{
+@"address" : @"北京",
+@"name" : @"jack",
+@"name2" : @"jack",
+@"name3" : @"jack",
+@"qq" : @"7657567765"};
+
+
+// 遍历方法一：
+NSArray *keys = [dict allKeys]; // 拿出所有的key
+
+for (int i = 0; i<dict.count; i++)
+{
+    NSString *key = keys[i];
+    NSString *object = dict[key];
+    NSLog(@"%@ = %@", key, object);
+}
+
+// 遍历方法二：
+[dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) 
+{
+     NSLog(@"%@ - %@", key, obj);
+     
+     // *stop = YES;
+ }];
+
+
+
+综合运用：
+------------------------------------
+// 快速创建字典数组：
+NSArray *persons = @[
+@{@"name" : @"jack", @"qq" : @"432423423", @"books": @[@"5分钟突破iOS编程", @"5分钟突破android编程"]},
+@{@"name" : @"rose", @"qq" : @"767567"},
+@{@"name" : @"jim", @"qq" : @"423423"},
+@{@"name" : @"jake", @"qq" : @"123123213"}
+];
+
+
+// 取值
+NSString *bookName = persons[0][@"books"][1];
+NSLog(@"%@", bookName);
+
+
+
+/******************************* NSNumber******************************/ 
+
+
+NSNumber *num = [NSNumber numberWithInt:10]; // 这样把10转换为一个number对象
+NSDictionary *dict =  @{
+    @"name" : @"jack",
+    @"age" : num 
+};
+
+// 取出num还是一个number对象
+NSNumber *num2 = dict[@"age"];
+// 用intvalue可以转弯int类型，对应还有doubleValue, floatValue, ....
+int a = [num2 intValue];
+NSLog(@"%d" , a);
+
+
+// 类型转换：
+NSNumber *n = [NSNumber numberWithDouble:10.5];
+int d = [n doubleValue];
+
+// 字符串转为整型：
+int a = 20;
+// @"20"
+NSString *str = [NSString stringWithFormat:@"%d", a];
+NSLog(@"%d", [str intValue]);
+
+
+// @20  将 20包装成一个NSNumber对象   -----编译器特性，快速包装
+NSArray *array = @[
+@{@"name" : @"jack", @"age" : @20},
+
+@{@"name" : @"rose", @"age" : @25},
+
+@{@"name" : @"jim", @"age" : @27}
+];
+
+
+// 将各种基本数据类型包装成NSNumber对象
+@10.5; // 包装浮点
+@YES; // 包装布尔
+@'A'; // NSNumber对象，包装字符
+@"A"; // NSString对象
+
+
+// 将age变量包装成NSNumber对象
+int age = 100;
+[NSNumber numberWithInt:age]; // 包装变量方法一：
+@(age); // 小括号为取值----包装变量， 快速包装变量方法二：
+
+
+/******************************* NSValue******************************/ 
+
+#import <Foundation/Foundation.h>
+
+// NSNumber之所以能包装基本数据类型为对象，是因为继承了NSValue
+
+int main()
+{
+    
+    // 结构体--->OC对象
+    
+    CGPoint p = CGPointMake(10, 10);
+    // 将结构体转为Value对象
+    NSValue *value = [NSValue valueWithPoint:p];
+    
+    // 将value转为对应的结构体
+    [value pointValue];
+    
+    NSArray *array = @[value ]; // 讲包装后的对象放入到数组中去；
+    
+    return 0;
+}
+
+/******************************* NSDate******************************/ 
+
+
+
