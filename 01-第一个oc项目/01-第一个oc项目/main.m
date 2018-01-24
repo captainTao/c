@@ -6,6 +6,36 @@
 //  Copyright © 2018年 captain. All rights reserved.
 //
 
+/*
+ 总结
+ 1.只有利用类名调用类方法的时候，不需要在类名后面写*。其他情况下，类名后面统一加上一个*
+ Circle *c1 = [Circle new];
+ - (BOOL)isInteractWithOther:(Circle *)other;
+ 
+ 2.返回值是BOOL类型的方法，方法名一般都以is开头
+ - (BOOL)isInteractWithOther:(Circle *)other;
+ 
+ 3.想要拥有某个对象，就先创建对象，然后调用set方法将对象传递给内部的成员变量
+ // 创建圆心对象
+ Point2D *p2 = [Point2D new];
+ [p2 setX:12 andY:19];
+ // 设置圆心
+ [c2 setPoint:p2];
+ 
+ - (void)setPoint:(Point2D *)point
+ {
+ _point = point;
+ }
+ 
+ 
+ 4.定义一个类分2个文件：.h声明文件、.m实现文件
+ .h : 成员变量、方法的声明
+ .m : 方法的实现
+ 
+ 5.如果想使用某一个类，只需要#import类的.h文件即可
+ */
+
+
 #import "Point2D.h"
 #import "Circle.h"
 

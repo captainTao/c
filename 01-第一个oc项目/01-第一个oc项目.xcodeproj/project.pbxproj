@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E431549B201782C40031FDF7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E431549A201782C40031FDF7 /* main.m */; };
+		E4ACE84220189160007434CF /* Point2D.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ACE84120189160007434CF /* Point2D.m */; };
+		E4ACE8452018917B007434CF /* Circle.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ACE8442018917B007434CF /* Circle.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,10 @@
 /* Begin PBXFileReference section */
 		E4315497201782C40031FDF7 /* 01-第一个oc项目 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "01-第一个oc项目"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E431549A201782C40031FDF7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E4ACE84020189160007434CF /* Point2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Point2D.h; sourceTree = "<group>"; };
+		E4ACE84120189160007434CF /* Point2D.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Point2D.m; sourceTree = "<group>"; };
+		E4ACE8432018917B007434CF /* Circle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Circle.h; sourceTree = "<group>"; };
+		E4ACE8442018917B007434CF /* Circle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Circle.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,10 @@
 			isa = PBXGroup;
 			children = (
 				E431549A201782C40031FDF7 /* main.m */,
+				E4ACE84020189160007434CF /* Point2D.h */,
+				E4ACE84120189160007434CF /* Point2D.m */,
+				E4ACE8432018917B007434CF /* Circle.h */,
+				E4ACE8442018917B007434CF /* Circle.m */,
 			);
 			path = "01-第一个oc项目";
 			sourceTree = "<group>";
@@ -119,6 +129,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4ACE8452018917B007434CF /* Circle.m in Sources */,
+				E4ACE84220189160007434CF /* Point2D.m in Sources */,
 				E431549B201782C40031FDF7 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
