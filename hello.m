@@ -3034,4 +3034,54 @@ int main()
 /******************************* NSDate******************************/ 
 
 
+// 创建一个时间对象
+NSDate *date = [NSDate date]; // 当前时间
+// 打印出的时候是0时区的时间（北京-东8区）
+NSLog(@"%@", date);
 
+
+// 时间后面30s
+NSDate *date2 = [NSDate dateWithTimeInterval:30 sinceDate:date];
+// 当前时间后的20s
+NSDate *date3 = [NSDate dateWithTimeIntervalSinceNow:20];
+
+//返回1970-1-1 00:00:00时间10秒后的时间
+NSDate *date4 = [NSDate dateWithTimeIntervalSince1970:10];
+
+
+// 从1970-1-1 00:00:00开始到date2走过的秒数
+NSTimeInterval seconds = [date2 timeIntervalSince1970];
+// 输出时间差，为float
+NSLog(@"%f", seconds);
+
+// date2到现在的时间差
+NSTimeInterval interval = [date2 timeIntervalSinceNow];
+// 两个时间差：
+NSTimeInterval interval = [date2 timeIntervalSinceDate:date3];
+
+// 比较时间，返回比较早的时间
+NSDate *newdate = [date2 earlierDate:date3];
+// 比较时间，返回比较晚的时间
+NSDate *newdate = [date2 laterDate:date3];
+
+
+
+时间格式转换：
+
+NSDate *date = [NSDate date];
+
+NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+// HH是24进制，hh是12进制
+formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss"; //定义自己想要的格式
+// formatter.dateFormat = @"yyyy/MM/dd HH:mm:ss";
+
+NSString *string = [formatter stringFromDate:date];
+NSLog(@"%@", string);  // 2018-01-25 16:52:48
+
+// 返回的格林治时间
+NSDate *date2 = [formatter dateFromString:@"2010-09-09 13:14:56"];
+NSLog(@"%@", date2); // Thu Sep 9 13:14:56 2010
+
+
+// link:NSDate的操作：
+http://blog.csdn.net/daiyelang/article/details/18731543
