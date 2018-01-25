@@ -3021,7 +3021,7 @@ int main()
     
     CGPoint p = CGPointMake(10, 10);
     // 将结构体转为Value对象
-    NSValue *value = [NSValue valueWithPoint:p];
+    NSValue *value = [NSValue valueWithPoint:p]; //同样可以把矩形包装为对象；
     
     // 将value转为对应的结构体
     [value pointValue];
@@ -3066,10 +3066,10 @@ NSDate *newdate = [date2 laterDate:date3];
 
 
 
-时间格式转换：
-
+// 时间格式转换字符串：
 NSDate *date = [NSDate date];
 
+// 日期格式化类：
 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 // HH是24进制，hh是12进制
 formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss"; //定义自己想要的格式
@@ -3078,10 +3078,18 @@ formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss"; //定义自己想要的格式
 NSString *string = [formatter stringFromDate:date];
 NSLog(@"%@", string);  // 2018-01-25 16:52:48
 
+
+
+// 字符串转为日期格式：
 // 返回的格林治时间
-NSDate *date2 = [formatter dateFromString:@"2010-09-09 13:14:56"];
+NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+formatter.dateFormat = @"yyyy/MM/dd HH:mm:ss";
+NSDate *date2 = [formatter dateFromString:@"2010/09/09 13:14:56"];
 NSLog(@"%@", date2); // Thu Sep 9 13:14:56 2010
 
 
 // link:NSDate的操作：
 http://blog.csdn.net/daiyelang/article/details/18731543
+
+
+----------finished on date 2018/1/25 22:18

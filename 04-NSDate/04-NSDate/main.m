@@ -12,12 +12,13 @@ int main()
 {
     // 09/10/2011
     NSString *time = @"2011/09/10 18:56";
-    
+
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy/MM/dd HH:mm";
-    
+
     NSDate *date = [formatter dateFromString:time];
     NSLog(@"%@", date);
+    
     return 0;
 }
 
