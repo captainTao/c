@@ -1,3 +1,6 @@
+60min入门教程：
+https://github.com/qinjx/30min_guides/blob/master/ios.md
+
 meteclass是放在哪里？
 http://blog.csdn.net/windyitian/article/details/19810875
 http://blog.csdn.net/jijunyuan/article/details/46780257
@@ -1336,6 +1339,51 @@ SEL s = NSSelectorFromString(name);  //把一个test2的方法名转换为sel类
 
 // 将SEL对象转为NSString对象
 NSString *str = NSStringFromSelector(@selector(test));
+
+
+
+// selector运用：
+在Objective-C里，selector主要用来做两类事情：
+
+1.绑定控件触发的动作
+@implementation DemoViewController
+- (void)downButtonPressed:(id)sender {//响应“按钮被按下事件”的方法
+    UIButton *button = (UIButton*)sender;
+    [button setSelected:YES];
+}
+
+- (void)drawAnButton {
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom]; 
+    btn.frame = _frame; 
+    btn.tag = 1;
+    btn.backgroundColor = [UIColor clearColor];
+    [btn addTarget: self
+         action: @selector(downButtonPressed:)
+         forControlEvents: UIControlEventTouchUpInside];//当这个按钮被按下时，触发downButtonPressed:方法
+}
+@end
+
+2.延时异步执行
+@implementation ETHotDealViewController
+- (void)viewDidLoad {
+    
+    //获取数据源
+    HotDealDataSource *ds = [[HotDealDataSource alloc]init];
+    [ds reload];
+    _items = ds.items;
+    
+    [self performSelector: @selector(refreshTable)
+          withObject: self
+          afterDelay: 0.5];//延迟0.5秒调用refreshTable方法
+}
+
+-(void)refreshTable
+{
+    [self.tableView reloadData];
+}
+@end
+这个例子中，获取数据源是通过ASIHTTP组件异步调用服务端HTTP接口，refreshTable要用到数据源返回回来的数据，
+如果不延迟0.5秒，就会立刻执行，执行的时候数据还在路上呢，页面就要变空白了。
 
 
 /******************************* 内存管理 *****************************/

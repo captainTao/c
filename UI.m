@@ -1,4 +1,11 @@
 
+https://www.jianshu.com/p/4be17ec40cfc
+delegate、protocol、tagart-action、closure ？
+
+
+Github  StackOverFlow
+
+
 /*
  1> UIButton    -> UIControl -> UIView
  
