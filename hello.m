@@ -53,6 +53,9 @@ int main()
 
 3. note:
 NSLog输出后会自动换行，printf输出后不会自动换行
+double f = 2.1e-10;
+NSLog(@"%g", f); // 科学计数用%g来输出
+%u, 无符号输出；
 
 
 4. #import的作用

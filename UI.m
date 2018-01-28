@@ -6,6 +6,12 @@ delegate、protocol、tagart-action、closure ？
 Github  StackOverFlow
 
 
+模拟器操作：
+
+cmd +l :锁屏
+cmd +shift +h :主界面
+cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
+
 /*
  1> UIButton    -> UIControl -> UIView
  

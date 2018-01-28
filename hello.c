@@ -3460,6 +3460,23 @@ int main ()
 #endif
 
 
+在ios中判断系统之后执行语句：
+#if TARGET_OS_UNIX
+    NSLog(@"MAC");
+#endif
+
+
+#define DEBUG_MODE 1
+#if DEBUG_MODE
+    NSLog(@"debug");
+#else
+    NSLog(@"release");
+#endif
+
+#ifdef DEBUG_MODE // 如果定义了dbug_mode，则执行
+    NSLog(@"xx");
+#endif
+
 
 预处理#include.h
 
