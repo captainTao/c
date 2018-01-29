@@ -2503,7 +2503,7 @@ NSRect\CGRect (CGPint CGSize)：
 /******************************* OC NSString*******************************/ 
 
 //  -----------------------------------字符串的创建的几种方式：
-
+1.字符串的初始化：
     NSString *s1 = @"jack";
     
     //NSString *s2 = [[NSString alloc] initWithString:@"jack"];  // 与上面等价，一般写上面那个
@@ -2514,9 +2514,20 @@ NSRect\CGRect (CGPint CGSize)：
     NSString *s4 = [[NSString alloc] initWithUTF8String:"jack"];
     // OC字符串 --> C字符串
     const char *cs = [s4 UTF8String];
-    
- 
 
+2.基础数据类型转为字符串：
+NSString *str1 = [NSString stringWithFormat:@"%d",1];
+NSString *str2 = [NSString stringWithFormat:@"%f",3.1415]; 
+
+3.字符串转为基础数据类型：
+int a = str1.intValue;
+float b = str2.floatValue;
+
+4.字符串的比较：
+ if([str1 isEqualToString: str2]){ // 这是比较字符串的内容
+    NSLog(@"%@字符串相等");
+ }
+ str1 == str2 // 字符串的内存地址和内容
 
 //  -----------------------------------读取文件：
 
