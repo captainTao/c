@@ -2529,53 +2529,63 @@ float b = str2.floatValue;
  }
  str1 == str2 // 字符串的内存地址和内容
 
-//  -----------------------------------读取文件：
-
-    // NSUTF8StringEncoding 用到中文就可以用这种编码 （把一个文件或者网页内容转为字符串）
-    NSString *s5 = [[NSString alloc] initWithContentsOfFile:@"/Users/apple/Desktop/1.txt" encoding:NSUTF8StringEncoding error:nil];
-    
+ 5.字符串的大小写转换：
+ NSString *str1 = @"abCDefg";
+ NSString *str2 = [str1 lowercaseString]; // 全是小写
+ NSString *str3 = [str1 uppercaseString]; // 全是大写
+ NSString *str4 = [str1 capitalizedString]; //首字母大写
+ NSLog(@"%@",[NSString stringWithFormat:@"%@\n%@\n%@", str2, str3, str4]);
+ 6.字符串和数组的关系：
  
-    // URL : 资源路径
-    // 协议头://路径
+ 7.字符串的内容索引：
+ NSString *str1 = @"abcdefg";
+ NSString *str2 = @"cde";
+ NSRange range;
+ range = [str1 rangeOfString:str2];
+ NSLog(@"%lu %lu",range.length, range.location);
 
-    // file:// 本地文件
-    // ftp:// ftp服务器
-    // http://weibo.com/a.png  http服务器
-    
-
-    // （把一个文件或者网页内容转为字符串）
-    NSURL *url = [[NSURL alloc] initWithString:@"file:///Users/apple/Desktop/1.txt"];
-    NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/1.txt"]; // 或者这样写，fileUrl是表示文件资源的一个方法
-    
-    NSString *s6 = [[NSString alloc] initWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
-    NSLog(@"s6=\n%@", s6); // 换行再输出
-    
-/*
- 上面都是对象方法，都有对应的类方法：
-
- 一般都会有一个类方法跟对象方法配对：
- [NSURL URLWithString:<#(NSString *)#>];
- [NSString stringWithFormat:@""];
- [NSString stringWithContentsOfFile:<#(NSString *)#> encoding:<#(NSStringEncoding)#> error:<#(NSError *__autoreleasing *)#>];
+ 8.字符串的位置索引：
+ NSString *str1 = @"abcdefg";
+ NSRange range = {range.length = 2, range.length = 3};
+ NSString *str2 = [str1 substringWithRange:range];
+ NSLog(@"%@", str2);
  
- */
-
-
-
-
-//  -----------------------------------文件写入：
-// 字符串的导出
-[@"Jack\nJack" writeToFile:@"/Users/apple/Desktop/my.txt" atomically:YES encoding:NSUTF8StringEncoding error:nil];  
-// 这其中Yes，代表：如果文件写入有错误，则停止创建文件； NO表示，会继续创建，即使错误；
-
-
-NSString *str = @"4234234";
-NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/my2.txt"];
-[str writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:nil];
-
-
-
-
+ 9.字符串的增删改查：(关于查就是7和8)
+ NSString *str1 = @"abc";
+ NSString *str2 = [str1 stringByAppendingString:@"efg"]; // 增加字符串
+ NSString *str3 = [str1 stringByAppendingFormat:@"%d", 12345]; // 增加格式化字符串
+ NSLog(@"str1 = %@, str2 = %@, str3 = %@", str1, str2, str3);
+ // 这儿并没有改变str1的值，而是返回了一个增加的值
+ NSString *str4 = [str3 stringByReplacingOccurrencesOfString:@"c123" withString:@"aa"];// 改
+ NSString *str5 = [str3 stringByReplacingOccurrencesOfString:@"c123" withString:@""]; // 删
+ NSLog(@"str4 = %@, str5 = %@", str4, str5);
+ 
+ 10.可变字符串：
+ NSMutableString *str6 = [[NSMutableString alloc] init];
+ [str6 appendString:@"123"];  // 增加没有返回值，是增加本身
+ [str6 appendFormat:@"%f", 3.1415]; // 增加格式化的字符
+ [str6 insertString:@"haha" atIndex:1]; // 插入字符
+ NSLog(@"%@", str6);
+ 
+ 11.字符串的内容检查：
+ NSString *str7 = @"http://www.baidu.com";
+ if ([str7 containsString:@"baidu"]){
+     NSLog(@"包含baidu");
+ }
+ if ([str7 hasPrefix:@"http"]){
+     NSLog(@"头包含http");
+ }
+ if ([str7 hasSuffix:@"com"]){
+     NSLog(@"结尾包含com");
+ }
+ 
+ 12.常用技巧：
+ a.字符串去首尾空格：
+ NSString *str8 = @" abc defg ";
+ NSString *str9 = [str8 stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+ NSLog(@"%@\n%@", str8, str9);
+ b.字符串的长度
+ NSLog(@"%lu - %lu", str8.length, str9.length);
 
 /*
  NSString : 不可变字符串 （添加，删除）
@@ -2598,8 +2608,52 @@ NSString *s3 = [s2 stringByAppendingString:@" 11 12"];  // 有返回值，这个
 
 
 
--------------------------------------
+
+
+//  -----------------------------------读取文件：
+
+ // NSUTF8StringEncoding 用到中文就可以用这种编码 （把一个文件或者网页内容转为字符串）
+ NSString *s5 = [[NSString alloc] initWithContentsOfFile:@"/Users/apple/Desktop/1.txt" encoding:NSUTF8StringEncoding error:nil];
+ 
+ // URL : 资源路径
+ // 协议头://路径
+ // file:// 本地文件
+ // ftp:// ftp服务器
+ // http://weibo.com/a.png  http服务器
+ 
+ // （把一个文件或者网页内容转为字符串）
+ NSURL *url = [[NSURL alloc] initWithString:@"file:///Users/apple/Desktop/1.txt"];
+ NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/1.txt"]; // 或者这样写，fileUrl是表示文件资源的一个方法
+ 
+ NSString *s6 = [[NSString alloc] initWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+ NSLog(@"s6=\n%@", s6); // 换行再输出
+    
+/*
+ 上面都是对象方法，都有对应的类方法：
+
+ 一般都会有一个类方法跟对象方法配对：
+ [NSURL URLWithString:<#(NSString *)#>];
+ [NSString stringWithFormat:@""];
+ [NSString stringWithContentsOfFile:<#(NSString *)#> encoding:<#(NSStringEncoding)#> error:<#(NSError *__autoreleasing *)#>];
+ 
+ */
+
+
+
+//  -----------------------------------文件写入：
+// 字符串的导出
+[@"Jack\nJack" writeToFile:@"/Users/apple/Desktop/my.txt" atomically:YES encoding:NSUTF8StringEncoding error:nil];  
+// 这其中Yes，代表：如果文件写入有错误，则停止创建文件； NO表示，会继续创建，即使错误；
+
+
+NSString *str = @"4234234";
+NSURL *url = [NSURL fileURLWithPath:@"/Users/apple/Desktop/my2.txt"];
+[str writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+
+
 练习简单的爬baidu教程：
+-------------------------------------
 // 请求baidu
 NSURL *url = [NSURL URLWithString:@"http://news.baidu.com/?tn=news"];
 NSString *str = [[NSString alloc]initWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
@@ -2631,67 +2685,104 @@ NSDate
 // oc的数组是面向对象数组，不能存放非oc对象类型，比如int, stuct, enum ; 里面对象的属性可以不一样；
 
 
+1.数组的初始化：
+NSArray *arr1 = [[NSArray alloc]initWithObjects:@"bilibili",@"balala",@"fftt", nil];
+NSArray *arr2 = @[@"bobo", @"keke", @"hehhe"];
+NSLog(@"%@", arr2);
+
+2.增删改查：
+
+查：位置索引：
+NSString *item1 = [arr2 firstObject];
+NSString *item2 = [arr2 lastObject];
+NSString *item3 = [arr2 objectAtIndex:1];
+NSLog(@"%@ %@ %@", item1, item2, item3);
+
+查：内容索引
+NSInteger index = [arr2 indexOfObject:@"hehhe"];
+NSLog(@"index=%ld", index);
+
+查：长度
+NSLog(@"count= %lu",arr2.count);
+NSLog(@"%d %d", [arr2 containsObject:@"heheh"], [arr2 containsObject:@"keke"]);
+
+增：
+NSMutableArray *array1 = [[NSMutableArray alloc]init];
+NSMutableArray *array2 = [[NSMutableArray alloc]initWithObjects:@"girl", @"boy", @"man", @"woman", nil];
+
+[array2 addObject:@"baby"];
+[array2 insertObject:@"youth" atIndex:2];
+NSLog(@"%@", array2);
+
+删除，改：
+[array2 removeLastObject];
+[array2 removeObject:@"youth"];
+[array2 removeObjectAtIndex:1];
+[array2 removeAllObjects];
+NSLog(@"%@", array2);
+
+
+1.NSArray的创建-------------------------------------
+
 /*
  int a = 5;
- 
  int ages[10] = {1, 90, 89, 17};
- 
- Person *p = [[Person alloc] init];
- Person *persons[5] = {p,  [[Person alloc] init]};
  */
 
+a.最老的方法
+ Person *p = [[Person alloc] init];
+ Person *persons[5] = {p,  [[Person alloc] init]};
+
+ NSArray *arr1 = [[NSArray alloc]initWithObjects:@"hahha",@"bbb", nil];
 // OC数组不能存放nil值
 // OC数组只能存放OC对象、不能存放非OC对象类型，比如int、struct、enum等
 
+
+b.比较常用的方法：
 // 这个array永远是空数组
 NSArray *array = [NSArray array];
-
-
-/*
- 1.NSArray的创建-------------------------------------
- */
 NSArray *array2 = [NSArray arrayWithObject:@"jack"];
 
 // nil是数组元素结束的标记
 NSArray *array3 = [NSArray arrayWithObjects:@"jack", @"rose", nil]; // 创建两个及以上的数组必须写nil
-
 NSArray *array4 = [NSArray arrayWithObjects:@"jack", @"rose", @"4324324", nil];
 
-// 快速创建一个NSArray对象
+
+c.快速创建一个NSArray对象
 NSArray *array4 = @[@"jack", @"rose", @"4324324"];
 
 
-/*
- 2.NSArray的元素个数-------------------------------------
- */
+
+2.NSArray的元素个数-------------------------------------
+
 // [array2 count]; 这个是set语法,可以
 NSLog(@"%ld", array3.count); // 点语法也可以
 
 
-/*
- 3.NSArray中元素的访问-------------------------------------
- */
+
+3.NSArray中元素的访问-------------------------------------
+
 NSLog(@"%@", [array3 objectAtIndex:1]); // 访问的第二个元素
 
 //array3[1]; // 或者像数组一样访问也可以
 NSLog(@"%@", array3[0]);
 
 
-/*
- 4.NSArray中数组的遍历-------------------------------------
- */
+
+4.NSArray中数组的遍历-------------------------------------
+
 Person *p = [[Person alloc] init];
 NSArray *array = @[p, @"rose", @"jack"];
 
 
-// 最普通的遍历一：
+a.最普通的遍历一：
 for (int i = 0; i<array.count; i++)
 {
     NSLog(@"%@", array[i]);
 }
 
 
-// for .. in遍历二：
+b.for .. in遍历二：
 // id obj代表着数组中的每一个元素
 int i = 0;
 for (id obj in array)
@@ -2709,7 +2800,7 @@ for (id obj in array)
 }
 
 
-// 利用自带的函数进行block遍历三：
+c.利用自带的函数进行block遍历三：
 // 每遍历到一个元素，就会调用一次block
 // 并且当前元素和索引位置当做参数传给block
 
@@ -2739,7 +2830,7 @@ NSMutableArray *array = @[@"jack", @"rose"];
 */
 
 
-// 4.可变数组的基本使用------------------------------------增删改查
+5.可变数组的基本使用------------------------------------增删改查
 NSMutableArray *array = [NSMutableArray arrayWithObjects:@"rose", @"jim", nil];
 
 // 添加元素
