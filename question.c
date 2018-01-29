@@ -2,6 +2,7 @@
 /************************************************.01*/
  // 1. 代码块的作用？？？
 
+
 #include <stdio.h>
 int main()
 {
@@ -17,24 +18,69 @@ int main()
         }
         a = 10;
     }
-    
+    printf("%d\n", score); //120
     {
         score = a + 250;
-        // printf("%d\n", a); //10
+        // printf("%d\n", a); //10   -----------?
         // printf("%d", score); //260
         int score = 30;
-        printf("%d", score); //30
+        printf("%d\n", score); //30
     }
-    
     printf("%d\n", score); //260              // ----------------  这看不懂，为啥不是120？
     return 0;
 }
 /*
-结果：
-120
-10
-30260
-*/
+ 结果：
+ 120
+ 10
+ 120
+ 30
+ 260
+ */
+
+
+// 全局变量：a、b、c
+// 局部变量：v1、v2、e、f
+
+#include <stdio.h>
+// 变量a的初值是10
+int a = 10;
+
+// 变量b的初值是0
+// 变量c的初值是20
+int b , c = 20;
+
+int sum(int v1, int v2)
+{
+    return v1 + v2;
+}
+
+void test()
+{
+    b++; //1
+    
+    int i = 0;
+    i++; //1
+    
+    printf("b=%d, i=%d\n", b, i);
+}
+
+int main()
+{
+    test();  //1,1
+    test();  //2,1
+    test();  //3,1
+    printf("%d\n",sum(b, c)); //23
+    int e = 10;
+    
+    {
+        {
+            int f = 30;
+        }
+    }
+    
+    return 0;
+}
 
 /************************************************.02*/
 // 2.自增和自减，？？

@@ -3096,6 +3096,8 @@ auto修饰
 */
 
 
+/********************************** 结构体 **********************************/
+
 结构体：
 c语言中数组只能是一个类型，python可以是多个，于是引入了结构体来解决这个问题；
 结构体跟对象不一样；
@@ -3125,6 +3127,45 @@ struct {
     int age;
 } stu;
 
+
+/*
+ 数组：只能由多个相同类型的数据构成
+ 结构体：可以由多个不同类型的数据构成
+*/
+#include <stdio.h>
+
+int main()
+{
+    //int ages[3] = {[2] = 10, 11, 27};
+    
+    
+    //int ages[3] = {10, 11, 29};
+    
+    // 1.定义结构体类型
+    struct Person
+    { // 里面的3个变量，可以称为是结构体的成员或者属性
+        int age; // 年龄
+        double height; // 身高
+        char *name; // 姓名
+    };
+    
+    // 2.根据结构体类型，定义结构体变量
+    struct Person p = {20, 1.55, "jack"};
+    p.age = 30;
+    p.name = "rose";
+    
+    printf("age=%d, name=%s, height=%f\n", p.age, p.name, p.height);
+    
+    /* 错误写法
+    struct Person p2;
+    p2 = {30, 1.67, "jake"};
+    */
+    
+    struct Person p2 = {.height = 1.78, .name="jim", .age=30};
+    //p2.age = 25;
+    
+    return 0;
+}
 
 结构体的注意点:
 1.不允许对结构体本身递归定义
