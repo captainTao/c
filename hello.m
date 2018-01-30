@@ -2721,6 +2721,25 @@ NSLog(@"%@", array2);
 [array2 removeAllObjects];
 NSLog(@"%@", array2);
 
+3.字符串的遍历：（见下面的遍历）
+
+4.字符串与数组互转：NSString <--> NSArray(字符串分割)
+ NSString *string1 = @"1@2@3@4@5";
+ NSArray *array1 = [string1 componentsSeparatedByString:@"@"];
+ NSLog(@"%@", array1);
+ 
+ NSMutableString *string2 = [[NSMutableString alloc]init];
+ for (NSString *item in array1){
+     [string2 appendFormat:@"%@@", item];
+ }
+ NSLog(@"%@", string2);
+
+5.可变数组与不可变数组的互转：
+ NSArray *array1 = @[@"123",@"456"];
+ NSMutableArray *array2 = [[NSMutableArray alloc]initWithArray:array1];
+ // 可变数组转不可变，直接赋值
+ NSArray *array3 = array2;
+
 
 1.NSArray的创建-------------------------------------
 
@@ -2775,14 +2794,14 @@ Person *p = [[Person alloc] init];
 NSArray *array = @[p, @"rose", @"jack"];
 
 
-a.最普通的遍历一：
+a. 最普通的遍历一：
 for (int i = 0; i<array.count; i++)
 {
     NSLog(@"%@", array[i]);
 }
 
 
-b.for .. in遍历二：
+b. for .. in遍历二：
 // id obj代表着数组中的每一个元素
 int i = 0;
 for (id obj in array)
@@ -3011,6 +3030,10 @@ NSMutableDictionary  // 可变
  * 快速访问元素：字典名[key]
  */
 
+1.定义：
+NSDictionary *dic1 = [NSDictionary alloc]init];
+// 先输入value，再输入key // value - key
+NSDictionary *dic2 = [[NSDictionary alloc]initWithObjectsAndKeys:@"2.5",@"apple",@"北京", @"address",nil]; 
 
 // 定义一：
 NSDictionary *dict = [NSDictionary dictionaryWithObject:@"jack" forKey:@"name"];
@@ -3027,43 +3050,28 @@ NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
 @"北京", @"address",
 @"32423434", @"qq", nil]; // value - key
 
-// 定义四：一般用这种
-NSDictionary *dict = @{@"name" : @"jack", @"address" : @"北京"}; // key - value
+// 定义四：快速定义，一般用这种// key - value
+NSDictionary *dict = @{@"name" : @"jack", @"address" : @"北京"}; 
 
-// 查值：
-id obj = [dict objectForKey:@"name"]; // 方法一
-id obj = dict[@"name"]; // 方法二，一般用这个
+2.查值：
+NSDictionary *dict = @{@"name" : @"jack", @"address" : @"北京"};
+NSString *str1 = [dict valueForKey:@"name"]; // 方法一
+NSString *str2 = [dict objectForKey:@"name"]; // 方法二
+NSString *str3= dict[@"name"];// 方法三
+NSLog(@"%@-%@-%@",str1, str2, str3);
+
+id obj = [dict objectForKey:@"name"]; // 方法二,用id
+id obj = dict[@"name"]; // 方法三，用id
 
 // 返回的是键值对的个数
 NSLog(@"%ld", dict.count);
 
+// 查询所有的key和value
+NSArray *keys = [dict allKeys];
+NSArray *values = [dict allValues];
+NSLog(@"%@-%@",keys, values);
 
-
-----------------------------------------------NSMutableDictionary： 
-
-NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-
-// 添加键值对
-[dict setObject:@"jack" forKey:@"name"];
-[dict setObject:@"北京" forKey:@"address"];
-[dict setObject:@"rose" forKey:@"name"]; // 覆盖
-
-
-// 移除键值对
-[dict removeObjectForKey:<#(id)#>];
-
-// 查
-NSString *str = dict[@"name"];
-
-// 打印
-NSLog(@"%@", dict);
-NSLog(@"%@", @[@"jack", @"rose"]);
-
-// 改
-NSMutableDictionary *dict = @{@"name" : @"jack"};
-//[dict setObject:@"rose" forKey:@"name"]; 这儿报错，不能把不可变的字典用可变字典的方法：
-
-
+3.遍历：
 
 // 字典遍历
 NSDictionary *dict = @{
@@ -3084,6 +3092,7 @@ for (int i = 0; i<dict.count; i++)
     NSLog(@"%@ = %@", key, object);
 }
 
+
 // 遍历方法二：
 [dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) 
 {
@@ -3091,6 +3100,35 @@ for (int i = 0; i<dict.count; i++)
      
      // *stop = YES;
  }];
+
+----------------------------------------------NSMutableDictionary： 
+
+NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+4.增
+// 添加键值对
+[dict setObject:@"jack" forKey:@"name"];
+[dict setObject:@"北京" forKey:@"address"];
+
+5.改
+[dict setObject:@"rose" forKey:@"name"]; // 覆盖
+
+6.删
+// 移除键值对
+[dict removeObjectForKey:<#(id)#>];
+
+// 查
+NSString *str = dict[@"name"];
+
+// 打印
+NSLog(@"%@", dict);
+NSLog(@"%@", @[@"jack", @"rose"]);
+
+// 改
+NSMutableDictionary *dict = @{@"name" : @"jack"};
+//[dict setObject:@"rose" forKey:@"name"]; 这儿报错，不能把不可变的字典用可变字典的方法：
+
+
+
 
 
 
