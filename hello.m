@@ -19,6 +19,8 @@ runloop runtime
 然后底层看
 
 
+dealloc  最好还是写起   也还要做些事情   比如移除观察者  等其他释放性的操作
+这里面要写广播的注册，发送，响应，销毁
 --------------------------------------
 1. 常见区别
 关键字以@开头
@@ -1398,8 +1400,8 @@ NSString *str = NSStringFromSelector(@selector(test));
 
 
 
-1.栈 ：局部变量，全局变量   // 系统自动回收
-2.堆 ：对象，             // 动态分配，手动回收
+1.栈 ：局部变量，全局变量   // 系统自动回收，由操作系统分配和释放，先进后出
+2.堆 ：对象，             // 动态分配，手动回收,由程序员手动分配和释放，先进先出
 
 
 //  管理范围：任何继承了NSObject的对象，对其他基本数据类型（int、char、float、double、struct、enum等）无效
@@ -2374,15 +2376,155 @@ id<NSCoding> obj2;
 // 协议常用于代理， 一个类满足代理需要遵从代理的协议：
 
 
+/******************************* runtime *******************************/
+http://blog.csdn.net/a19860903/article/details/44853841
+
+RunTime简称运行时。就是系统在运行的时候的一些机制，其中最主要的是消息机制。
+runtime是属于OC的底层，是一套比较底层的纯C语言API, 属于1个C语言库;
+
+
+1.首先我们来看看obj这个对象，iOS中的obj都继承于NSObject。
+
+@interface NSObject <nsobject> {
+    Class isa  OBJC_ISA_AVAILABILITY;
+}</nsobject>
+
+2.在NSObjcet中存在一个Class的isa指针。然后我们看看Class：
+
+typedef struct objc_class *Class;
+
+struct objc_class {
+
+  Class isa; // 指向metaclass
+
+  Class super_class ; // 指向其父类
+
+  const char *name ; // 类名
+
+  long version ; // 类的版本信息，初始化默认为0，可以通过runtime函数class_setVersion和class_getVersion进行修改、读取
+
+  long info; // 一些标识信息,如CLS_CLASS (0x1L) 表示该类为普通 class ，其中包含对象方法和成员变量;CLS_META (0x2L) 表示该类为 metaclass，其中包含类方法;
+
+  long instance_size ; // 该类的实例变量大小(包括从父类继承下来的实例变量);
+
+  struct objc_ivar_list *ivars; // 用于存储每个成员变量的地址
+
+  struct objc_method_list **methodLists ; // 与 info 的一些标志位有关,如CLS_CLASS (0x1L),则存储对象方法，如CLS_META (0x2L)，则存储类方法;
+
+  struct objc_cache *cache; // 指向最近使用的方法的指针，用于提升效率；
+
+  struct objc_protocol_list *protocols; // 存储该类遵守的协议
+
+}
+
+
+Class isa：指向metaclass，也就是静态的Class。
+一般一个Obj对象中的isa会指向普通的Class，这个Class中存储普通成员变量和对 象方法（“-”开头的方法），
+普通Class中的isa指针指向静态Class，静态Class中存储static类型成员变量和类方法（“+”开头的方 法）。
+
+Class super_class:指向父类，如果这个类是根类，则为NULL。
+
+过程：
+1.封装为selector消息发送
+2.通过isa指针找到class,
+3.在obj_cache中去找方法
+4.在obj_method_list中去找方法
+
+应用场景：
+1.运行中：动态创建一个类,（比如KVO的底层实现）
+2.运行中：动态为某个类添加方法和属性
+3.遍历类的所有方法和属性
+（比如字典–>模型：利用runtime遍历模型对象的所有属性, 根据属性名从字典中取出对应的值, 设置到模型的属性上；还有归档和接档，利用runtime遍历模型对象的所有属性）
+
+/******************************* RunLoop *******************************/
+
+RunLoop就是一个事件处理的循环，用来不停的调用工作以及处理事件。
+使用runloop的目的就是节省cpu效率，线程在有工作的时候忙于工作，在没工作的时候处于休眠状态；
+
+其实就是处理各种事件的循环。
+核心价值：不停的接受数据。
+
+runloop线程处理的东西包括：
+handlePort
+customeScr
+mySelector
+timerFired
+
+/******************************* 深拷贝和浅拷贝 *******************************/
+
+浅拷贝：
+1.指向的内存地址是一样的，又称指针拷贝
+2.数据不独立，对一个对象操作会引起另外一个对象内容的改变
+3.释放对象的时候，会造成野指针错误，所以释放对象的时候，适合深拷贝；
+4.只复制对象的基本类型，对象类型仍属于原来的引用
+
+深拷贝：
+在堆中另外开辟了一个空间来存储对象的内容
+
+
+// 对象的快速拷贝：
+
+// personn.h
+@interface
+@property (nonatomic, copy) NSString *name; // 定义person的name属性
+@end
+
+// person.m
+@implementation
+-（id）copyWithZone:(NSZone*)zone{
+    Person *copy = [[[self class]allocWithZone:zone]init];
+    copy.name= [self.name copyWithZone:zone];
+    return copy;
+}
+@end
+
+// main.m:
+Person *p1 = [[Person alloc]init];
+p1.name = @"Robin";
+Person *p2 = [p1 copy];
+NSLog(@"%@, %@", p1, p2); // 输出之后发现他们的内存地址不一样，且他们都有一个相同的name属性，Robin
 
 
 
-/*******************************RunLoop*******************************/
+
+// 字符串的可变与不可变：
+不可变到可变：copy:只修改内容，mutableCopy:修改地址
+NSString *str1 = @"hello";
+NSMutableString *str2 = [str1 copy];
+NSMutableString *str3 = [str1 mutableCopy];
+NSLog(@"%@ %@ %@", str1, str2, str3);
+NSLog(@"%p %p %p", str1, str2, str3);
+    
+不可变到不可变：copy:只修改内容，mutableCopy:修改地址
+NSString *str1 = @"hello";
+NSString *str2 = [str1 copy];
+NSString *str3 = [str1 mutableCopy];
+NSLog(@"%@ %@ %@", str1, str2, str3);
+NSLog(@"%p %p %p", str1, str2, str3);
+
+可变到不可变：copy:修改地址，mutableCopy:修改地址
+// NSMutableString *str1 = @"hello"; // 换成这个，copy:只修改内容
+NSMutableString *str1 = [[NSMutableString alloc]initWithString:@"hello"];
+NSString *str2 = [str1 copy];
+NSString *str3 = [str1 mutableCopy];
+NSLog(@"%@ %@ %@", str1, str2, str3);
+NSLog(@"%p %p %p", str1, str2, str3);
+
+可变到可变：copy:修改地址，mutableCopy:修改地址
+// NSMutableString *str1 = @"hello"; // 换成这个，copy:只修改内容
+NSMutableString *str1 = [[NSMutableString alloc]initWithString:@"hello"];
+NSMutableString *str2 = [str1 copy];
+NSMutableString *str3 = [str1 mutableCopy];
+NSLog(@"%@ %@ %@", str1, str2, str3);
+NSLog(@"%p %p %p", str1, str2, str3);
 
 
 
 
+// 数组的可变与不可变：
 
+
+/******************************* 谓词的基本使用 *******************************/
 
 
 
