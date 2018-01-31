@@ -11,17 +11,18 @@ int main()
     printf("%d\n", score); //120
     
     {
-        int score = 50;
+        int score = 50; // 定义的只作用于代码块
         {
             score = 10;
             printf("%d\n", score);//10
         }
         a = 10;
     }
+    printf("%d\n", a); //10
     printf("%d\n", score); //120
     {
         score = a + 250;
-        // printf("%d\n", a); //10   -----------?
+        // printf("%d\n", a); //10   -----------?这儿是因为上面代码块对a重新复制了；
         // printf("%d", score); //260
         int score = 30;
         printf("%d\n", score); //30

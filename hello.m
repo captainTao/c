@@ -2088,12 +2088,16 @@ int main()
  MyBlock b3 = ^(int a, int b) {
     return a - b;
  };
+
+ 5> 
+ * block常用作传值，实际上就是把block的地址传到要调用block的地方
+ * block本质上就是一个函数指针，即代码块的内存地址
  */
 
 
 
 
-// -------------------------没有参数,没有返回值的block:
+-------------------------没有参数,没有返回值的block:
 int main()
 {  
     // block用来保存一段代码,
@@ -2141,7 +2145,7 @@ p(10, 6) // 指针调用
 
 
 
-// -------------------------有参数，有返回值的block调用：
+-------------------------有参数，有返回值的block调用：
 int main()
 {
     int (^sumblock)(int, int) = ^(int a, int b){
@@ -2165,11 +2169,11 @@ int main()
 }
 
 
-// -------------------------block与局部变量的的关系：
+-------------------------block与局部变量的的关系：
 int main()
 {
     int a = 10;
-    __block int b = 20;
+    __block int b = 20; // 给b前面加上__block关键字，b就可以在block内部修改
     
     void (^block)();   // 函数可以分开写，就如先定义函数名，再定义函数内部；
     
@@ -2203,7 +2207,7 @@ int (^minusBlock)(int, int) = ^(int a, int b) {
 */
 
 
-// ----------------------------block与typedef：
+----------------------------block与typedef：
 /*
  函数指针的typedef
  typedef int (*SumP)(int, int);
@@ -2376,6 +2380,7 @@ id<NSCoding> obj2;
 // 协议常用于代理， 一个类满足代理需要遵从代理的协议：
 
 
+
 /******************************* runtime *******************************/
 http://blog.csdn.net/a19860903/article/details/44853841
 
@@ -2523,11 +2528,82 @@ NSLog(@"%p %p %p", str1, str2, str3);
 
 // 数组的可变与不可变：
 
+不可变到可变：copy:只修改内容，mutableCopy:修改地址,内容
+NSArray *arr1 = @[@"a",@"b"];
+NSMutableArray *arr2 = [arr1 copy];
+NSMutableArray *arr3 = [arr1 mutableCopy];
+NSLog(@"%@ %@ %@", arr1, arr2, arr3);
+NSLog(@"%p %p %p", arr1, arr2, arr3);
+
+不可变到不可变：copy:只修改内容，mutableCopy:修改地址，内容
+NSArray *arr1 = @[@"a",@"b"];
+NSArray *arr2 = [arr1 copy];
+NSArray *arr3 = [arr1 mutableCopy];
+NSLog(@"%@ %@ %@", arr1, arr2, arr3);
+NSLog(@"%p %p %p", arr1, arr2, arr3);
+
+可变到不可变：copy:修改地址，内容，mutableCopy:修改地址，内容
+//NSMutableArray *arr1 = @[@"a",@"b"]; // copy:只修改内容，mutableCopy:修改地址，内容
+NSMutableArray *arr1 = [[NSMutableArray alloc]initWithObjects:@"a",@"b", nil];
+NSArray *arr2 = [arr1 copy];
+NSArray *arr3 = [arr1 mutableCopy];
+NSLog(@"%@ %@ %@", arr1, arr2, arr3);
+NSLog(@"%p %p %p", arr1, arr2, arr3);
+
+可变到可变：copy:修改地址，内容，mutableCopy:修改地址，内容
+// NSMutableArray *arr1 = @[@"a",@"b"]; // copy:只修改内容，mutableCopy:修改地址，内容
+NSMutableArray *arr1 = [[NSMutableArray alloc]initWithObjects:@"a",@"b", nil];
+NSMutableArray *arr2 = [arr1 copy];
+NSMutableArray *arr3 = [arr1 mutableCopy];
+NSLog(@"%@ %@ %@", arr1, arr2, arr3);
+NSLog(@"%p %p %p", arr1, arr2, arr3);
+
 
 /******************************* 谓词的基本使用 *******************************/
 
+// 相当于python中的filter函数：（过滤数组）
+
+1.==:过滤字符串
+NSArray *arr1 = @[@"ios", @"android", @"wp"];
+// 创建谓词
+NSPredicate *pre1 = [NSPredicate predicateWithFormat:@"self == 'ios'"]; // 这儿是过滤条件
+// 谓词作用数组：
+NSArray *arr2 = [arr1 filteredArrayUsingPredicate: pre1];
+NSLog(@"%@", arr2);
 
 
+2.intValue:过滤数值大小
+NSArray *arr1 = @[@"-3", @"15", @"32", @"-33"];
+NSPredicate *pre1 = [NSPredicate predicateWithFormat:@"-10 < self.intValue && self.intValue< 3 "];
+NSArray *arr2 = [arr1 filteredArrayUsingPredicate: pre1];
+NSLog(@"%@", arr2);
+
+
+3.contains:包含某个字段
+NSArray *arr1 = @[@"adb", @"install", @"c360", @"allof"];
+NSPredicate *pre1 = [NSPredicate predicateWithFormat:@"self contains %@", @"all"];
+NSArray *arr2 = [arr1 filteredArrayUsingPredicate: pre1];
+NSLog(@"%@", arr2);
+
+
+4.过滤某个对象，用属性
+Person *p1 = [[Person alloc]init];
+p1.age = 10;
+Person *p2 = [[Person alloc]init];
+p2.age = 20;
+NSArray *PersonArray1 = @[p1, p2];
+NSLog(@"%@",PersonArray1);
+NSPredicate *pre = [NSPredicate predicateWithFormat:@"self.age == 10"]; // self.age可以写成age
+NSArray *PersonArray2 = [PersonArray1 filteredArrayUsingPredicate:pre];
+NSLog(@"%@", PersonArray2);
+
+/*******************************类之间的通信*******************************/
+类之间通信的三大方式：
+BLock,通知，委托代理
+KVO, KVC, Timer
+
+
+BLock：为了避免交叉引用，造成对象无法释放
 ================================Foundation====================================
 
 /******************************* OC 结构体*******************************/
