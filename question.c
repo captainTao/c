@@ -22,7 +22,7 @@ int main()
     printf("%d\n", score); //120
     {
         score = a + 250;
-        // printf("%d\n", a); //10   -----------?这儿是因为上面代码块对a重新复制了；
+        // printf("%d\n", a); //10   -----------? 这儿是因为上面代码块对a重新赋值了；
         // printf("%d", score); //260
         int score = 30;
         printf("%d\n", score); //30
