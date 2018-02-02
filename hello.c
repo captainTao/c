@@ -2993,7 +2993,9 @@ char *test()
  */
 
 double haha(double d, char *s, int a)
-{ }
+{ 
+    return 3.14;
+};
 
 
 void test()
@@ -3015,11 +3017,9 @@ int main()
     
     p = sum;
     
-    //int c = p(10, 11);
-    
-    //int c = (*p)(10, 11);
-    
-    int c = sum(10, 9);
+    int c = p(10, 11);
+    int c = (*p)(10, 11);
+    int c = sum(10, 9); // 这三个赋值的结果是一样的；
     
     printf("c is %d\n", c);
     
@@ -3038,12 +3038,11 @@ void test1()
     p = test;
     
     p();  // 函数名也就是指针
-    //(*p)(); // 利用指针变量间接调用函数
-    
-    //test(); // 直接调用函数
+    (*p)(); // 利用指针变量间接调用函数
+    test(); // 直接调用函数
 }
 
------------------------------------变量的类型：
+-----------------------------------变量的类型和作用域：
 /*
 根据变量的作用域，可以分为：
  1.局部变量：
@@ -3223,6 +3222,7 @@ struct Student stu2 = stu1;
 printf("age is %d", stu2.age);
 
 
+/********************************** 结构体数组 **********************************/
 
 结构体数组定义：
 struct Student {
@@ -3248,6 +3248,46 @@ struct {
     int age;
 } stu[2] = { {"MJ", 27}, {"JJ", 30} };
 
+
+
+int main()
+{
+    struct RankRecord
+    {
+        int no; // 序号  4
+        int score; // 积分 4
+        char *name; // 名称 8
+    };
+    /*
+    struct RankRecord r1 = {1, "jack", 5000};
+    struct RankRecord r2 = {2, "jim", 500};
+    struct RankRecord r3 = {3, "jake",300};
+    */
+    
+    struct RankRecord records[3] =
+    {
+        {1, "jack", 5000},
+        
+        {2, "jim", 500},
+        
+        {3, "jake",300}
+    };
+    
+    records[0].no = 4;
+    // 错误写法
+    //records[0] = {4, "rose", 9000};
+    
+    for (int i = 0; i<3; i++)
+    {
+        printf("%d\t%s\t%d\n", records[i].no, records[i].name, records[i].score);
+    }
+    
+    //printf("%d\n", sizeof(records)); // 72
+    
+    return 0;
+}
+
+/********************************** 结构体函数 **********************************/
 
 结构体作为函数参数：
 
@@ -3277,6 +3317,7 @@ int main(int argc, const char * argv[]) {
 }
 
 
+/********************************** 结构体指针 **********************************/
 
 结构体的指针形式：struct 结构体名称 *指针变量名
 结构体的指针形式，有3种访问结构体成员的方式
@@ -3301,9 +3342,9 @@ int main(int argc, const char * argv[]) {
     
     // 指向结构体变量stu
     p = &stu;
-/*
-     这时候可以用3种方式访问结构体的成员
-     */
+    
+    // 这时候可以用3种方式访问结构体的成员
+     
     // 方式1：结构体变量名.成员名
     printf("name=%s, age = %d \n", stu.name, stu.age);
     
@@ -3316,9 +3357,74 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
+/********************************** 结构体存储 **********************************/
 
+结构体内存分析：
 
+#include <stdio.h>
+int main()
+{
+    
+    
+    return 0;
+}
 
+// 补齐算法
+void test1()
+{
+    struct Student
+    {
+        int age;// 4个字节
+        
+        char a; // 1个字节
+        
+        //char *name; // 8个字节
+    };
+    
+    struct Student stu;
+    //stu.age = 20;
+    //stu.name = "jack";
+    // 补齐算法（对齐算法）
+    // 结构体所占用的存储空间 必须是 最大成员字节数的倍数
+    
+    int s = sizeof(stu);  // 8
+    printf("%d\n", s);
+}
+
+// 结构体内存细节
+void test()
+{
+    // 1.定义结构体类型(并不会分配存储空间)
+    struct Date
+    {
+        int year;
+        int month;
+        int day;
+    };
+    
+    // 2.定义结构体变量（真正分配存储空间）
+    struct Date d1 = {2011, 4, 10};
+    
+    
+    struct Date d2 = {2012, 8, 9};
+    
+    // 会将d1所有成员的值对应地赋值给d2的所有成员
+    d2 = d1;
+    d2.year = 2010;
+    
+    printf("%d - %d - %d\n", d1.year, d1.month, d1.day);
+    
+    printf("%d - %d - %d\n", d2.year, d2.month, d2.day);
+    /*
+     printf("%p - %p - %p\n", &d1.year, &d1.month, &d1.day);
+     
+     int s = sizeof(d1); // 12, 3个int（4）
+     printf("%d\n", s);
+     
+     */
+}
+
+/********************************** 枚举 **********************************/
 枚举：
 一般形式为：enum枚举名{枚举元素1,枚举元素2,……};
 enum Season {spring, summer, autumn, winter}; 
