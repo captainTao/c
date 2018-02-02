@@ -3221,6 +3221,72 @@ struct Student stu1 = {"MJ", 27};
 struct Student stu2 = stu1;
 printf("age is %d", stu2.age);
 
+/********************************** 结构体存储 **********************************/
+
+结构体内存分析：
+
+#include <stdio.h>
+int main()
+{
+    
+    
+    return 0;
+}
+
+// 补齐算法
+void test1()
+{
+    struct Student
+    {
+        int age;// 4个字节
+        
+        char a; // 1个字节
+        
+        //char *name; // 8个字节
+    };
+    
+    struct Student stu;
+    //stu.age = 20;
+    //stu.name = "jack";
+    // 补齐算法（对齐算法）
+    // 结构体所占用的存储空间 必须是 最大成员字节数的倍数
+    
+    int s = sizeof(stu);  // 8
+    printf("%d\n", s);
+}
+
+// 结构体内存细节
+void test()
+{
+    // 1.定义结构体类型(并不会分配存储空间)
+    struct Date
+    {
+        int year;
+        int month;
+        int day;
+    };
+    
+    // 2.定义结构体变量（真正分配存储空间）
+    struct Date d1 = {2011, 4, 10};
+    
+    
+    struct Date d2 = {2012, 8, 9};
+    
+    // 会将d1所有成员的值对应地赋值给d2的所有成员
+    d2 = d1;
+    d2.year = 2010;
+    
+    printf("%d - %d - %d\n", d1.year, d1.month, d1.day);
+    
+    printf("%d - %d - %d\n", d2.year, d2.month, d2.day);
+    /*
+     printf("%p - %p - %p\n", &d1.year, &d1.month, &d1.day);
+     
+     int s = sizeof(d1); // 12, 3个int（4）
+     printf("%d\n", s);
+     
+     */
+}
 
 /********************************** 结构体数组 **********************************/
 
@@ -3317,6 +3383,52 @@ int main(int argc, const char * argv[]) {
 }
 
 
+
+// 如果结构体作为函数参数，只是将实参结构体所有成员的值对应地赋值给了形参结构体的所有成员
+// 修改函数内部结构体的成员不会影响外面的实参结构体
+
+#include <stdio.h>
+struct Student
+{
+    int age;
+    int no;
+};
+
+void test(struct Student s)
+{
+    s.age = 30;
+    s.no = 2;
+}
+
+// 会影响外面的实参结构体
+void test2(struct Student *p)
+{
+    p->age = 15;
+    p->no = 2;
+
+}
+
+void test3(struct Student *p)
+{
+    struct Student stu2 = {15, 2};
+    p = &stu2;  //{15, 2};
+    p->age = 16; 
+    p->no = 3;  //{16, 3};
+}
+
+int main()
+{
+    struct Student stu = {28, 1};
+    
+    // test(stu); // age=28, no=1
+    // test2(&stu); // age=15, no=2
+    test3(&stu); // age=28, no=1
+    
+    printf("age=%d, no=%d\n", stu.age, stu.no);
+    
+    return 0;
+}
+
 /********************************** 结构体指针 **********************************/
 
 结构体的指针形式：struct 结构体名称 *指针变量名
@@ -3357,74 +3469,10 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
-/********************************** 结构体存储 **********************************/
 
-结构体内存分析：
-
-#include <stdio.h>
-int main()
-{
-    
-    
-    return 0;
-}
-
-// 补齐算法
-void test1()
-{
-    struct Student
-    {
-        int age;// 4个字节
-        
-        char a; // 1个字节
-        
-        //char *name; // 8个字节
-    };
-    
-    struct Student stu;
-    //stu.age = 20;
-    //stu.name = "jack";
-    // 补齐算法（对齐算法）
-    // 结构体所占用的存储空间 必须是 最大成员字节数的倍数
-    
-    int s = sizeof(stu);  // 8
-    printf("%d\n", s);
-}
-
-// 结构体内存细节
-void test()
-{
-    // 1.定义结构体类型(并不会分配存储空间)
-    struct Date
-    {
-        int year;
-        int month;
-        int day;
-    };
-    
-    // 2.定义结构体变量（真正分配存储空间）
-    struct Date d1 = {2011, 4, 10};
-    
-    
-    struct Date d2 = {2012, 8, 9};
-    
-    // 会将d1所有成员的值对应地赋值给d2的所有成员
-    d2 = d1;
-    d2.year = 2010;
-    
-    printf("%d - %d - %d\n", d1.year, d1.month, d1.day);
-    
-    printf("%d - %d - %d\n", d2.year, d2.month, d2.day);
-    /*
-     printf("%p - %p - %p\n", &d1.year, &d1.month, &d1.day);
-     
-     int s = sizeof(d1); // 12, 3个int（4）
-     printf("%d\n", s);
-     
-     */
-}
 
 /********************************** 枚举 **********************************/
+
 枚举：
 一般形式为：enum枚举名{枚举元素1,枚举元素2,……};
 enum Season {spring, summer, autumn, winter}; 
