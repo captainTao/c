@@ -3139,7 +3139,6 @@ int main()
 {
     //int ages[3] = {[2] = 10, 11, 27};
     
-    
     //int ages[3] = {10, 11, 29};
     
     // 1.定义结构体类型
@@ -3195,6 +3194,20 @@ struct Student stu = {"MJ", 27};
 // 访问stu的age成员
 stu.age = 27;
 
+
+
+相同类型的结构体变量之间可以进行整体赋值
+struct Student {
+    char *name;
+    int age;
+};
+struct Student stu1 = {"MJ", 27};
+// 将stu1直接赋值给stu2
+struct Student stu2 = stu1;
+printf("age is %d", stu2.age);
+
+/********************************** 结构体嵌套 **********************************/
+
 连续使用成员运算符"."访问最低一级成员
 struct Date {
      int year;
@@ -3211,16 +3224,35 @@ stu.birthday.month = 9;
 stu.birthday.day = 10;
 
 
-相同类型的结构体变量之间可以进行整体赋值
-struct Student {
-    char *name;
-    int age;
-};
-struct Student stu1 = {"MJ", 27};
-// 将stu1直接赋值给stu2
-struct Student stu2 = stu1;
-printf("age is %d", stu2.age);
 
+#include <stdio.h>
+int main()
+{
+    struct Date
+    {
+        int year;
+        int month;
+        int day;
+    };
+    
+    // 类型
+    struct Student
+    {
+        int no; // 学号
+        
+        struct Date birthday; // 生日
+        
+        struct Date ruxueDate; // 入学日期
+        
+        // 这种写法是错误的
+        //struct Student stu;
+    };
+    
+    struct Student stu = {1, {2000, 9, 10}, {2012, 9, 10}};
+    printf("year=%d,month=%d,day=%d\n", stu.birthday.year, stu.birthday.month, stu.birthday.day);
+
+    return 0;
+}
 /********************************** 结构体存储 **********************************/
 
 结构体内存分析：
@@ -3504,7 +3536,7 @@ for (s = spring; s <= winter; s++) {
 }
 
 
-
+/********************************** 宏定义 **********************************/
 
 宏定义：
 // C语言提供的预处理指令主要有：宏定义、文件包含、条件编译
@@ -3536,6 +3568,7 @@ int main ()
 note:
 1.宏名一般用大写字母，以便与变量名区别开来，但用小写也没有语法错误
 2.对程序中用双引号扩起来的字符串内的字符，不进行宏的替换操作。比如：
+
 #include <stdio.h>
 #define R 10
 int main ()
@@ -3612,8 +3645,35 @@ int main(int argc, const char * argv[]) {
 2.函数调用在程序运行时执行，而宏替换只在编译预处理阶段进行。所以带参数的宏比函数具有更高的执行效率
 
 
+#include <stdio.h>
 
-条件编译：
+int main()
+{
+    enum Sex { Man, Woman, Unkown};
+    
+    // 0男  1女 -1不详
+    //int sex = 3;
+    //enum Sex s = Unkown;
+    
+    // 1.定义枚举类型
+    enum Season
+    {
+        spring = 1, //-------------默认值?
+        summer,
+        autumn,
+        winter
+    };
+    
+    // 2.定义枚举变量
+    enum Season s = 100000;  //--------------为什么不是4个中1个?
+
+    printf("%d\n", s);
+      
+    return 0;
+}
+
+/********************************** 条件编译 **********************************/
+// 条件编译：
 
 #if 条件1
  ...code1...
