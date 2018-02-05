@@ -14,6 +14,9 @@ int main(int argc, const char * argv[]) {
     @autoreleasepool {
         Aclass *a = [[Aclass alloc]init];
         [a testBlock];
+        
+        Bclass *b1 = [[Bclass alloc]init];
+        [b1 testNotification];
     }
     return 0;
 }

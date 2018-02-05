@@ -13,6 +13,7 @@
 -(void)testBlock
 {
     // 类之间的通信：A找B办事
+    // 代码块实现通信
     /*
     MyBlock b1 = ^(NSString *str1){
         NSLog(@"Aclass :%@", str1);
@@ -20,7 +21,7 @@
     Bclass *classb = [[Bclass alloc]init];
     [classb testBlcok:b1 str1:@"Aclass"];
      */
-//    快速实现方法：
+    // 快速实现方法：
     Bclass *classb = [[Bclass alloc]init];
     [classb testBlcok:^(NSString *str1){
         NSLog(@"Aclass:%@", str1);
