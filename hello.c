@@ -3537,6 +3537,17 @@ for (s = spring; s <= winter; s++) {
 
 
 /********************************** 宏定义 **********************************/
+/*
+ 1.所有的预处理指令都是以#开头
+ 2.预处理指令分3种
+ 1> 宏定义
+ 2> 条件编译
+ 3> 文件包含
+ 3.预处理指令在代码翻译成0和1之前执行
+ 4.预处理的位置是随便写的
+ 5.预处理指令的作用域：从编写指令的那一行开始，一直到文件结尾，可以用#undef取消宏定义的作用
+ 6.宏名一般用大写或者以k开头，变量名一般用小写
+ */
 
 宏定义：
 // C语言提供的预处理指令主要有：宏定义、文件包含、条件编译
@@ -3573,7 +3584,7 @@ note:
 #define R 10
 int main ()
 {
-    char *s = "Radio";
+    char *s = "Radio";  // 双引号取消宏操作
     printf("%s\n", s);
 }
 3.如果需要终止宏定义的作用域，可以用#undef命令
@@ -3681,7 +3692,7 @@ int main()
  ...code2...
 #else
  ...code3...
-#endif   //需要写endif
+#endif   //需要写endif, 只要写了#if，在最后面必须加上#endif
 
 举个栗子：
 #include <stdio.h>
@@ -3717,6 +3728,7 @@ int main ()
 #endif
 
 
+---------------------------------
 在ios中判断系统之后执行语句：
 #if TARGET_OS_UNIX
     NSLog(@"MAC");
@@ -3734,6 +3746,29 @@ int main ()
     NSLog(@"xx");
 #endif
 
+---------------------------------
+#include <stdio.h>
+//#define A 5
+int main()
+{
+#ifndef A
+    //#ifdef A
+    //#if !defined(A)a
+    #define A 5
+    printf("哈哈\n");
+#endif
+     #if (A == 10)
+     printf("a是10\n");
+     #elif (A == 5)
+     printf("a是5\n");
+     #else
+     printf("a其他值\n");
+     #endif
+    
+    return 0;
+}
+
+/********************************** 文件包含 **********************************/
 
 预处理#include.h
 
@@ -3744,13 +3779,14 @@ int main ()
 #endif
 
 如下栗子：
+// one.h
 #include "one.h"
 #ifndef _ONE_H_
 #define _ONE_H_
-
 void one();
 #endif
 
+//two.h(中导入了one.h)
 // #include "two.h"
 #ifndef _TWO_H_
 #define _TWO_H_
@@ -3758,18 +3794,20 @@ void one();
 // #include "one.h"
 #ifndef _ONE_H_
 #define _ONE_H_
-
 void one();
 #endif
 
 void two();
 #endif
 
+// main函数导入了
+#include "one.h"
+#include "two.h"
 // 编译后就只有两个声明，就不会有重复的声明：
 void one();
 void two();
 
-
+/********************************** extern static **********************************/
 外部函数：
 如果在当前文件中定义的函数允许其他文件访问、调用，就称为外部函数。
 C语言规定，不允许有同名的外部函数。
@@ -3780,26 +3818,38 @@ C语言规定不同的源文件可以有同名的内部函数，并且互不干�
 
 
 栗子：
+--------------
 在main.c中调用one.c中定义的one函数
 main.c如下：
 #include <stdio.h>  //include的意思相当于拷贝
-#include "one.h"  //引用one.h文件，这儿.h文件是头文件的意思，是否跟one.c不一致？
-int.int main(int argc, char const *argv[])
+#include "one.h"  //引用one.h文件，这儿.h文件是头文件的意思
+int main(int argc, char const *argv[])
 {
     void one();
     return 0;
 }
 
-one.h如下：
+one.c如下：
 #include <stdio.h>
-void one() //void前面省略了extern， 因为函数默认可以被外部调用
+extern void one() //void前面可以省略extern， 因为函数默认可以被外部调用 //extern跟auto关键字一样废，完全可以省略
 {
     printf("调用了one函数\n");
     return 0;
 }
 
+one.h如下：
+#ifndef one_h
+#define one_h
+#include <stdio.h>
+
+void one(void);
+#endif
+
 
 栗子：内部函数
+----------------
+在函数实现的前面加上static即可：
+
 #include <stdio.h> 
 static void test();  //加上static，针对于内部函数使用，函数外部无法调用
 int main(int argc, const char * argv[])
@@ -3818,6 +3868,34 @@ Note:
 定义和声明完全是两码事
 
 
+/********************************** extern static 全局局部变量**********************************/
+
+/*
+ 全局变量分2种：
+ 外部变量：定义的变量能被本文件和其他文件访问
+ 1> 默认情况下，所有的全局变量都是外部变量
+ 1> 不同文件中的同名外部变量，都代表着同一个变量
+ 
+ 内部变量：定义的变量只能被本文件访问，不能被其他文件访问
+ 1> 不同文件中的同名内部变量，互不影响
+ 
+ static对变量的作用：
+ 定义一个内部变量
+ 
+ extern对变量的作用：
+ extern int a;
+ 声明一个外部变量
+ 
+ static对函数的作用：
+ 定义和声明一个内部函数
+ 
+ extern对函数的作用：
+ 定义和声明一个外部函数（可以省略）
+
+ static修饰局部变量的使用场合：
+ 1.如果某个函数的调用频率特别高
+ 2.这个函数内部的某个变量值是固定不变的
+*/
 
 全局变量：
 
@@ -3871,8 +3949,138 @@ note:
 // extern可以用来声明一个全局变量，但是不能用来定义变量；
 
 
-类型别名： typedef
+/********************************** typedef **********************************/
 
+类型别名： typedef
+/*
+ 1.作用：给已经存在的类型起一个新的名称
+ 
+ 2.使用场合：
+ 1> 基本数据类型
+ 2> 指针
+ 3> 结构体
+ 4> 枚举
+ 5> 指向函数的指针
+*/
+
+#include <stdio.h>
+---------------------------常用类型
+typedef int MyInt;
+typedef MyInt MyInt2;
+
+// 给指针类型char *起一个新的类型名称String
+typedef char * String;
+---------------------------结构体
+/*
+struct Student
+{
+    int age;
+};
+typedef struct Student MyStu;
+*/
+
+/*
+typedef  struct Student
+{
+    int age;
+} MyStu;
+*/
+
+typedef struct
+{
+    int age;
+} MyStu;
+---------------------------枚举
+/*
+enum Sex {Man, Woman};
+typedef enum Sex MySex;
+*/
+
+typedef enum {
+    Man,
+    Woman
+} MySex;
+
+---------------------------指针函数
+typedef int (*MyPoint)(int, int);
+
+int minus(int a, int b)
+{
+    return a - b;
+}
+
+int sum(int a, int b)
+{
+    return a + b;
+}
+/*
+struct Person
+{
+    int age;
+};
+
+typedef struct Person * PersonPoint;
+*/
+
+typedef struct Person
+{
+    int age;
+} * PersonPoint;
+
+int main()
+{
+    /*
+    定义结构体变量
+    struct Person p = {20};
+    PersonPoint p2 = &p;
+    struct Person *p2 = &p;
+    */
+
+    /*
+    函数指针
+    MyPoint p = sum;
+    MyPoint p2 = minus;
+    
+    int (*p)(int, int) = sum;
+    int (*p2)(int, int) = minus;
+    
+    p(10, 11);
+    */
+    
+    /*
+    枚举
+    MySex s = Man;
+    enum Sex s = Man;
+    enum Sex s2 = Woman;
+    */
+
+    /*
+    结构体
+    struct Student stu3;
+    Stu stu = {20};
+    MyStu stu2= {21};
+    */
+    return 0;
+}
+
+void test2()
+{
+    String name = "jack";
+    
+    printf("%s\n", name);
+}
+
+void test()
+{
+    int a;
+    MyInt i = 10;
+    MyInt2 c = 20;
+    
+    MyInt b1, b2;
+    
+    printf("c is %d\n", c);
+}
+---------------------------------------------
 // 一般用法：
 #include <stdio.h> 
 typedef int Integer;  //int别名
@@ -3893,7 +4101,7 @@ typedef int Integer;
 typedef Integer MyInteger;
 
 
-typedef与指针：
+----------typedef与指针：
 #include <stdio.h>
 typedef char *String;   // 给指针类型char *起别名为String
 int main(int argc, const char * argv[]) {
@@ -3902,7 +4110,7 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
-typedef结构体：
+----------typedef结构体：
 
 // 以前结构体的写法
 struct MyPoint { // 定义一个结构体
@@ -3923,6 +4131,7 @@ struct MyPoint { // 定义一个结构体
     float x;
     float y;
 };
+
 // 起别名
 typedef struct MyPoint Point;   //方法一
 int main(int argc, const char * argv[]) {
@@ -3945,7 +4154,7 @@ typedef struct {  //方法三
 } Point;
 
 
-typedef与结构指针：
+----------typedef与结构指针：
 
 #include <stdio.h>
 typedef struct {
@@ -3965,7 +4174,7 @@ int main(int argc, const char * argv[]) {
 }
 
 
-typedef与枚举类型：
+----------typedef与枚举类型：
 
 
 // 定义枚举类型的第一种方式：
@@ -3984,7 +4193,7 @@ int main(int argc, const char * argv[]) {
 }
 
 
-typedef与函数指针：
+----------typedef与函数指针：
 
 #include <stdio.h>
  // 定义一个sum函数，计算a跟b的和
@@ -4000,6 +4209,8 @@ typedef与函数指针：
      
      return 0;
  }
+
+
 
 //另外一种写法：
 #include <stdio.h>
@@ -4020,7 +4231,7 @@ typedef与函数指针：
  }
 
 
-typedef与#define
+----------typedef与#define
 
 typedef char *String1; //char *起了个别名String1
 
@@ -4037,7 +4248,7 @@ Note:
 以后给类型起别名，最好使用typedef，而不是使用#define
 
 
-===================================================================
+============================typedef应用=======================================
 typedef 举栗子：
 
 // typedef常用系列：
@@ -4122,3 +4333,62 @@ void MyFun3(int x){
 // 函数 MyFun3 中输出：30
 
 
+/********************************** 递归 **********************************/
+/*
+设计一个函数，用来计算b的n次方
+ 
+ 递归的2个条件：
+ 1.函数自己调用自己
+ 2.必须有个明确的返回值
+*/
+#include <stdio.h>
+int pow2(int b, int n);
+
+int main()
+{
+    int c = pow2(3, 2);
+    
+    printf("%d\n", c);
+    return 0;
+}
+
+/*
+ pow2(b, 0) == 1
+ pow2(b, 1) == b == pow2(b, 0) * b
+ pow2(b, 2) == b*b == pow2(b, 1) * b
+ pow2(b, 3) == b*b*b == pow2(b, 2) * b
+ 
+ 1> n为0，结果肯定是1
+ 2> n>0，pow2(b, n) == pow2(b, n-1) * b
+ */
+
+int pow2(int b, int n)
+{
+    if (n <= 0) return 1;
+    return pow2(b, n-1) * b;
+}
+
+/*
+int pow2(int b, int n)
+{
+    // 用来保存计算结果
+    int result = 1;
+    
+    
+    //result *= b;
+    //result *= b;
+    //result *= b;
+    //result *= b;
+    //....
+    
+    //n次
+
+    
+    for (int i = 0; i<n; i++)
+    {
+        result *= b;
+    }
+    
+    return result;
+}
+*/
