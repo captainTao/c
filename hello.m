@@ -1904,7 +1904,7 @@ int main(int argc, char const *argv[])  // 主函数
 /*
 跟非ARC模式区别：
 1. 不用手动创建autorelease对象了
-2. 在重写dealloc中不能用[super dealalloc];
+2. 在重写dealloc中不能用[super dealloc];
 */
 
 /*
@@ -2430,6 +2430,21 @@ Class isa：指向metaclass，也就是静态的Class。
 
 Class super_class:指向父类，如果这个类是根类，则为NULL。
 
+当前class的对象的isa指向当前class
+当前class的isa指向meteclass
+meteclass的isa指向root metaclass
+
+---存储单元是不是只有堆和栈？
+内存有堆 和 栈 ， 主要是这两个   还有静态存储区   全局存储   常量存储区
+堆需要程序员自己申请  释放   栈由系统管理
+
+---类方法和静态变量都是放在全局区域中？
+静态变量在静态存储区吧   类方法应该是全局的, 这个要看系统    会有略微差别  这些慨念
+
+请参考：
+http://www.cnblogs.com/JCSU/articles/1051579.html
+
+
 过程：
 1.封装为selector消息发送
 2.通过isa指针找到class,
@@ -2615,6 +2630,41 @@ notification:
 2.定义广播的接受对象
 3.发起人向广播中心发送广播
 
+
+@implementation
+// A -> B, A向B发广播
+// 广播的注册
+-(void)testNotification
+{
+    //参数一：谁在接受这个方法，参数二：响应方法，参数三：广播名称，参数四：广播带的参数
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(testAction) name:@"testnotific.." object:nil];
+    Aclass *A = [[Aclass alloc]init];
+}
+//广播的响应
+-(void)testAction
+{
+    NSLog(@"我已经收到广播");
+}
+//广播的销毁
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"testnotific.." object:nil];
+    NSLog(@"广播已经被销毁");
+}
+@end
+
+
+//A发送广播：
+// A发送广播
+@implementation
+-(id)init
+{
+    if (self = [super init]) {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"testnotific.." object:nil];
+    }
+    return self;
+}
+@end
 
 ================================Foundation====================================
 

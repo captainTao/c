@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Bclass.h"
+
 @interface Aclass : NSObject
+
 -(void)testBlock;
+
 @end

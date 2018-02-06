@@ -12,6 +12,7 @@
 typedef void (^MyBlock)(NSString *);
 
 @interface Bclass : NSObject
+
 // 代码块：
 -(void)testBlcok:(MyBlock)block str1:(NSString *)str1;
 

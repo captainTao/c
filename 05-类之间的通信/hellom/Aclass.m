@@ -28,4 +28,18 @@
     } str1:@"Aclass"];
   
 }
+
+// A发送广播
+-(id)init
+{
+    if (self = [super init]) {
+        //不带参数的广播
+        //[[NSNotificationCenter defaultCenter]postNotificationName:@"testnotific.." object:nil];
+        //带参数的广播
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
+        [dic setValue:@"123" forKey:@"key"];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"testnotific.." object:[NSNumber numberWithInt:5] userInfo:dic];
+    }
+    return self;
+}
 @end

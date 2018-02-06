@@ -12,9 +12,13 @@
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
+        // block通信
         Aclass *a = [[Aclass alloc]init];
         [a testBlock];
-        
+      
+        NSLog(@"--------------我是分割线--------------");
+       
+        // 广播
         Bclass *b1 = [[Bclass alloc]init];
         [b1 testNotification];
     }
