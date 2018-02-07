@@ -38,12 +38,12 @@
 }
 
 //广播的响应
-/*
+
 -(void)testAction
 {
     NSLog(@"我已经收到广播");
 }
-*/
+
 
 //带参数的广播响应：
 -(void)testAction:(NSNotification *)notific

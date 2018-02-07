@@ -1398,17 +1398,26 @@ NSString *str = NSStringFromSelector(@selector(test));
 // 默认情况下，Xcode是不会管僵尸对象的，使用一块被释放的内存也不会报错。为了方便调试，应该开启僵尸对象监控：
 // 开启僵尸对象检测：点击运行按钮旁边的终端按钮，选择edit Scheme,然后选择Diagnostict，选择Memory Management，勾选僵尸对象；
 
-
+请参考：
+http://www.cnblogs.com/JCSU/articles/1051579.html
 
 1.栈 ：局部变量，全局变量   // 系统自动回收，由操作系统分配和释放，先进后出
 2.堆 ：对象，             // 动态分配，手动回收,由程序员手动分配和释放，先进先出
-
+3.全局区（静态区），全局变量和静态变量的存储是放在一块的，初始化的全局变量和静态变量在一块区域，未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。- 程序结束释放
+4.另外还有一个专门放常量的地方。- 程序结束释放
 
 //  管理范围：任何继承了NSObject的对象，对其他基本数据类型（int、char、float、double、struct、enum等）无效
 
+---存储单元是不是只有堆和栈？
+内存有 堆和栈 ， 主要是这两个   还有静态存储区   全局存储   常量存储区
+堆需要程序员自己申请  释放   栈由系统管理
+
+---类方法和静态变量都是放在全局区域中？
+静态变量在静态存储区吧   类方法应该是全局的, 这个要看系统    会有略微差别  这些慨念
+
+
 
 /*
-
 // 引用计数器的基本结构：
 1.每个OC对象都有自己的引用计数器，是一个整数，表示“对象被引用的次数”，即有多少人正在使用这个OC对象
 2.每个OC对象内部专门有4个字节的存储空间来存储引用计数器
@@ -2431,18 +2440,13 @@ Class isa：指向metaclass，也就是静态的Class。
 Class super_class:指向父类，如果这个类是根类，则为NULL。
 
 当前class的对象的isa指向当前class
-当前class的isa指向meteclass
-meteclass的isa指向root metaclass
+当前class的isa指向metaclass
+metaclass的isa指向root metaclass
 
----存储单元是不是只有堆和栈？
-内存有堆 和 栈 ， 主要是这两个   还有静态存储区   全局存储   常量存储区
-堆需要程序员自己申请  释放   栈由系统管理
+link: https://www.jianshu.com/p/8036f15c91c6
 
----类方法和静态变量都是放在全局区域中？
-静态变量在静态存储区吧   类方法应该是全局的, 这个要看系统    会有略微差别  这些慨念
-
-请参考：
-http://www.cnblogs.com/JCSU/articles/1051579.html
+.当我们对一个实例发送消息时（-开头的方法），会在该 instance 对应的类的 methodLists 里查找。
+.当我们对一个类发送消息时（+开头的方法），会在该类的 MetaClass 的 methodLists 里查找。
 
 
 过程：
@@ -2630,7 +2634,11 @@ notification:
 2.定义广播的接受对象
 3.发起人向广播中心发送广播
 
+一对一
+一对多
+多对一
 
+// 一对一：
 @implementation
 // A -> B, A向B发广播
 // 广播的注册
