@@ -2443,7 +2443,8 @@ Class super_class:指向父类，如果这个类是根类，则为NULL。
 当前class的isa指向metaclass
 metaclass的isa指向root metaclass
 
-link: https://www.jianshu.com/p/8036f15c91c6
+link: 
+https://www.jianshu.com/p/8036f15c91c6
 
 .当我们对一个实例发送消息时（-开头的方法），会在该 instance 对应的类的 methodLists 里查找。
 .当我们对一个类发送消息时（+开头的方法），会在该类的 MetaClass 的 methodLists 里查找。
