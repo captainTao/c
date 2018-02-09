@@ -848,7 +848,8 @@ return self.age;
 
 
 */
-
+----@property
+----@synthesize
 
 xcode自动生成的都是private类型；比如  @property NSString *name;  private类型在子类中不能进行直接赋值。
 /*
@@ -909,8 +910,10 @@ NSString *_name;
 }
 
 @property和@synthesize可以一行实现多个变量的声明或实现：
+*/
 
 //@property double weight, NSString *name;  //同类型转换,不同类型不能放在一句当中，这行报错
+
 @property int age, height;
 @synthesize weight = _weight, name = _name;
 
@@ -919,7 +922,7 @@ NSString *_name;
 2.如手动实现了getter方法，编译器只会生成setter方法和成员变量；
 3.如同时实现了setter和getter方法，编译器就不会生成任何方法和成员变量；
 
-*/
+
 
 
 /************************ id *****************************/
