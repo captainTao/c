@@ -10,4 +10,9 @@
 
 @implementation Student
 
+-(id)init
+{
+   
+}
+
 @end

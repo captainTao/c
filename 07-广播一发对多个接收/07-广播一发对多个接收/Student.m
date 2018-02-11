@@ -10,6 +10,7 @@
 
 @implementation Student
 
+// 注册：
 -(id)init
 {
     if (self = [super init]) {
@@ -18,16 +19,18 @@
     return self;
 }
 
+// 响应：
 -(void)testAction
 {
     NSLog(@"Student接受到广播");
 }
 
+//销毁：
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"testNotification" object:nil
      ];
+    NSLog(@"Student收到的广播被销毁");
 }
-
 
 @end

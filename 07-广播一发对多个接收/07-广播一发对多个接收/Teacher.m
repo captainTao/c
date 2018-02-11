@@ -9,6 +9,8 @@
 #import "Teacher.h"
 
 @implementation Teacher
+
+//注册
 -(id)init
 {
     if (self = [super init]) {
@@ -17,14 +19,17 @@
     return self;
 }
 
+//响应
 -(void)testAction
 {
     NSLog(@"teacher接受到广播");
 }
 
+//销毁
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"testNotification" object:nil
      ];
+    NSLog(@"Teacher收到的广播被销毁");
 }
 @end

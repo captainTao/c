@@ -7,6 +7,7 @@
 //
 /*
  广播：多个发送，1个接收；
+ techer和student发送，person接收：
  */
 #import <Foundation/Foundation.h>
 

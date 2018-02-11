@@ -17,12 +17,11 @@
 
 -(void)testAction
 {
-    NSLog(@"我是接收者！");
+    NSLog(@"我已经接收到信息！");
 }
 
 -(void)dealloc
 {
         [[NSNotificationCenter defaultCenter]removeObserver:self name:@"testNotification content!" object:nil];
-   
 }
 @end

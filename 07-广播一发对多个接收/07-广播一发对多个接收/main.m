@@ -9,6 +9,7 @@
 /*
  类通信：
  广播：一人发送，多人接受
+ Person发送，teacher和student接受
  */
 #import <Foundation/Foundation.h>
 #import "Person.h"
