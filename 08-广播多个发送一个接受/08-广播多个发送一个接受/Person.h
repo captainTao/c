@@ -7,7 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Student.h"
+#import "Teacher.h"
 
 @interface Person : NSObject
+{
+    Student *s1;
+    Teacher *t1;
+}
 -(void)testNotification;
 @end

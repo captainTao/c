@@ -10,4 +10,17 @@
 
 @implementation Teacher
 
+-(id)init
+{
+    if(self = [super init])
+    {
+        NSDictionary *dics = @{@"name" : @"jake", @"address" : @"Bejing"};
+//        NSObject *objs = [NSNumber numberWithInt:100];
+        NSString *objs = @"teacher发送";
+
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"testNotification content!" object:objs userInfo:dics];
+    }
+    return self;
+}
+
 @end

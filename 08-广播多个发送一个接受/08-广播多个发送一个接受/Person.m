@@ -12,16 +12,21 @@
 
 -(void)testNotification
 {
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(testAction) name:@"testNotification content!" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(testAction:) name:@"testNotification content!" object:nil];
+    s1 = [[Student alloc]init];
+    t1 = [[Teacher alloc]init];
 }
 
--(void)testAction
+-(void)testAction:(NSNotification *)notific
 {
-    NSLog(@"我已经接收到信息！");
+    NSObject *obj = notific.object;
+    NSDictionary *dic = notific.userInfo;
+    NSLog(@"我接收到%@信息为%@！！", obj, dic);
 }
 
 -(void)dealloc
 {
         [[NSNotificationCenter defaultCenter]removeObserver:self name:@"testNotification content!" object:nil];
+    NSLog(@"通知被销毁！！");
 }
 @end

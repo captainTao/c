@@ -11,11 +11,11 @@
 
 @interface Person : NSObject
 
-- (void) buyTicket;
-
 // 拥有一个代理属性
 // id代表代理的类名随便
 // 但必须遵守TicketDelegate协议
-@property (nonatomic, retain) id<TicketDelegate> delegate;
+@property (nonatomic, retain) id<TicketDelegate> delegate; // 定义代理需要遵守的协议
+
+- (void) buyTicket;
 
 @end

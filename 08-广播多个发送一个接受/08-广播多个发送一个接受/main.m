@@ -10,11 +10,12 @@
  techer和student发送，person接收：
  */
 #import <Foundation/Foundation.h>
+#import "Person.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        // insert code here...
-        NSLog(@"Hello, World!");
+        Person *p1 = [[Person alloc]init];
+        [p1 testNotification];
     }
     return 0;
 }

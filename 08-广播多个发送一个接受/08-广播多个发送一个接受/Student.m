@@ -12,7 +12,14 @@
 
 -(id)init
 {
-   
-}
+    if(self = [super init])
+    {
+        NSDictionary *dics = @{@"name" : @"jason", @"address" : @"Chengdu"};
+//        NSObject *objs = [NSNumber numberWithInt:50];
+        NSString *objs = @"Student发送";
 
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"testNotification content!" object:objs userInfo:dics];
+    }
+    return self;
+}
 @end

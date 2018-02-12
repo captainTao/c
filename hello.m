@@ -2060,6 +2060,16 @@ int main()
 
 /*******************************block*****************************/
 
+Block: 声明 语法：返回值＋Myblock＋传递参数
+typedef  int (^MyBlock)(int)
+
+// Block实现？
+MyBlock b1 = ^(int b){
+    NSLog(@"我是一个代码块 我的接收是%d",b);
+    return b+1;
+};
+int newB = b1(10);
+NSLog(@"%d",newB);
 
 /*
  block要掌握的东西
@@ -2258,7 +2268,10 @@ int main()
 
 /*******************************protocol*****************************/
 
-
+步骤：
+1.生成协议
+2.委托代理
+3.代理方法
 /*
  1.协议的定义
  @protocol 协议名称 <NSObject>
@@ -2677,6 +2690,38 @@ notification:
     return self;
 }
 @end
+
+/*******************************Timer*******************************/
+
+-(void)testTimer
+{
+    /*
+     NSDictionary *dic = @{@"key" : @"release"};
+     // 参数1：时间间隔，参数2：响应方法对象，参数3：响应方法，参数4：传递参数，参数5：是否重复；
+     timer1 = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timelog:) userInfo:dic repeats:false];
+     
+     //定时器添加进runloop线程，并进行run;
+     [[NSRunLoop currentRunLoop]addTimer:timer1 forMode:NSDefaultRunLoopMode];
+     [[NSRunLoop currentRunLoop]run];
+     */
+
+    
+    // 带参数的定时器:(另外一种fire方法),非runloop方法;
+    timer2 = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timelog:) userInfo:@"hello!" repeats:false];
+    [timer2 fire];
+}
+
+-(void)timelog //不带参数的selector
+{
+    NSLog(@"我是一个timer, 正在执行");
+}
+
+-(void)timelog:(NSTimer *)timer
+{
+    NSLog(@"我是一个timer,执行的为：%@", timer.userInfo);
+}
+@end
+
 
 ================================Foundation====================================
 

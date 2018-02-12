@@ -10,14 +10,14 @@
 
 @implementation NextAgent
 
-- (double)ticketPrice
-{
-    return 500;
-}
-
 - (int)leftTicketsNumber
 {
     return  10;
+}
+
+- (double)ticketPrice
+{
+    return 500;
 }
 
 @end

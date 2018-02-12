@@ -19,7 +19,7 @@ int main(int argc, const char * argv[])
         
         NextAgent *a = [[[NextAgent alloc] init] autorelease];
         
-        p.delegate = a;
+        p.delegate = a;  // 挑选代理
         
         [p buyTicket];
     }
