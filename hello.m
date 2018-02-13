@@ -2692,18 +2692,21 @@ notification:
 @end
 
 /*******************************Timer*******************************/
-
+/*
+1.用scheduledTimerWithTimeInterval初始化，将以默认mode直接添加到当前的runloop中。
+2.用timerWithTimeInterval初始化，需要手动添加timer和mode到runloop中，定时器会在指定时候后自动触发。
+*/
 -(void)testTimer
 {
-    /*
-     NSDictionary *dic = @{@"key" : @"release"};
-     // 参数1：时间间隔，参数2：响应方法对象，参数3：响应方法，参数4：传递参数，参数5：是否重复；
-     timer1 = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timelog:) userInfo:dic repeats:false];
+    
+    NSDictionary *dic = @{@"key" : @"release"};
+    // 参数1：时间间隔，参数2：响应方法对象，参数3：响应方法，参数4：传递参数，参数5：是否重复；
+    timer1 = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timelog:) userInfo:dic repeats:false];
+    
+    //定时器添加进runloop线程，并进行run;
+    [[NSRunLoop currentRunLoop]addTimer:timer1 forMode:NSDefaultRunLoopMode];
+    [[NSRunLoop currentRunLoop]run];
      
-     //定时器添加进runloop线程，并进行run;
-     [[NSRunLoop currentRunLoop]addTimer:timer1 forMode:NSDefaultRunLoopMode];
-     [[NSRunLoop currentRunLoop]run];
-     */
 
     
     // 带参数的定时器:(另外一种fire方法),非runloop方法;
