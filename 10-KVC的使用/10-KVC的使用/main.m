@@ -9,7 +9,7 @@
 /*
  KVC模式是动态添加;
  可以用如下两种方式添加，效果一样；
- setValue:@"herry" forKeyPath:@"name"
+ setValue:@"herry" forKeyPath:@"name"®
  setValue:@"jack" forKey:@"name"
  */
 
@@ -25,7 +25,7 @@ int main(int argc, const char * argv[]) {
         [p2 setValue:@"jack" forKey:@"name"];
         [p2 setValue:@"22" forKey:@"age"];
         
-        NSLog(@"p1=%@, p2.age= %@",p1, p2.name);
+        NSLog(@"p1=%d, p2.age=%@",p1.age, p2.name);
     }
     return 0;
 }

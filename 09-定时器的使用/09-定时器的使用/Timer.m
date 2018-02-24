@@ -30,7 +30,7 @@
      */
 
     
-    //2. 带参数的定时器:(另外一种fire方法),非runloop方法;
+    //2. 带参数的定时器:(另外一种fire方法),非runloop方法; //带冒号是执行带参数的方法
     timer2 = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(timelog:) userInfo:@"hello!" repeats:false];
     [timer2 fire];
 

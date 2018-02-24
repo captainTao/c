@@ -2691,7 +2691,7 @@ notification:
 }
 @end
 
-/*******************************Timer*******************************/
+/*******************************Timer定时器*******************************/
 /*
 1.用scheduledTimerWithTimeInterval初始化，将以默认mode直接添加到当前的runloop中。
 2.用timerWithTimeInterval初始化，需要手动添加timer和mode到runloop中，定时器会在指定时候后自动触发。
@@ -2724,6 +2724,34 @@ notification:
     NSLog(@"我是一个timer,执行的为：%@", timer.userInfo);
 }
 @end
+
+
+/******************************* KVC *******************************/
+
+// key - value - coding
+#import <Foundation/Foundation.h>
+#import "Person.h"
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        Person *p1 = [[Person alloc]init];
+        [p1 setValue:@"herry" forKeyPath:@"name"];
+        [p1 setValue:@"18" forKeyPath:@"age"];
+         
+        Person *p2 = [[Person alloc]init];
+        [p2 setValue:@"jack" forKey:@"name"];
+        [p2 setValue:@"22" forKey:@"age"];
+        
+        NSLog(@"p1=%d, p2.age=%@",p1.age, p2.name);
+    }
+    return 0;
+}
+
+/******************************* KVO *******************************/
+
+1.注册
+2.观察
+3.移除观察者
+
 
 
 ================================Foundation====================================
