@@ -12,6 +12,7 @@
 @interface KVO : NSObject
 
 @property(nonatomic, strong) Stock *stock1;
+@property(nonatomic, strong) NSTimer *timer;
 -(void)detectStockPrice;
 
 @end

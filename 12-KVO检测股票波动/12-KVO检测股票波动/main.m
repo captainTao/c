@@ -7,11 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "KVO.h"
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        // insert code here...
-        NSLog(@"Hello, World!");
+//        KVO *k = [[KVO alloc]init];
+//        [k detectStockPrice];
+        
+        NSString *str = @"ijjavahehe";
+        
+        
+        // 查找某个字符串在str中的范围，返回的是一个结构体
+        // 如果找不到，length=0，location=NSNotFound==-1
+        NSRange range = [str rangeOfString:@"java"]; // 查找java在str中的位置：
+        NSLog(@"loc = %ld, length=%ld", range.location, range.length);
     }
     return 0;
 }
