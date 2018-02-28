@@ -48,6 +48,7 @@
      // 把这个view添加到视图：
      [self.view addSubview:viewcolor];
      */
+
 }
 
 
