@@ -4174,6 +4174,31 @@ int main(int argc, const char * argv[]) {
 }
 
 
+#include <stdio.h>
+typedef struct
+{
+    int age;
+    char *name;
+} Student;
+
+typedef Student *StuP;
+
+int main()
+{
+    Student stu;
+    
+    StuP p = &stu;
+    
+    // p是一个指向结构体变量stu的指针
+    // 指针变量访问结构体成员用的是->，不是.
+    p->age = 10;
+    //p.age = 10;
+    p->name = "rose";
+    //p.name = "rose";
+    printf("%d - %s\n",(*p).age, (*p).name);
+    return 0;
+}
+// 2个错误
 ----------typedef与枚举类型：
 
 
