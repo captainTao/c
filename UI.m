@@ -4,6 +4,9 @@ delegate、protocol、tagart-action、closure ？
 
 
 Github  StackOverFlow
+三方库：一个是用来网络请求，一个是用来加载图片的
+AFNetworking，SDWebimage
+主线代码，里面pod很多三方库
 
 
 模拟器操作：
@@ -89,6 +92,7 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
      NSLog(@"bounds=%@",NSStringFromCGRect(self.view.bounds));//bounds={{0, 0}, {375, 667}}，这是屏幕的尺寸
      
      
+
      // view的增删改查：
      UIView *viewcolor1 = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
      viewcolor1.backgroundColor = [UIColor purpleColor];
@@ -130,6 +134,7 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
      }
 
 
+
     //修改view的透明度alpha,取值范围为0-1，数值越小，透明度越高；
     _blue.alpha = 0.7;
     //隐藏：hidden属性为bool类型，也可以设置它的透明度为0来把它隐藏
@@ -145,7 +150,8 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
     self.blue.layer.shadowOffset = CGSizeMake(10, 10); //设置shandow偏移量；
     _blue.layer.shadowOpacity = 0.5; //设置透明度
      
-     
+    
+
      // 图片轮播效果
      UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
      UIImage *img2 = [UIImage imageNamed:@"img2.jpg"];
@@ -243,7 +249,136 @@ stopAnimating：方法，停止播放动画；
 self.blue.backgroundColor = [UIColor grayColor];
 
 
+layer和UIview的区别：
+1.layer无法响应响应时间， UIview可以响应
+2.layer继承自NSObject,  UIview继承自UIResponder
+3.layer：主要进行内容的绘制，创建；UIview：显示管理
+4.layer：能实现一些特殊的效果，比如圆角和阴影
 
 
 
+8.UILabel:
+链接url:
+https://www.jianshu.com/p/d4c71fbd440e
+
+
+/************************************************************/
+UIColor的颜色#494949转rgb模式！
+
+//
+//  UIColor+ext.h
+//  HFramework
+//
+//  Created by zhangchutian on 14-6-5.
+//  Copyright (c) 2014年 zhangchutian. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface UIColor (ext)
+
+- (UIColor *)revertColor;
+
+//formate : @"#f6ee34" or @"0x45fed2"
++ (UIColor *)colorWithString:(NSString *)colorStr alpha:(float)alpha;
++ (UIColor *)colorWithString:(NSString *)colorStr;
+
+//formate : 0x9875a3
++ (UIColor *)colorWithHex:(int)hex alpha:(float)alpha;
++ (UIColor *)colorWithHex:(int)hex;
+
++ (UIColor *)random;
+@end
+
+/*---------------------------分割线---------------------------------*/
+//
+//  UIColor+ext.m
+//  HFramework
+//
+//  Created by zhangchutian on 14-6-5.
+//  Copyright (c) 2014年 zhangchutian. All rights reserved.
+//
+
+#import "UIColor+ext.h"
+
+@implementation UIColor (ext)
+- (UIColor *)revertColor
+{
+    CGColorSpaceModel colorSpaceModel = CGColorSpaceGetModel(CGColorGetColorSpace(self.CGColor));
+    if (colorSpaceModel == kCGColorSpaceModelRGB)
+    {
+        const CGFloat *components = CGColorGetComponents(self.CGColor);
+        return [UIColor colorWithRed:(1.0 - components[0]) green:(1.0 - components[1]) blue:(1.0 - components[2]) alpha:components[3]];
+    }
+    else return nil;
+}
+
++ (UIColor *)colorWithString:(NSString *)colorStr
+{
+    return [self colorWithString:colorStr alpha:1.0];
+}
+
++ (UIColor *)colorWithString:(NSString *)colorStr alpha:(float)alpha
+{
+    NSString *cString = [[colorStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    if ([cString length] < 6) return [UIColor clearColor];
+    if ([cString hasPrefix:@"0X"] || [cString hasPrefix:@"0x"]) cString = [cString substringFromIndex:2];
+    if ([cString hasPrefix:@"#"]) cString = [cString substringFromIndex:1];
+
+    if ([cString length] != 6) return [UIColor clearColor];
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    NSString *rString = [cString substringWithRange:range];
+
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+
+    return [UIColor colorWithRed:((float) r / 255.0f)
+                           green:((float) g / 255.0f)
+                            blue:((float) b / 255.0f)
+                           alpha:alpha];
+}
+
++ (UIColor *)colorWithHex:(int)hex
+{
+    return [self colorWithHex:hex alpha:1.0];
+}
+
++ (UIColor *)colorWithHex:(int)hex alpha:(float)alpha
+{
+    float r = ((float)((hex & 0xff0000) >> 16))/255.0;
+    float g = ((float)((hex & 0xff00) >> 8))/255.0;
+    float b = ((float)((hex & 0xff) >> 0))/255.0;
+    return [UIColor colorWithRed:r green:g blue:b alpha:alpha];
+}
++ (UIColor *)random
+{
+    return [UIColor colorWithRed:(arc4random()%256)*1.0/256 green:(arc4random()%256)*1.0/256 blue:(arc4random()%256)*1.0/256 alpha:1];
+}
+@end
+
+
+/************************************************************/
+
+
+安装cocoapods:
+http://blog.csdn.net/zhang5690800/article/details/51891879
+使用cocoapods：
+http://www.cocoachina.com/ios/20180110/21815.html
+
+1.1.1
+
+错误：
+error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: can't locate file for: -lPods-SuperStoreFW
+error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: file: -lPods-SuperStoreFW is not an object file (not allowed in a library)
+原因：
+依赖除了问题，参考链接：https://www.jianshu.com/p/8c34e45a0499
      

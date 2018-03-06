@@ -19,46 +19,26 @@
     [super viewDidLoad];
 
     /*
-     // 添加main.storyboard的背景颜色
-     self.view.backgroundColor = [UIColor yellowColor];
-     
-     // 获取当前设备的物理尺寸: UIscreen
-     CGFloat w = [UIScreen mainScreen].bounds.size.width;
-     CGFloat h = [UIScreen mainScreen].bounds.size.height;
-     NSLog(@"width = %f, height = %f", w, h);
-     
-     // 获取原点坐标
-     CGFloat x = [UIScreen mainScreen].bounds.origin.x;
-     CGFloat y = [UIScreen mainScreen].bounds.origin.y;
-     NSLog(@"x = %f, y = %f", x, y);
-     
-     // 添加一个色块：
-     UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
-     //    UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 375-100-10, 50)];//375-100-10标识总的尺寸，然后左边留100，右边留10
-     viewcolor.backgroundColor = [UIColor purpleColor];
-     [self.view addSubview:viewcolor];
-     
-     CGFloat x = viewcolor.frame.origin.x;
-     CGFloat y = viewcolor.frame.origin.y;
-     NSLog(@"x=%f,y=%f",x,y);//x=70.000000,y=100.000000
-     NSLog(@"size=%@",NSStringFromCGSize(viewcolor.frame.size));//size={200, 50}
-     NSLog(@"bounds=%@",NSStringFromCGRect(viewcolor.bounds));//bounds={{0, 0}, {200, 50}}，相对于自己的宽高
-     NSLog(@"bounds=%@",NSStringFromCGRect(self.view.bounds));//bounds={{0, 0}, {375, 667}}，这是屏幕的尺寸
-     
-     
-     // 图片轮播效果
-     UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
-     UIImage *img2 = [UIImage imageNamed:@"img2.jpg"];
-     UIImage *img3 = [UIImage imageNamed:@"img3.jpg"];
-     UIImageView *imageview = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
-     imageview.animationImages = [NSArray arrayWithObjects:img1,img2,img3, nil];
-     imageview.animationDuration = 5;
-     [imageview startAnimating];
-     [self.view addSubview:imageview];
-     //    [imageview release];
+
      */
- 
     
+    self.blue.hidden = true;
+    
+    // UIlabel的相关属性：url：https://www.jianshu.com/p/d4c71fbd440e
+    UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(50, 70, 200, 100)];//位置
+    label1.backgroundColor = [UIColor grayColor];//背景颜色
+    label1.text  = @"这是label1的内容！";//内容
+    [label1 setText:@"hello,world 你好,呵呵呵，哈哈哈，哼哼，唧唧，乐乐"];
+    label1.textColor = [UIColor greenColor];//字体颜色
+    [label1 setTextColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1]];//设置rgb;
+    label1.font = [UIFont systemFontOfSize:12.0];//字体大小
+    label1.font = [UIFont fontWithName:@"Menlo" size:14.0];//字体
+    label1.font = [UIFont boldSystemFontOfSize:13];//加粗
+    label1.font = [UIFont italicSystemFontOfSize:13.0];//斜体
+    [label1 setTextAlignment:NSTextAlignmentCenter];//对齐
+    [label1 setNumberOfLines:3];//设置行数
+    [label1 setLineBreakMode:NSLineBreakByWordWrapping]; //折行模式
+    [self.view addSubview:label1];
     
 }
 
@@ -128,4 +108,44 @@
 }
 
 
+-(void)test{
+    // 添加main.storyboard的背景颜色
+    self.view.backgroundColor = [UIColor yellowColor];
+    
+    // 获取当前设备的物理尺寸: UIscreen
+    CGFloat w = [UIScreen mainScreen].bounds.size.width;
+    CGFloat h = [UIScreen mainScreen].bounds.size.height;
+    NSLog(@"width = %f, height = %f", w, h);
+    
+    // 获取原点坐标
+    CGFloat x = [UIScreen mainScreen].bounds.origin.x;
+    CGFloat y = [UIScreen mainScreen].bounds.origin.y;
+    NSLog(@"x = %f, y = %f", x, y);
+    
+    // 添加一个色块：
+    UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
+    //    UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 375-100-10, 50)];//375-100-10标识总的尺寸，然后左边留100，右边留10
+    viewcolor.backgroundColor = [UIColor purpleColor];
+    [self.view addSubview:viewcolor];
+    
+    CGFloat x1 = viewcolor.frame.origin.x;
+    CGFloat y1 = viewcolor.frame.origin.y;
+    NSLog(@"x=%f,y=%f",x1,y1);//x=70.000000,y=100.000000
+    NSLog(@"size=%@",NSStringFromCGSize(viewcolor.frame.size));//size={200, 50}
+    NSLog(@"bounds=%@",NSStringFromCGRect(viewcolor.bounds));//bounds={{0, 0}, {200, 50}}，相对于自己的宽高
+    NSLog(@"bounds=%@",NSStringFromCGRect(self.view.bounds));//bounds={{0, 0}, {375, 667}}，这是屏幕的尺寸
+    
+    
+    // 图片轮播效果
+    UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
+    UIImage *img2 = [UIImage imageNamed:@"img2.jpg"];
+    UIImage *img3 = [UIImage imageNamed:@"img3.jpg"];
+    UIImageView *imageview = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
+    imageview.animationImages = [NSArray arrayWithObjects:img1,img2,img3, nil];
+    imageview.animationDuration = 5;
+    [imageview startAnimating];
+    [self.view addSubview:imageview];
+    //    [imageview release];
+    
+}
 @end
