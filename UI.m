@@ -80,7 +80,7 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
      
      // 添加一个色块：
      UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
-     //    UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 375-100-10, 50)];//375-100-10标识总的尺寸，然后左边留100，右边留10
+     // UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 375-100-10, 50)];//375-100-10标识总的尺寸，然后左边留100，右边留10
      viewcolor.backgroundColor = [UIColor purpleColor];
      [self.view addSubview:viewcolor];
      
@@ -162,6 +162,55 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
      [imageview startAnimating];
      [self.view addSubview:imageview];
      //    [imageview release];
+
+
+
+
+     // UIlabel的相关属性：url：https://www.jianshu.com/p/d4c71fbd440e
+    UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(50, 70, 200, 100)];//位置
+    label1.backgroundColor = [UIColor grayColor];//背景颜色
+    label1.text  = @"这是label1的内容！";//内容
+    [label1 setText:@"hello,world 你好,呵呵呵，哈哈哈，哼哼，唧唧，乐乐, 说走咱就走啊，你有我有全都有啊！嘿嘿嘿！！！"];
+    label1.textColor = [UIColor greenColor];//字体颜色
+    [label1 setTextColor:[UIColor colorWithRed:1.0 green:0.5 blue:0.0 alpha:1.0]];//设置rgb;
+    label1.font = [UIFont systemFontOfSize:12.0];//字体大小
+    label1.font = [UIFont fontWithName:@"Menlo" size:14.0];//字体
+    label1.font = [UIFont boldSystemFontOfSize:13];//加粗
+    label1.font = [UIFont italicSystemFontOfSize:13.0];//斜体
+    [label1 setTextAlignment:NSTextAlignmentCenter];//文本对齐
+    label1.textAlignment = NSTextAlignmentLeft;
+    [label1 setNumberOfLines:3];//设置行数
+    [label1 setLineBreakMode:NSLineBreakByWordWrapping]; //折行模式
+    label1.lineBreakMode = NSLineBreakByTruncatingTail; //最后省略模式
+    //label1.adjustsFontSizeToFitWidth = true; //字体大小自适应,这种方法会缩小字体，不建议使用
+    label1.numberOfLines = 0; //行数自适应
+    [self.view addSubview:label1];
+    
+    //继承UIview的属性
+    label1.layer.borderColor = [UIColor redColor].CGColor; //转换为CGcolor
+    label1.layer.borderWidth = 5.0;
+    
+    label1.layer.shadowColor = [UIColor greenColor].CGColor;
+    label1.layer.cornerRadius = 5.0;
+    label1.layer.shadowOffset = CGSizeMake(20, 20);
+    label1.layer.shadowOpacity = 0.7;
+    
+    //设置label中的字体样式
+    label1.shadowColor = [UIColor yellowColor];
+    label1.shadowOffset = CGSizeMake(2, 2);
+    
+    
+    
+    //根据label的内容设置合适的宽和高,比如微信：
+    UIFont *font = [UIFont systemFontOfSize:15.0];
+    NSString *content =@"hello,嘿嘿！！！";
+    //根据文本内容，以及字体大小生成合适的宽高。
+    CGSize lableWh = [content sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil]];
+    UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(50, 250, lableWh.width, lableWh.height)];
+    label2.text = content;
+    label2.font = font;
+    label2.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:label2];
      
     
 }
@@ -260,6 +309,9 @@ layer和UIview的区别：
 8.UILabel:
 链接url:
 https://www.jianshu.com/p/d4c71fbd440e
+
+
+
 
 
 /************************************************************/

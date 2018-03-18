@@ -9,7 +9,11 @@
 #import "KVO.h"
 
 @implementation KVO
-
+/*KVO基本步骤：
+ 1.注册
+ 2.观察
+ 3.移除观察者
+ */
 -(void)testKVO
 {
 //    //1.注册
@@ -33,6 +37,12 @@
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     NSLog(@"年龄age变化了");
+    
+    //获取老的和新的值：
+    NSString *oldage = [change valueForKey:@"old"];
+    NSLog(@"现在的年龄为：%@岁", oldage);
+    NSString *newage = [change valueForKey:@"new"];
+    NSLog(@"现在的年龄为：%@岁", newage);
 }
 
 @end

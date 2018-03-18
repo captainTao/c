@@ -17,28 +17,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    /*
-
-     */
     
     self.blue.hidden = true;
     
-    // UIlabel的相关属性：url：https://www.jianshu.com/p/d4c71fbd440e
-    UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(50, 70, 200, 100)];//位置
-    label1.backgroundColor = [UIColor grayColor];//背景颜色
-    label1.text  = @"这是label1的内容！";//内容
-    [label1 setText:@"hello,world 你好,呵呵呵，哈哈哈，哼哼，唧唧，乐乐"];
-    label1.textColor = [UIColor greenColor];//字体颜色
-    [label1 setTextColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1]];//设置rgb;
-    label1.font = [UIFont systemFontOfSize:12.0];//字体大小
-    label1.font = [UIFont fontWithName:@"Menlo" size:14.0];//字体
-    label1.font = [UIFont boldSystemFontOfSize:13];//加粗
-    label1.font = [UIFont italicSystemFontOfSize:13.0];//斜体
-    [label1 setTextAlignment:NSTextAlignmentCenter];//对齐
-    [label1 setNumberOfLines:3];//设置行数
-    [label1 setLineBreakMode:NSLineBreakByWordWrapping]; //折行模式
-    [self.view addSubview:label1];
+    // 图片轮播效果，幻灯片效果
+    UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
+    UIImage *img2 = [UIImage imageNamed:@"img2.jpg"];
+    UIImage *img3 = [UIImage imageNamed:@"img3.jpg"];
+    
+    CGSize screensize = [UIScreen mainScreen].bounds.size;
+    CGFloat imgheight = screensize.width * (img1.size.height / img1.size.width);
+    UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, screensize.width, imgheight)];
+    
+    imageview.animationImages = [NSArray arrayWithObjects:img1,img2,img3, nil];
+    imageview.animationDuration = 3; //循环间隔
+    imageview.animationRepeatCount =5; //循环次数
+    imageview.alpha = 0.9; // 修改view的透明度alpha,取值范围为0-1，数值越小，透明度越高；
+    [self.view addSubview:imageview];
+    [imageview startAnimating]; //开始动画
     
 }
 
@@ -48,8 +44,113 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)test5{
+    /*
+     typedef NS_ENUM(NSInteger, UIViewContentMode) {
+     UIViewContentModeScaleToFill,         // 填充，会变形,
+     UIViewContentModeScaleAspectFit,      // 居中适配，不变形, contents scaled to fit with fixed aspect. remainder is transparent
+     UIViewContentModeScaleAspectFill,     // 全部填充，不变形，部分裁切, contents scaled to fill with fixed aspect. some portion of content may be clipped.
+     UIViewContentModeRedraw,              // redraw on bounds change (calls -setNeedsDisplay)
+     UIViewContentModeCenter,              // contents remain same size. positioned adjusted.
+     UIViewContentModeTop,
+     UIViewContentModeBottom,
+     UIViewContentModeLeft,
+     UIViewContentModeRight,
+     UIViewContentModeTopLeft,
+     UIViewContentModeTopRight,
+     UIViewContentModeBottomLeft,
+     UIViewContentModeBottomRight,
+     };
+     凡是没有带Scale的，当图片尺寸超过 ImageView尺寸时，只有部分显示在ImageView中;
+     
+     */
+    
+    UIImage *img2 = [UIImage imageNamed:@"img4.jpg"];
+    UIImageView *imageview2 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, 300, 500)];
+    imageview2.image = img2;
+    imageview2.contentMode = UIViewContentModeScaleAspectFit;
+    //view的变换：
+    imageview2.center = CGPointMake(150, 300);//中心移动：移动view的中心点
+    imageview2.transform = CGAffineTransformMakeRotation(M_1_PI);//旋转办法；
+    imageview2.transform = CGAffineTransformMakeScale(0.5, 0.5);//缩放，参数分别为宽，高
+    imageview2.transform = CGAffineTransformMakeTranslation(100, 100);//相对移动：屏幕上的点再移动100，100
+    
+    [self.view addSubview:imageview2];
+    imageview2.layer.borderColor = [UIColor redColor].CGColor;
+    imageview2.layer.borderWidth = 3.0;
+    
+}
 
--(void)test1{
+-(void)test4{
+    /*
+     UIImageView: UI + image + view
+     
+     直接通过imageview添加的图片没有大小限制，会根据图片的实际大小来展示；
+     UIImageView *imageview2 = [[UIImageView alloc]initWithImage:img1];
+     [self.view addSubview:imageview2];
+     */
+    
+    UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
+    //根据屏幕设备的宽度来适配图片的高度
+    CGSize screensize = [UIScreen mainScreen].bounds.size;
+    CGFloat imgheight = screensize.width * (img1.size.height / img1.size.width);
+    UIImageView *imageview1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, screensize.width, imgheight)];
+    imageview1.image = img1;
+    [self.view addSubview:imageview1];
+    
+}
+
+-(void)test3{
+    // UIlabel的相关属性：url：https://www.jianshu.com/p/d4c71fbd440e
+    UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(50, 70, 200, 100)];//位置
+    label1.backgroundColor = [UIColor grayColor];//背景颜色
+    label1.text  = @"这是label1的内容！";//内容
+    [label1 setText:@"hello,world 你好,呵呵呵，哈哈哈，哼哼，唧唧，乐乐, 说走咱就走啊，你有我有全都有啊！嘿嘿嘿！！！"];
+    label1.textColor = [UIColor greenColor];//字体颜色
+    [label1 setTextColor:[UIColor colorWithRed:1.0 green:0.5 blue:0.0 alpha:1.0]];//设置rgb;
+    label1.font = [UIFont systemFontOfSize:12.0];//字体大小
+    label1.font = [UIFont fontWithName:@"Menlo" size:14.0];//字体
+    label1.font = [UIFont boldSystemFontOfSize:13];//加粗
+    label1.font = [UIFont italicSystemFontOfSize:13.0];//斜体
+    [label1 setTextAlignment:NSTextAlignmentCenter];//文本对齐
+    label1.textAlignment = NSTextAlignmentLeft;
+    [label1 setNumberOfLines:3];//设置行数
+    [label1 setLineBreakMode:NSLineBreakByWordWrapping]; //折行模式
+    label1.lineBreakMode = NSLineBreakByTruncatingTail; //最后省略模式
+    //label1.adjustsFontSizeToFitWidth = true; //字体大小自适应,这种方法会缩小字体，不建议使用
+    label1.numberOfLines = 0; //行数自适应
+    [self.view addSubview:label1];
+    
+    //继承UIview的属性
+    label1.layer.borderColor = [UIColor redColor].CGColor; //转换为CGcolor
+    label1.layer.borderWidth = 5.0;
+    
+    label1.layer.shadowColor = [UIColor greenColor].CGColor;
+    label1.layer.cornerRadius = 5.0;
+    label1.layer.shadowOffset = CGSizeMake(20, 20);
+    label1.layer.shadowOpacity = 0.7; //阴影的透明度，越大越不透明；
+    
+    //设置label中的字体样式
+    label1.shadowColor = [UIColor yellowColor];
+    label1.shadowOffset = CGSizeMake(2, 2);
+    
+    
+    
+    //根据label的内容设置合适的宽和高,比如微信：
+    UIFont *font = [UIFont systemFontOfSize:15.0];
+    NSString *content =@"hello,嘿嘿！！！";
+    //根据文本内容，以及字体大小生成合适的宽高。
+    CGSize lableWh = [content sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil]];
+    UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(50, 250, lableWh.width, lableWh.height)];
+    label2.text = content;
+    label2.font = font;
+    label2.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:label2];
+    
+}
+
+
+-(void)test2{
     // view的增删改查：
     UIView *viewcolor1 = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
     viewcolor1.backgroundColor = [UIColor purpleColor];
@@ -108,7 +209,7 @@
 }
 
 
--(void)test{
+-(void)test1{
     // 添加main.storyboard的背景颜色
     self.view.backgroundColor = [UIColor yellowColor];
     
@@ -148,4 +249,9 @@
     //    [imageview release];
     
 }
+
 @end
+
+
+
+

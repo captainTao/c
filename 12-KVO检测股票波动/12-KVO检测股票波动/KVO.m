@@ -18,7 +18,7 @@ float currentPrice;
     [self.stock1 setPrice:currentPrice];
     [self.stock1 addObserver:self forKeyPath:@"price" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
     //timer的实例化：
-    self.timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(pricechange) userInfo:nil repeats:true];
+    self.timer = [NSTimer timerWithTimeInterval:2 target:self selector:@selector(pricechange) userInfo:nil repeats:true];
     [[NSRunLoop currentRunLoop]addTimer:_timer forMode:NSDefaultRunLoopMode];
     [[NSRunLoop currentRunLoop]run];
 }
@@ -30,6 +30,7 @@ float currentPrice;
 }
 // 观察 --- 判断观察结果！处理结果
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    
     NSString *oldPriceS = [change valueForKey:@"old"];
     NSString *newPriceS = [change valueForKey:@"new"];
     float oldPrice = oldPriceS.floatValue;
@@ -40,6 +41,7 @@ float currentPrice;
     {
         NSLog(@"股票价格下跌了，当前价格为%0.3f！", newPrice);
     }
+    
 }
 
 //移除观察着 -- 对象销毁时
