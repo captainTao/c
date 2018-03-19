@@ -2770,6 +2770,18 @@ int main(int argc, const char * argv[]) {
  NSRect\CGRect (CGPint CGSize)
  */
     
+struct CGRect { //CGRect两个属性 origin, size;
+CGPoint origin;
+CGSize size;
+};
+struct CGSize {
+CGFloat width;
+CGFloat height;
+};
+struct CGPoint {
+CGFloat x;
+CGFloat y;
+};
 
 
 NSRange：
