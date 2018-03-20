@@ -61,112 +61,119 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
 //////////////////////////////////////////////////////////////////////////
 
 
+@implementation ViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    self.blue.hidden = true;
     
-     // 添加main.storyboard的背景颜色
-     self.view.backgroundColor = [UIColor yellowColor];
-     
-     // 获取当前设备的物理尺寸: UIscreen
-     CGFloat w = [UIScreen mainScreen].bounds.size.width;
-     CGFloat h = [UIScreen mainScreen].bounds.size.height;
-     NSLog(@"width = %f, height = %f", w, h);
-     
-     // 获取原点坐标
-     CGFloat x = [UIScreen mainScreen].bounds.origin.x;
-     CGFloat y = [UIScreen mainScreen].bounds.origin.y;
-     NSLog(@"x = %f, y = %f", x, y);
-     
-     // 添加一个色块：
-     UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
-     // UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 375-100-10, 50)];//375-100-10标识总的尺寸，然后左边留100，右边留10
-     viewcolor.backgroundColor = [UIColor purpleColor];
-     [self.view addSubview:viewcolor];
-     
-     CGFloat x = viewcolor.frame.origin.x;
-     CGFloat y = viewcolor.frame.origin.y;
-     NSLog(@"x=%f,y=%f",x,y);//x=70.000000,y=100.000000
-     NSLog(@"size=%@",NSStringFromCGSize(viewcolor.frame.size));//size={200, 50}
-     NSLog(@"bounds=%@",NSStringFromCGRect(viewcolor.bounds));//bounds={{0, 0}, {200, 50}}，相对于自己的宽高
-     NSLog(@"bounds=%@",NSStringFromCGRect(self.view.bounds));//bounds={{0, 0}, {375, 667}}，这是屏幕的尺寸
-     
-     
+    // UIbutton绑定事件；
+    self.view.backgroundColor = [UIColor yellowColor];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setBackgroundColor:[UIColor grayColor]];
+    [btn setTitle:@"点击内容" forState:UIControlStateNormal]; //设置内容
+    [btn setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];//设置内容颜色
+    btn.frame = CGRectMake(100, 200, 100, 100);
+    // UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(100, 200, 100, 100)]; //可以直接初始化的时候设置位置大小
+    [btn addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    // UIControlEventTouchUpInside:点击之后响应事件
+    [self.view addSubview:btn];
+}
 
-     // view的增删改查：
-     UIView *viewcolor1 = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
-     viewcolor1.backgroundColor = [UIColor purpleColor];
-     [self.view addSubview:viewcolor1];
-     
-     UIView *viewcolor2 = [[UIView alloc]initWithFrame:CGRectMake(75, 105, 200, 50)];
-     viewcolor2.backgroundColor = [UIColor greenColor];
-     [self.view addSubview:viewcolor2];//在最后一个view后面添加
-     
-     //插入某个view到哪一层
-     [self.view insertSubview:viewcolor2 atIndex:2];
-     //view的交换,self.view的index为1，后面的子视图依次+1;
-     [self.view exchangeSubviewAtIndex:2 withSubviewAtIndex:3];
-     
-     UIView *viewcolor3 = [[UIView alloc]initWithFrame:CGRectMake(80, 110, 200, 50)];
-     viewcolor3.backgroundColor = [UIColor yellowColor];
-     [self.view addSubview:viewcolor3];//在最后一个view后面添加
-     
-     //调整到最后一个view
-     [self.view sendSubviewToBack:viewcolor3];
-     //调整到最前面来
-     [self.view bringSubviewToFront:viewcolor3];
-     //从视图中移除
-     [viewcolor3 removeFromSuperview];
-
-
-     //遍历：
-     viewcolor1.tag = 1;//添加tag
-     viewcolor2.tag = 2;
-     viewcolor3.tag = 3;
-     NSArray *subviewArray = self.view.subviews;//通过父视图获取子视图
-     for (UIView *view in subviewArray){ // 通过数组遍历
-         if(view.tag == 1){
-             view.backgroundColor = [UIColor grayColor];
-         }
-         if(view.tag == 2){
-             view.frame = CGRectMake(75, 105, 250, 70);
-         }
-     }
-
-
-
-    //修改view的透明度alpha,取值范围为0-1，数值越小，透明度越高；
-    _blue.alpha = 0.7;
-    //隐藏：hidden属性为bool类型，也可以设置它的透明度为0来把它隐藏
-    self.blue.hidden = false;
+- (void)buttonPressed:(UIButton *)bt // 含参的函数调用
+{
+    // button事件，跳转url
+    NSLog(@"我被点击了！");
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"]];
     
-    //描边：
-    self.blue.layer.borderWidth = 3;
-    self.blue.layer.borderColor = [UIColor redColor].CGColor;//注意要转换为CGColor
-    //圆角：
-    self.blue.layer.cornerRadius = 10;
-    //阴影：
-    self.blue.layer.shadowColor = [UIColor grayColor].CGColor;
-    self.blue.layer.shadowOffset = CGSizeMake(10, 10); //设置shandow偏移量；
-    _blue.layer.shadowOpacity = 0.5; //设置透明度
-     
+    return;
+    //    [self presentViewController:[TestVC new] animated:YES completion:nil];
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(void)test6{
+    // 图片轮播效果，幻灯片效果
+    UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
+    UIImage *img2 = [UIImage imageNamed:@"img2.jpg"];
+    UIImage *img3 = [UIImage imageNamed:@"img3.jpg"];
     
+    //设置imageview的尺寸
+    CGSize screensize = [UIScreen mainScreen].bounds.size;
+    CGFloat imgheight = screensize.width * (img1.size.height / img1.size.width);
+    UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, screensize.width, imgheight)];
+    
+    imageview.animationImages = [NSArray arrayWithObjects:img1,img2,img3, nil];//设置图像，需要先把图像包装成UIimage
+    imageview.animationDuration = 3; //循环间隔
+    imageview.animationRepeatCount =5; //循环次数
+    imageview.alpha = 0.9; // 修改view的透明度alpha,取值范围为0-1，数值越小，透明度越高；
+    [self.view addSubview:imageview];
+    [imageview startAnimating]; //开始动画
+    
+}
 
-     // 图片轮播效果
-     UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
-     UIImage *img2 = [UIImage imageNamed:@"img2.jpg"];
-     UIImage *img3 = [UIImage imageNamed:@"img3.jpg"];
-     UIImageView *imageview = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
-     imageview.animationImages = [NSArray arrayWithObjects:img1,img2,img3, nil];
-     imageview.animationDuration = 5;
-     [imageview startAnimating];
-     [self.view addSubview:imageview];
-     //    [imageview release];
+-(void)test5{
+    /*
+     typedef NS_ENUM(NSInteger, UIViewContentMode) {
+     UIViewContentModeScaleToFill,         // 填充，会变形,
+     UIViewContentModeScaleAspectFit,      // 居中适配，不变形, contents scaled to fit with fixed aspect. remainder is transparent
+     UIViewContentModeScaleAspectFill,     // 全部填充，不变形，部分裁切, contents scaled to fill with fixed aspect. some portion of content may be clipped.
+     UIViewContentModeRedraw,              // redraw on bounds change (calls -setNeedsDisplay)
+     UIViewContentModeCenter,              // contents remain same size. positioned adjusted.
+     UIViewContentModeTop,
+     UIViewContentModeBottom,
+     UIViewContentModeLeft,
+     UIViewContentModeRight,
+     UIViewContentModeTopLeft,
+     UIViewContentModeTopRight,
+     UIViewContentModeBottomLeft,
+     UIViewContentModeBottomRight,
+     };
+     凡是没有带Scale的，当图片尺寸超过 ImageView尺寸时，只有部分显示在ImageView中;
+     
+     */
+    
+    UIImage *img2 = [UIImage imageNamed:@"img4.jpg"];
+    UIImageView *imageview2 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, 300, 500)];
+    imageview2.image = img2;
+    imageview2.contentMode = UIViewContentModeScaleAspectFit;
+    //view的变换：
+    imageview2.center = CGPointMake(150, 300);//中心移动：移动view的中心点
+    imageview2.transform = CGAffineTransformMakeRotation(M_1_PI);//旋转办法；
+    imageview2.transform = CGAffineTransformMakeScale(0.5, 0.5);//缩放，参数分别为宽，高
+    imageview2.transform = CGAffineTransformMakeTranslation(100, 100);//相对移动：屏幕上的点再移动100，100
+    
+    [self.view addSubview:imageview2];
+    imageview2.layer.borderColor = [UIColor redColor].CGColor;
+    imageview2.layer.borderWidth = 3.0;
+    
+}
 
+-(void)test4{
+    /*
+     UIImageView: UI + image + view
+     
+     直接通过imageview添加的图片没有大小限制，会根据图片的实际大小来展示；
+     UIImageView *imageview2 = [[UIImageView alloc]initWithImage:img1];
+     [self.view addSubview:imageview2];
+     */
+    
+    UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
+    //根据屏幕设备的宽度来适配图片的高度
+    CGSize screensize = [UIScreen mainScreen].bounds.size;
+    CGFloat imgheight = screensize.width * (img1.size.height / img1.size.width);
+    UIImageView *imageview1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, screensize.width, imgheight)];
+    imageview1.image = img1;
+    [self.view addSubview:imageview1];
+    
+}
 
-
-
-     // UIlabel的相关属性：url：https://www.jianshu.com/p/d4c71fbd440e
+-(void)test3{
+    // UIlabel的相关属性：url：https://www.jianshu.com/p/d4c71fbd440e
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(50, 70, 200, 100)];//位置
     label1.backgroundColor = [UIColor grayColor];//背景颜色
     label1.text  = @"这是label1的内容！";//内容
@@ -190,10 +197,10 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
     label1.layer.borderColor = [UIColor redColor].CGColor; //转换为CGcolor
     label1.layer.borderWidth = 5.0;
     
-    label1.layer.shadowColor = [UIColor greenColor].CGColor;
+    label1.layer.shadowColor = [UIColor greenColor].CGColor; //转换为CGcolor
     label1.layer.cornerRadius = 5.0;
     label1.layer.shadowOffset = CGSizeMake(20, 20);
-    label1.layer.shadowOpacity = 0.7;
+    label1.layer.shadowOpacity = 0.7; //阴影的透明度，越大越不透明；
     
     //设置label中的字体样式
     label1.shadowColor = [UIColor yellowColor];
@@ -211,9 +218,136 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
     label2.font = font;
     label2.backgroundColor = [UIColor yellowColor];
     [self.view addSubview:label2];
-     
     
 }
+
+
+-(void)test2{
+    // view的增删改查：
+    UIView *viewcolor1 = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
+    viewcolor1.backgroundColor = [UIColor purpleColor];
+    [self.view addSubview:viewcolor1];
+    
+    UIView *viewcolor2 = [[UIView alloc]initWithFrame:CGRectMake(75, 105, 200, 50)];
+    viewcolor2.backgroundColor = [UIColor greenColor];
+    [self.view addSubview:viewcolor2];//在最后一个view后面添加
+    
+    //插入某个view到哪一层
+    [self.view insertSubview:viewcolor2 atIndex:2];
+    //view的交换,self.view的index为1，后面的子视图依次+1;
+    [self.view exchangeSubviewAtIndex:2 withSubviewAtIndex:3];
+    
+    UIView *viewcolor3 = [[UIView alloc]initWithFrame:CGRectMake(80, 110, 200, 50)];
+    viewcolor3.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:viewcolor3];//在最后一个view后面添加
+    
+    //调整到最后一个view
+    [self.view sendSubviewToBack:viewcolor3];
+    //调整到最前面来
+    [self.view bringSubviewToFront:viewcolor3];
+    //从视图中移除
+    [viewcolor3 removeFromSuperview];
+    
+    
+    //遍历：
+    viewcolor1.tag = 1;//添加tag
+    viewcolor2.tag = 2;
+    viewcolor3.tag = 3;
+    NSArray *subviewArray = self.view.subviews;//通过父视图获取子视图
+    for (UIView *view in subviewArray){ // 通过数组遍历
+        if(view.tag == 1){
+            view.backgroundColor = [UIColor grayColor];
+        }
+        if(view.tag == 2){
+            view.frame = CGRectMake(75, 105, 250, 70);
+        }
+    }
+    
+    
+    /*
+     layer和UIview的区别：
+     1.layer无法响应响应事件， UIview可以响应
+     2.layer继承自NSObject,  UIview继承自UIResponder
+     3.layer：主要进行内容的绘制，创建；UIview：显示管理
+     4.layer：能实现一些特殊的效果，比如圆角和阴影
+     */
+    //修改view的透明度alpha,取值范围为0-1，数值越小，透明度越高；
+    _blue.alpha = 0.7;
+    //隐藏：hidden属性为bool类型，也可以设置它的透明度为0来把它隐藏
+    self.blue.hidden = false;
+    
+    //描边：
+    self.blue.layer.borderWidth = 3;
+    self.blue.layer.borderColor = [UIColor redColor].CGColor;//注意要转换为CGColor
+    //圆角：
+    self.blue.layer.cornerRadius = 10;
+    //阴影：
+    self.blue.layer.shadowColor = [UIColor grayColor].CGColor;
+    self.blue.layer.shadowOffset = CGSizeMake(10, 10); //设置shandow偏移量；
+    _blue.layer.shadowOpacity = 0.5; //设置透明度
+
+}
+
+
+-(void)test1{
+    /*
+     struct CGRect { //CGRect两个属性 origin, size;
+     CGPoint origin;
+     CGSize size;
+     };
+     struct CGSize {
+     CGFloat width;
+     CGFloat height;
+     };
+     struct CGPoint {
+     CGFloat x;
+     CGFloat y;
+     };
+     */
+    // 添加main.storyboard的背景颜色
+    self.view.backgroundColor = [UIColor yellowColor];
+    
+    // 获取当前设备的物理尺寸: UIscreen
+    CGFloat w = [UIScreen mainScreen].bounds.size.width;
+    CGFloat h = [UIScreen mainScreen].bounds.size.height;
+    NSLog(@"width = %f, height = %f", w, h);
+    
+    // 获取原点坐标
+    CGFloat x = [UIScreen mainScreen].bounds.origin.x;
+    CGFloat y = [UIScreen mainScreen].bounds.origin.y;
+    NSLog(@"x = %f, y = %f", x, y);
+    
+    
+
+    //UIview的四个属性：frame, bounds, center, transform;
+
+    // 添加一个色块：
+    UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
+    //    UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 375-100-10, 50)];//375-100-10标识总的尺寸，然后左边留100，右边留10
+    viewcolor.backgroundColor = [UIColor purpleColor];
+    [self.view addSubview:viewcolor];
+    
+    CGFloat x1 = viewcolor.frame.origin.x;
+    CGFloat y1 = viewcolor.frame.origin.y;
+    NSLog(@"x=%f,y=%f",x1,y1);//x=70.000000,y=100.000000
+    NSLog(@"size=%@",NSStringFromCGSize(viewcolor.frame.size));//size={200, 50},相对于屏幕的宽高
+    NSLog(@"bounds=%@",NSStringFromCGRect(viewcolor.bounds));//bounds={{0, 0}, {200, 50}}，相对于自己的宽高
+    NSLog(@"bounds=%@",NSStringFromCGRect(self.view.bounds));//bounds={{0, 0}, {375, 667}}，这是屏幕的尺寸
+    
+    
+    // 图片轮播效果
+    UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
+    UIImage *img2 = [UIImage imageNamed:@"img2.jpg"];
+    UIImage *img3 = [UIImage imageNamed:@"img3.jpg"];
+    UIImageView *imageview = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
+    imageview.animationImages = [NSArray arrayWithObjects:img1,img2,img3, nil];
+    imageview.animationDuration = 5;
+    [imageview startAnimating];
+    [self.view addSubview:imageview];
+    
+}
+
+@end
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -299,7 +433,7 @@ self.blue.backgroundColor = [UIColor grayColor];
 
 
 layer和UIview的区别：
-1.layer无法响应响应时间， UIview可以响应
+1.layer无法响应响应事件， UIview可以响应
 2.layer继承自NSObject,  UIview继承自UIResponder
 3.layer：主要进行内容的绘制，创建；UIview：显示管理
 4.layer：能实现一些特殊的效果，比如圆角和阴影
