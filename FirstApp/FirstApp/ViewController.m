@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "mybutton.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIView *blue;
@@ -18,27 +19,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.blue.hidden = true;
+    self.mybutton.hidden = true;
     
-    // UIbutton绑定事件；
-    self.view.backgroundColor = [UIColor yellowColor];
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btn setBackgroundColor:[UIColor grayColor]];
-    // btn.backgroundColor = [UIColor greenColor]; // 也可以这样设置
-    // [btn setBackgroundImage:[UIImage imageNamed:@"img4.jpg"] forState:UIControlStateNormal];
-    // UIControlStateHighlighted:设置高亮，button点击之后的高亮的背景
-    [btn setBackgroundImage:[UIImage imageNamed:@"btnbg.jpg"] forState:UIControlStateHighlighted];
+    // 自定义button:
+    mybutton *btn2 = [[mybutton alloc]initWithFrame:CGRectMake(80, 70, 200, 100)];
+    btn2.backgroundColor = [UIColor yellowColor];
+    btn2.titleLabel.font = [UIFont systemFontOfSize:26]; // 设置btn中文字的大小
+    [self.view addSubview: btn2];
 
-    [btn setTitle:@"点击内容" forState:UIControlStateNormal]; //设置内容
-    // 默认情况下字体title的颜色为白色
-    [btn setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];//设置内容颜色
-
-    // UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(100, 200, 100, 100)]; //可以直接初始化的时候设置位置大小
-    btn.frame = CGRectMake(130, 200, 100, 100);
-
-    // UIControlEventTouchUpInside:点击之后响应事件
-    [btn addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btn];
-
+    
 }
 
 - (void)buttonPressed:(UIButton *)bt // 含参的函数调用
@@ -55,6 +44,49 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)test7{
+    
+    // button的枚举类型：UIControlStateNormal  UIControlStateNormal  UIButtonTypeCustom
+    // UIbutton 继承自UIControl, UIControl继承自UIView；
+    // UIbutton绑定事件；
+    self.view.backgroundColor = [UIColor yellowColor];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    /*button type的类型：
+     UIButtonTypeCustom = 0,                         // no button type
+     UIButtonTypeSystem NS_ENUM_AVAILABLE_IOS(7_0),  // standard system button
+     
+     UIButtonTypeDetailDisclosure,
+     UIButtonTypeInfoLight, // 一个i信息图标
+     UIButtonTypeInfoDark,
+     UIButtonTypeContactAdd, //一个+号图标
+     */
+    [btn setBackgroundColor:[UIColor grayColor]];
+    // btn.backgroundColor = [UIColor greenColor]; // 也可以这样设置
+    
+    // [btn setBackgroundImage:[UIImage imageNamed:@"img4.jpg"] forState:UIControlStateNormal];
+    // UIControlStateHighlighted:设置高亮，button点击之后的高亮的背景
+    [btn setBackgroundImage:[UIImage imageNamed:@"btnbg.jpg"] forState:UIControlStateHighlighted];
+    
+    [btn setTitle:@"点击内容" forState:UIControlStateNormal]; //设置内容
+    // 默认情况下字体title的颜色为白色
+    [btn setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];//设置内容颜色
+    
+    // UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(100, 200, 100, 100)]; //可以直接初始化的时候设置位置大小
+    btn.frame = CGRectMake(130, 200, 100, 100);
+    
+    // UIControlEventTouchUpInside:点击之后响应事件
+    [btn addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn];
+    /*
+     typedef NS_OPTIONS(NSUInteger, UIControlEvents) {
+     UIControlEventTouchDown                                         = 1 <<  0,      // on all touch downs,点击按钮后触发
+     UIControlEventTouchDownRepeat                                   = 1 <<  1,      // on multiple touchdowns (tap count > 1)
+     UIControlEventTouchDragInside                                   = 1 <<  2,
+     UIControlEventTouchDragOutside                                  = 1 <<  3,
+     };
+     */
 }
 
 -(void)test6{
@@ -240,7 +272,7 @@
     
     //描边：
     self.blue.layer.borderWidth = 3;
-    self.blue.layer.borderColor = [UIColor redColor].CGColor;//注意要转换为CGColor
+    self.blue.layer.borderColor = [UIColor redColor].CGColor;//注意要转换为CGColor,所有的layer图层都要使用CGColor属性
     //圆角：
     self.blue.layer.cornerRadius = 10;
     //阴影：
@@ -318,6 +350,10 @@
     
 }
 
+- (IBAction)myaction:(id)sender { // 通过拖拽方式生成的btn1的方法
+    UIButton *btn1 = (UIButton *)sender; //把id类型转为uibutton
+    btn1.backgroundColor = [UIColor greenColor];
+}
 @end
 
 
