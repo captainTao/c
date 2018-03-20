@@ -23,13 +23,22 @@
     self.view.backgroundColor = [UIColor yellowColor];
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setBackgroundColor:[UIColor grayColor]];
+    // btn.backgroundColor = [UIColor greenColor]; // 也可以这样设置
+    // [btn setBackgroundImage:[UIImage imageNamed:@"img4.jpg"] forState:UIControlStateNormal];
+    // UIControlStateHighlighted:设置高亮，button点击之后的高亮的背景
+    [btn setBackgroundImage:[UIImage imageNamed:@"btnbg.jpg"] forState:UIControlStateHighlighted];
+
     [btn setTitle:@"点击内容" forState:UIControlStateNormal]; //设置内容
-    [btn setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];//设置内容颜色
-    btn.frame = CGRectMake(100, 200, 100, 100);
+    // 默认情况下字体title的颜色为白色
+    [btn setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];//设置内容颜色
+
     // UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(100, 200, 100, 100)]; //可以直接初始化的时候设置位置大小
-    [btn addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    btn.frame = CGRectMake(130, 200, 100, 100);
+
     // UIControlEventTouchUpInside:点击之后响应事件
+    [btn addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
+
 }
 
 - (void)buttonPressed:(UIButton *)bt // 含参的函数调用
@@ -65,6 +74,7 @@
     imageview.alpha = 0.9; // 修改view的透明度alpha,取值范围为0-1，数值越小，透明度越高；
     [self.view addSubview:imageview];
     [imageview startAnimating]; //开始动画
+    [imageview stopAnimating]; //停止动画
     
 }
 
@@ -197,7 +207,7 @@
     [self.view sendSubviewToBack:viewcolor3];
     //调整到最前面来
     [self.view bringSubviewToFront:viewcolor3];
-    //从视图中移除
+    //从父视图中移除
     [viewcolor3 removeFromSuperview];
     
     
@@ -270,12 +280,21 @@
     NSLog(@"x = %f, y = %f", x, y);
     
     
-
-    //UIview的四个属性：frame, bounds, center, transform;
-
+    //UIview的四个属性：frame, bounds, center, transform, alpha, backgroundColor, contentStrench（视图内容如何拉伸）;
+    /*
+     frame:描述当前view视图在其父视图中的位置和大小
+     bounds:描述当前view视图在其自身坐标系统中的位置和大小
+     center:描述当前view视图的中心点在其父视图中的位置
+     
+     一般来说，bounds属性比较少用，
+     通常使用frame来设置视图的大小和位置，
+     使用center来改变（移动）视图的位置（也可以用frame来改变位置）。
+     另外，对视图进行旋转，缩放也是相对于center进行操作的；
+     */
+    
     // 添加一个色块：
     UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
-    //    UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 375-100-10, 50)];//375-100-10标识总的尺寸，然后左边留100，右边留10
+    // UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 375-100-10, 50)];//375-100-10标识总的尺寸，然后左边留100，右边留10
     viewcolor.backgroundColor = [UIColor purpleColor];
     [self.view addSubview:viewcolor];
     
