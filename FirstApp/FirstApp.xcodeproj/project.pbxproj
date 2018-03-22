@@ -20,6 +20,7 @@
 		E455D1722060E90200D928B1 /* btnbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E455D16D2060E90200D928B1 /* btnbg.jpg */; };
 		E455D1732060E90200D928B1 /* img1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E455D16E2060E90200D928B1 /* img1.jpg */; };
 		E455D1742060E90200D928B1 /* img4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E455D16F2060E90200D928B1 /* img4.jpg */; };
+		E4B41EF42062AF9200AF40F8 /* mytextField.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B41EF32062AF9200AF40F8 /* mytextField.m */; };
 		E4BCFE262061561500DADDC0 /* mybutton.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCFE252061561500DADDC0 /* mybutton.m */; };
 		E4BCFE29206165F800DADDC0 /* 01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E4BCFE27206165F800DADDC0 /* 01.jpg */; };
 		E4BCFE2A206165F800DADDC0 /* 02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E4BCFE28206165F800DADDC0 /* 02.jpg */; };
@@ -64,6 +65,8 @@
 		E455D16D2060E90200D928B1 /* btnbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = btnbg.jpg; sourceTree = "<group>"; };
 		E455D16E2060E90200D928B1 /* img1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img1.jpg; sourceTree = "<group>"; };
 		E455D16F2060E90200D928B1 /* img4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img4.jpg; sourceTree = "<group>"; };
+		E4B41EF22062AF9200AF40F8 /* mytextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mytextField.h; sourceTree = "<group>"; };
+		E4B41EF32062AF9200AF40F8 /* mytextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = mytextField.m; sourceTree = "<group>"; };
 		E4BCFE242061561500DADDC0 /* mybutton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mybutton.h; sourceTree = "<group>"; };
 		E4BCFE252061561500DADDC0 /* mybutton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = mybutton.m; sourceTree = "<group>"; };
 		E4BCFE27206165F800DADDC0 /* 01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 01.jpg; sourceTree = "<group>"; };
@@ -130,6 +133,8 @@
 				E409BF302043A5DC0074D68B /* main.m */,
 				E4BCFE242061561500DADDC0 /* mybutton.h */,
 				E4BCFE252061561500DADDC0 /* mybutton.m */,
+				E4B41EF22062AF9200AF40F8 /* mytextField.h */,
+				E4B41EF32062AF9200AF40F8 /* mytextField.m */,
 			);
 			path = FirstApp;
 			sourceTree = "<group>";
@@ -308,6 +313,7 @@
 			files = (
 				E409BF262043A5DC0074D68B /* ViewController.m in Sources */,
 				E409BF312043A5DC0074D68B /* main.m in Sources */,
+				E4B41EF42062AF9200AF40F8 /* mytextField.m in Sources */,
 				E409BF232043A5DC0074D68B /* AppDelegate.m in Sources */,
 				E4BCFE262061561500DADDC0 /* mybutton.m in Sources */,
 			);

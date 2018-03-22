@@ -8,8 +8,14 @@
 
 #import "ViewController.h"
 #import "mybutton.h"
+#import "mytextField.h"
 
-@interface ViewController ()
+@interface ViewController () <UITextFieldDelegate> // 这儿加上Uitextfield需要遵守的协议
+{
+    mytextField *textfield1;
+    mytextField *textfield2;
+}
+
 @property (weak, nonatomic) IBOutlet UIView *blue;
 
 @end
@@ -20,30 +26,97 @@
     [super viewDidLoad];
     self.blue.hidden = true;
     self.mybutton.hidden = true;
+    /*** insert code below .. ***/
     
-    // 自定义button:
-    mybutton *btn2 = [[mybutton alloc]initWithFrame:CGRectMake(80, 70, 200, 100)];
-    btn2.backgroundColor = [UIColor yellowColor];
-    btn2.titleLabel.font = [UIFont systemFontOfSize:26]; // 设置btn中文字的大小
-    [self.view addSubview: btn2];
-
+    self.loginbutton.layer.borderWidth = 2.0;
+    self.loginbutton.layer.borderColor = [UIColor purpleColor].CGColor;
+    self.loginbutton.backgroundColor = [UIColor grayColor];
+    [self.loginbutton setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
+    
+    textfield1 = [[mytextField alloc]initWithFrame:CGRectMake(20, 60, 300, 30)];
+    textfield2 = [[mytextField alloc]initWithFrame:CGRectMake(20, 100, 300, 30)];
+    [self.view addSubview:textfield1];
+    [self.view addSubview:textfield2];
     
 }
-
-- (void)buttonPressed:(UIButton *)bt // 含参的函数调用
-{
-    // button事件，跳转url
-    NSLog(@"我被点击了！");
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"]];
-    
-    return;
-    //    [self presentViewController:[TestVC new] animated:YES completion:nil];
-}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)test9{
+    // 文本框的属性
+    UITextField *textfield = [[UITextField alloc]initWithFrame:CGRectMake(20, 50, 300, 30)];
+    textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆角矩形
+    textfield.textColor = [UIColor redColor];
+    textfield.font = [UIFont systemFontOfSize:17.0];
+    textfield.placeholder = @"please enter your text..";
+    textfield.backgroundColor = [UIColor yellowColor];
+    textfield.layer.borderColor = [UIColor greenColor].CGColor;
+    textfield.layer.borderWidth = 2.0;
+    textfield.layer.cornerRadius = 5.0;
+    
+    textfield.clearButtonMode = UITextFieldViewModeWhileEditing; // 设置文本的清除模式
+    textfield.tag = 100;
+    textfield.keyboardType = UIKeyboardTypeURL; // 键盘类型
+    textfield.returnKeyType = UIReturnKeyDone; // 设置enter键的内容
+    [self.view addSubview:textfield];
+    
+    /*
+     文本框的响应方法：
+     跟button响应方法不同，文本是通过设置代理：
+     1.设置代理为self
+     2.当前方法需要遵守协议UI..
+     */
+    textfield.delegate = self;
+    
+    
+    
+    /*
+     自定义UITextField的样式:
+     目标：在输入框的左边加入一个图标；
+     1.设置一个imageview，图片，宽高，
+     2.设置imageview的image
+     3.设置imageview的图片居中
+     4.添加imageview到最左边
+     5.设置输入框左边的view的leftViewMode永久显示 textfield.leftViewMode =  UITextFieldViewModeAlways;
+     6.设置输入框右边编辑时或者永久显示清除按钮 textfield.clearButtonMode = UITextFieldViewModeAlways；
+     */
+    
+    UIImageView *leftimage =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"01.jpg"]];
+    
+    // 这儿设置值传递必须用一个中间值，先写属性，再取结构体：
+    CGRect temp =leftimage.frame;
+    temp.size.height = textfield.frame.size.height - 2;
+    temp.size.width =temp.size.height;
+    leftimage.frame = temp;
+    
+    leftimage.contentMode =UIViewContentModeScaleAspectFit;
+    // leftimage.contentMode = UIViewContentModeCenter; //一般设置居中；这儿图片太大，就不能这么设置了
+    textfield.leftView =leftimage;
+    textfield.leftViewMode =  UITextFieldViewModeAlways; // 图标一直出现在输入框中
+}
+
+// 点击done按键之后调用此方法：
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    NSLog(@"调用了tag=%ld的文本框",(long)textField.tag);
+    [textField resignFirstResponder]; // 取消当前键盘输入响应，即：输入完毕，收起键盘；
+    return true;
+}
+
+// 输入完成后调用此方法；在上面done方法之后调用；
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    NSLog(@"输入的text = %@", textField.text);
+}
+
+
+-(void)test8{
+    // 自定义button,设置button内部的图片和文字位置:
+    mybutton *btn2 = [[mybutton alloc]initWithFrame:CGRectMake(80, 70, 200, 100)];
+    btn2.backgroundColor = [UIColor yellowColor];
+    btn2.titleLabel.font = [UIFont systemFontOfSize:26]; // 设置btn中文字的大小
+    [self.view addSubview: btn2];
 }
 
 -(void)test7{
@@ -87,6 +160,16 @@
      UIControlEventTouchDragOutside                                  = 1 <<  3,
      };
      */
+}
+
+- (void)buttonPressed:(UIButton *)bt // 含参的函数调用,如果方法没有冒号，这儿就不加后面的参数；
+{
+    // button事件，跳转url
+    NSLog(@"我被点击了！");
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"]];
+    
+    return;
+    //    [self presentViewController:[TestVC new] animated:YES completion:nil];
 }
 
 -(void)test6{
@@ -350,9 +433,20 @@
     
 }
 
-- (IBAction)myaction:(id)sender { // 通过拖拽方式生成的btn1的方法
+// myaction button点击时候调用方法：
+- (IBAction)myaction:(id)sender { // 通过拖拽方式生成的btn1的方法，点击之后响应：
     UIButton *btn1 = (UIButton *)sender; //把id类型转为uibutton
     btn1.backgroundColor = [UIColor greenColor];
+}
+
+// loginAction button点击时候调用方法：
+- (IBAction)loginAction:(UIButton *)sender {
+    [textfield1 resignFirstResponder]; // 取消键盘的响应
+    [textfield2 resignFirstResponder];
+    textfield1.layer.borderColor = [UIColor grayColor].CGColor;
+    textfield2.layer.borderColor = [UIColor grayColor].CGColor;
+    textfield1.text = @"";
+    textfield2.text = @"";
 }
 @end
 
