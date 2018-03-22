@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "mybutton.h"
 #import "mytextField.h"
+#define UIColorFromHex(s) [UIColor colorWithRed:(((s & 0xFF0000) >> 16))/255.0 green:(((s & 0xFF00) >>8))/255.0 blue:((s & 0xFF))/255.0 alpha:1.0] // 宏定义16进制代码转rgb模式
 
 @interface ViewController () <UITextFieldDelegate> // 这儿加上Uitextfield需要遵守的协议
 {
@@ -31,6 +32,7 @@
     self.loginbutton.layer.borderWidth = 2.0;
     self.loginbutton.layer.borderColor = [UIColor purpleColor].CGColor;
     self.loginbutton.backgroundColor = [UIColor grayColor];
+    self.loginbutton.backgroundColor = UIColorFromHex(0xC0FF3E);//用颜色的16进制设置颜色
     [self.loginbutton setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
     
     textfield1 = [[mytextField alloc]initWithFrame:CGRectMake(20, 60, 300, 30)];
