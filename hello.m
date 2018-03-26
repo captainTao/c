@@ -2509,20 +2509,22 @@ timerFired
 
 深拷贝：
 在堆中另外开辟了一个空间来存储对象的内容
+不仅复制了对象的基本类，同时也复制了对象中的对象，相当于完全是个新对象
 
 
-// 对象的快速拷贝：
+
+// 对象的快速拷贝：（下面的示例是深度拷贝）
 
 // personn.h
 @interface
 @property (nonatomic, copy) NSString *name; // 定义person的name属性
 @end
 
-// person.m
+// person.m----定义拷贝的方法：
 @implementation
 -（id）copyWithZone:(NSZone*)zone{
-    Person *copy = [[[self class]allocWithZone:zone]init];
-    copy.name= [self.name copyWithZone:zone];
+    Person *copy = [[[self class]allocWithZone:zone]init]; // 空间分配
+    copy.name= [self.name copyWithZone:zone];  //内容的拷贝
     return copy;
 }
 @end
@@ -2535,7 +2537,7 @@ NSLog(@"%@, %@", p1, p2); // 输出之后发现他们的内存地址不一样，
 
 
 
-
+// 下面示例可变地址和不可变地址空间的转换：
 // 字符串的可变与不可变：
 不可变到可变：copy:只修改内容，mutableCopy:修改地址
 NSString *str1 = @"hello";
@@ -2642,12 +2644,17 @@ NSPredicate *pre = [NSPredicate predicateWithFormat:@"self.age == 10"]; // self.
 NSArray *PersonArray2 = [PersonArray1 filteredArrayUsingPredicate:pre];
 NSLog(@"%@", PersonArray2);
 
+
+
 /*******************************类之间的通信*******************************/
 类之间通信的三大方式：
 BLock, 通知，委托代理
 KVO, KVC, Timer
 
 BLock：为了避免交叉引用，造成对象无法释放
+
+
+
 
 /*******************************广播*******************************/
 
