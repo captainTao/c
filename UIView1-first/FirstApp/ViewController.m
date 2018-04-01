@@ -25,27 +25,36 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.blue.hidden = true;
     self.mybutton.hidden = true;
     /*** insert code below .. ***/
     
-    self.loginbutton.layer.borderWidth = 2.0;
-    self.loginbutton.layer.borderColor = [UIColor purpleColor].CGColor;
-    self.loginbutton.backgroundColor = [UIColor grayColor];
-    self.loginbutton.backgroundColor = UIColorFromHex(0xC0FF3E);//用颜色的16进制设置颜色
-    [self.loginbutton setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
-    
-    textfield1 = [[mytextField alloc]initWithFrame:CGRectMake(20, 60, 300, 30)];
-    textfield2 = [[mytextField alloc]initWithFrame:CGRectMake(20, 100, 300, 30)];
-    [self.view addSubview:textfield1];
-    [self.view addSubview:textfield2];
-    
+    [self test10];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+-(void)test10{
+    // #pragma mark 自定义textfield:
+    self.loginbutton.layer.borderWidth = 2.0;
+    self.loginbutton.layer.borderColor = [UIColor purpleColor].CGColor;
+    self.loginbutton.backgroundColor = [UIColor grayColor];
+    
+    self.loginbutton.backgroundColor = UIColorFromHex(0xC0FF3E);//用颜色的16进制设置颜色
+    
+    [self.loginbutton setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
+    
+    textfield1 = [[mytextField alloc]initWithFrame:CGRectMake(20, 60, 300, 30)];
+    textfield2 = [[mytextField alloc]initWithFrame:CGRectMake(20, 100, 300, 30)];
+    [self.view addSubview:textfield1];
+    [self.view addSubview:textfield2];
+}
+
+# pragma mark UITextFiled:
 
 -(void)test9{
     // 文本框的属性
@@ -112,6 +121,7 @@
     NSLog(@"输入的text = %@", textField.text);
 }
 
+# pragma mark UIButton：
 
 -(void)test8{
     // 自定义button,设置button内部的图片和文字位置:
@@ -174,6 +184,8 @@
     //    [self presentViewController:[TestVC new] animated:YES completion:nil];
 }
 
+#pragma mark 多个图片的UIImageView：轮播效果图
+
 -(void)test6{
     // 图片轮播效果，幻灯片效果
     UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
@@ -195,6 +207,7 @@
     
 }
 
+#pragma mark 单个图片的UIImageView：
 -(void)test5{
     /*
      typedef NS_ENUM(NSInteger, UIViewContentMode) {
@@ -251,6 +264,8 @@
     
 }
 
+#pragma mark UILable:
+
 -(void)test3{
     // UIlabel的相关属性：url：https://www.jianshu.com/p/d4c71fbd440e
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(50, 70, 200, 100)];//位置
@@ -300,6 +315,7 @@
     
 }
 
+# pragma mark UIView:
 
 -(void)test2{
     // view的增删改查：
@@ -441,7 +457,7 @@
     btn1.backgroundColor = [UIColor greenColor];
 }
 
-// loginAction button点击时候调用方法：
+// loginAction button点击时候调用方法：(自定义textfield)
 - (IBAction)loginAction:(UIButton *)sender {
     [textfield1 resignFirstResponder]; // 取消键盘的响应
     [textfield2 resignFirstResponder];

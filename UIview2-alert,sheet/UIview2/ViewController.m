@@ -104,6 +104,7 @@
     [alert show];
 }
 
+#pragma mark AlterController使用，还不会。。。
 // 弹出对话框
 - (void)createAlterController
 {
