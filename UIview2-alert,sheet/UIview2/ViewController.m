@@ -31,7 +31,7 @@
     [self.view addSubview: myalertview];
 
 }
-
+# pragma mark UIAcitonSheet:
 // UIActionSheet:
 // 代理为self时候，协议用：UIActionSheetDelegate， 响应方法：
 // Cancel--最下面，OK---最上面
@@ -47,6 +47,7 @@
     NSLog(@"button Index = %ld", buttonIndex);
 }
 
+# pragma mark UIAlertView:
 // UIAlertView:
 - (void)test6{
     // 如果代理为自己，那么对一个的.m文件需要遵守 <UIAlertViewDelegate>协议
@@ -104,7 +105,7 @@
     [alert show];
 }
 
-#pragma mark AlterController使用，还不会。。。
+# pragma mark AlterController使用，还不会。。。
 // 弹出对话框
 - (void)createAlterController
 {

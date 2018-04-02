@@ -122,7 +122,12 @@
 }
 
 # pragma mark UIButton：
-
+/*
+ UIbutton的背景图会填充整个button区域，图片会拉伸
+ UIbutton设置image属性的时候，图片不会占据整个button
+ UIbutton设置属性最好通过set方式，并指定状态，直接赋值可能没有效果
+ UIbutton的title不能直接进行赋值改变  btn.title
+ */
 -(void)test8{
     // 自定义button,设置button内部的图片和文字位置:
     mybutton *btn2 = [[mybutton alloc]initWithFrame:CGRectMake(80, 70, 200, 100)];
@@ -287,10 +292,9 @@
     label1.numberOfLines = 0; //行数自适应
     [self.view addSubview:label1];
     
-    //继承UIview的属性
+    //继承UIview的属性,这是label的样式
     label1.layer.borderColor = [UIColor redColor].CGColor; //转换为CGcolor
     label1.layer.borderWidth = 5.0;
-    
     label1.layer.shadowColor = [UIColor greenColor].CGColor; //转换为CGcolor
     label1.layer.cornerRadius = 5.0;
     label1.layer.shadowOffset = CGSizeMake(20, 20);
