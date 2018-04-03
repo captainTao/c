@@ -30,7 +30,7 @@
     self.mybutton.hidden = true;
     /*** insert code below .. ***/
     
-    [self test10];
+    [self test9];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,7 +60,7 @@
     // 文本框的属性
     UITextField *textfield = [[UITextField alloc]initWithFrame:CGRectMake(20, 50, 300, 30)];
     textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆角矩形
-    textfield.textColor = [UIColor redColor];
+    textfield.textColor = [UIColor blueColor];
     textfield.font = [UIFont systemFontOfSize:17.0];
     textfield.placeholder = @"please enter your text..";
     textfield.backgroundColor = [UIColor yellowColor];
@@ -71,7 +71,10 @@
     textfield.clearButtonMode = UITextFieldViewModeWhileEditing; // 设置文本的清除模式
     textfield.tag = 100;
     textfield.keyboardType = UIKeyboardTypeURL; // 键盘类型
-    textfield.returnKeyType = UIReturnKeyDone; // 设置enter键的内容
+    textfield.returnKeyType = UIReturnKeyDone; // 设置enter键的显示内容
+    textfield.secureTextEntry = YES; // 设置密码输入就变点
+    textfield.autocorrectionType = UITextAutocorrectionTypeNo; // 设置是否自动纠错
+    textfield.clearsOnBeginEditing = YES; //再次编辑就清空
     [self.view addSubview:textfield];
     
     /*
@@ -144,13 +147,13 @@
     self.view.backgroundColor = [UIColor yellowColor];
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     /*button type的类型：
-     UIButtonTypeCustom = 0,                         // no button type
+     UIButtonTypeCustom = 0,                         // no button type,自定义类型
      UIButtonTypeSystem NS_ENUM_AVAILABLE_IOS(7_0),  // standard system button
      
-     UIButtonTypeDetailDisclosure,
-     UIButtonTypeInfoLight, // 一个i信息图标
-     UIButtonTypeInfoDark,
-     UIButtonTypeContactAdd, //一个+号图标
+     UIButtonTypeDetailDisclosure, // 蓝色小箭头按钮，主要做详细说明用
+     UIButtonTypeInfoLight, // 一个i信息图标,亮色
+     UIButtonTypeInfoDark, // 一个i信息图标,暗色
+     UIButtonTypeContactAdd, // 一个+号图标
      */
     [btn setBackgroundColor:[UIColor grayColor]];
     // btn.backgroundColor = [UIColor greenColor]; // 也可以这样设置
@@ -176,6 +179,7 @@
      UIControlEventTouchDragInside                                   = 1 <<  2,
      UIControlEventTouchDragOutside                                  = 1 <<  3,
      };
+     button.showsTouchWhenHighlighted = YES; // 这个属性设置yes,按钮按下会发光
      */
 }
 
