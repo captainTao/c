@@ -31,8 +31,76 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    [self SwipeGesture];
+    [self pinchGesture];
 
+}
+# pragma mark 旋转和缩放手势：
+ // 思考：如何定义一个view支持旋转和缩放两个手势?
+- (void)rotationAndPinchGesture{
+    UIRotationGestureRecognizer *rotationgesutre = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotationAction:)];
+    [self.myblue addGestureRecognizer:rotationgesutre];
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchAction:)];
+    [self.myblue addGestureRecognizer:pinchGesture];
+}
+
+# pragma mark 旋转手势：
+- (void)rotationGesture{
+    UIRotationGestureRecognizer *rotationgesutre = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotationAction:)];
+    [self.myblue addGestureRecognizer:rotationgesutre];
+}
+- (void)rotationAction:(UIRotationGestureRecognizer *)sender{
+    NSLog(@"rotation angle = %f", sender.rotation);// 输出旋转角度
+    if (sender.state == UIGestureRecognizerStateChanged){
+        self.myblue.transform = CGAffineTransformMakeRotation(sender.rotation); //图像变化角度
+    } else if(sender.state == UIGestureRecognizerStateEnded){
+        [UIView animateWithDuration:0.5 animations:^{  // 调用动画block, 时间设置为0.5比较合适
+            self.myblue.transform = CGAffineTransformIdentity; // 取消一切形变
+        }];
+    }
+}
+# pragma mark 缩放手势：
+- (void)pinchGesture{
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchAction:)];
+    [self.myblue addGestureRecognizer:pinchGesture];
+}
+- (void)pinchAction:(UIPinchGestureRecognizer *)sender{
+    NSLog(@"scale = %f", sender.scale); // 输出缩放比例
+    if (sender.state == UIGestureRecognizerStateChanged){
+        self.myblue.transform = CGAffineTransformMakeScale(sender.scale, sender.scale); //图像缩小
+    } else if(sender.state == UIGestureRecognizerStateEnded){
+        [UIView animateWithDuration:1 animations:^{  // 调用动画block
+            self.myblue.transform = CGAffineTransformIdentity; // 取消一切形变
+        }];
+    }
+}
+# pragma mark 屏幕边缘滑动手势：
+- (void)ScreenEdgeGesture{
+    UIScreenEdgePanGestureRecognizer *edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc]initWithTarget:self action:@selector(edgeAction:)];
+    // 指定屏幕边缘
+    edgeGesture.edges = UIRectEdgeRight;
+     // self.view添加手势
+    [self.view addGestureRecognizer:edgeGesture];
+}
+- (void)edgeAction:(UIScreenEdgePanGestureRecognizer *)sender{
+    if (sender.state == UIGestureRecognizerStateBegan && sender.edges == UIRectEdgeRight) {
+        NSLog(@"从右边缘开始滑动！");
+    }
+    else if(sender.state == UIGestureRecognizerStateEnded && sender.edges != UIRectEdgeLeft){
+        NSLog(@"不是从左边缘滑动结束的！");
+    }
+}
+# pragma mark 滑动手势：
+- (void)panGesture{
+    UIPanGestureRecognizer *pangesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panAction:)];
+    [self.myblue addGestureRecognizer:pangesture];
+}
+
+- (void)panAction:(UIPanGestureRecognizer *)sender{
+    // 获取滑动点的位置：
+    CGPoint point = [sender locationInView:self.myblue];
+    // 获取滑动的速度：
+    CGPoint speed = [sender velocityInView:self.myblue];
+    NSLog(@"point = %@, speed = %@", NSStringFromCGPoint(point),NSStringFromCGPoint(speed));
 }
 
 # pragma mark 轻扫:
