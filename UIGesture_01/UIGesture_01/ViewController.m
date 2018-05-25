@@ -25,13 +25,16 @@
  Screen Edge Pan:边缘滑动
  Pinch:放大缩小
  Rotation:旋转
+ 
+ UIScreenEdgePanGestureRecongnizer继承直接的父类UIPanGesutreRecongnizer;
+ ImageView需要打开用户交互才能用？ iv.userInteractionEnabled = YES;
+ 
  */
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    [self pinchGesture];
+    [self shortTapGesture];
 
 }
 # pragma mark 旋转和缩放手势：
@@ -41,9 +44,10 @@
     [self.myblue addGestureRecognizer:rotationgesutre];
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchAction:)];
     [self.myblue addGestureRecognizer:pinchGesture];
+   
 }
 
-# pragma mark 旋转手势：
+# pragma mark 旋转手势 Rotation：
 - (void)rotationGesture{
     UIRotationGestureRecognizer *rotationgesutre = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotationAction:)];
     [self.myblue addGestureRecognizer:rotationgesutre];
@@ -58,7 +62,7 @@
         }];
     }
 }
-# pragma mark 缩放手势：
+# pragma mark 缩放手势 Pinch：
 - (void)pinchGesture{
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchAction:)];
     [self.myblue addGestureRecognizer:pinchGesture];
@@ -73,7 +77,7 @@
         }];
     }
 }
-# pragma mark 屏幕边缘滑动手势：
+# pragma mark 屏幕边缘滑动手势 ScreenEdgePan：
 - (void)ScreenEdgeGesture{
     UIScreenEdgePanGestureRecognizer *edgeGesture = [[UIScreenEdgePanGestureRecognizer alloc]initWithTarget:self action:@selector(edgeAction:)];
     // 指定屏幕边缘
@@ -89,7 +93,7 @@
         NSLog(@"不是从左边缘滑动结束的！");
     }
 }
-# pragma mark 滑动手势：
+# pragma mark 滑动手势 Pan：
 - (void)panGesture{
     UIPanGestureRecognizer *pangesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panAction:)];
     [self.myblue addGestureRecognizer:pangesture];
@@ -103,7 +107,7 @@
     NSLog(@"point = %@, speed = %@", NSStringFromCGPoint(point),NSStringFromCGPoint(speed));
 }
 
-# pragma mark 轻扫:
+# pragma mark 轻扫 Swipe:
 - (void)SwipeGesture{
     UISwipeGestureRecognizer *swipeGesgureleft = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(SwipeAction:)];
     swipeGesgureleft.direction = UISwipeGestureRecognizerDirectionLeft; //默认的方向为向右
@@ -122,7 +126,7 @@
     }
    
 }
-# pragma mark 长按
+# pragma mark 长按 LongPress
 - (void)longTapGesture{
     UILongPressGestureRecognizer *longGesutre = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(LongTapAction:)];
     [self.myblue addGestureRecognizer:longGesutre];
@@ -144,7 +148,7 @@
         NSLog(@"Long press ended!");
 }
 
-# pragma mark 短按
+# pragma mark 短按 Tap
 - (void)shortTapGesture{
     UITapGestureRecognizer *tapreconginzer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGestureAction:)];
     tapreconginzer.numberOfTapsRequired =2; // 点击两次
@@ -154,6 +158,8 @@
 - (void)tapGestureAction:(UITapGestureRecognizer *)gesture{
     NSLog(@"UIview has been tapped!");
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

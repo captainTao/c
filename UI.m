@@ -19,6 +19,10 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
 编译+运行：cmd+r
 大小： cmd+1~7,一般用cmd+3
 
+
+设置颜色十六进制的代码：
+#define UIColorFromHex(s) [UIColor colorWithRed:(((s & 0xFF0000) >> 16))/255.0 green:(((s & 0xFF00) >>8))/255.0 blue:((s & 0xFF))/255.0 alpha:1.0] // 宏定义16进制代码转rgb模式
+self.loginbutton.backgroundColor = UIColorFromHex(0xC0FF3E);//用颜色的16进制设置颜色
 /*
  1> UIButton  -> UIControl -> UIView
  
@@ -567,4 +571,21 @@ error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctool
 error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: file: -lPods-SuperStoreFW is not an object file (not allowed in a library)
 原因：
 依赖除了问题，参考链接：https://www.jianshu.com/p/8c34e45a0499
+
+
+
+
+/************************************************************/
+绘图：
+Quartz2d绘制图形，图标，
+drwaRect 重绘
+CoreGraphics核心矩阵操作
+
+
+
+
+
+/************************************************************/
+
+
      

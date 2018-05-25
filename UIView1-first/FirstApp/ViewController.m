@@ -30,7 +30,7 @@
     self.mybutton.hidden = true;
     /*** insert code below .. ***/
     
-    [self test9];
+    [self test10];
 }
 
 - (void)didReceiveMemoryWarning {
