@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UIView *myblue;
 
 @end
@@ -34,27 +34,42 @@
  
  
  旋转：
- CGAffineTransformRotate(view.transform, rotationGestureRecognizer.rotation);
- CGAffineTransformMakeRotation(sender.rotation);
+ CGAffineTransformRotate(view.transform, rotationGestureRecognizer.rotation); 这个方法可以叠加其他效果
+ CGAffineTransformMakeRotation(sender.rotation);  这个方法不改变中心点
  缩放：
  CGAffineTransformScale(view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
  CGAffineTransformMakeScale(sender.scale, sender.scale);
  
- 上面两种方法的区别是，长的那种可以叠加其他手势效果；
+ 上面两种方法的区别是，长的那种可以叠加其他手势效果；make方法的不能叠加其他效果；
  */
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [self.myblue setMultipleTouchEnabled:YES];
-    [self.myblue setUserInteractionEnabled:YES];
-    [self addGestureRecognizerToView:_myblue];
+
+    [self rotationAndPin];
 
 }
+
+
 # pragma mark 旋转和缩放手势,或者多手势：
  // 思考：如何定义一个view支持旋转和缩放两个手势或者以上手势?
 
-- (void) addGestureRecognizerToView:(UIView *)view // 添加所有的手势
+- (void) rotationAndPin{  // 这个不行....
+    [self rotationGesture];
+    [self pinchGesture];
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer   // 这个是UIGestureRecognizerDelegate里面的一个委托方法  // 这个不行....
+{
+//    if ([gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:[UIRotationGestureRecognizer class]]) {
+//        return YES;  // 只需要执行缩放和旋转手势
+//    }
+    return YES;
+}
+
+
+- (void) addGestureRecognizerToView:(UIView *)view // 添加所有的手势 // 这个不行....
 {
     // 旋转手势
     UIRotationGestureRecognizer *rotationGestureRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotateView:)];
@@ -75,7 +90,7 @@
     UIView *view = rotationGestureRecognizer.view;
     if (rotationGestureRecognizer.state == UIGestureRecognizerStateBegan || rotationGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         view.transform = CGAffineTransformRotate(view.transform, rotationGestureRecognizer.rotation);
-        [rotationGestureRecognizer setRotation:0];
+        [rotationGestureRecognizer setRotation:0];  // 这句是连续旋转？
     } else if (rotationGestureRecognizer.state == UIGestureRecognizerStateEnded){
         [UIView animateWithDuration:0.5 animations:^{
             view.transform = CGAffineTransformIdentity;
@@ -89,7 +104,7 @@
     UIView *view = pinchGestureRecognizer.view;
     if (pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || pinchGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         view.transform = CGAffineTransformScale(view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
-        pinchGestureRecognizer.scale = 1;
+        pinchGestureRecognizer.scale = 1;  // 这句是连续缩放？
     } else if (pinchGestureRecognizer.state == UIGestureRecognizerStateEnded){
         [UIView animateWithDuration:0.5 animations:^{
             view.transform = CGAffineTransformIdentity;
@@ -107,7 +122,7 @@
         [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded){
         [UIView animateWithDuration:0.5 animations:^{
-            view.transform = CGAffineTransformIdentity;
+            view.transform = CGAffineTransformIdentity;  //这儿拖动如何复原呢？
             
         }];
     }

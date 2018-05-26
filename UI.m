@@ -23,6 +23,16 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
 设置颜色十六进制的代码：
 #define UIColorFromHex(s) [UIColor colorWithRed:(((s & 0xFF0000) >> 16))/255.0 green:(((s & 0xFF00) >>8))/255.0 blue:((s & 0xFF))/255.0 alpha:1.0] // 宏定义16进制代码转rgb模式
 self.loginbutton.backgroundColor = UIColorFromHex(0xC0FF3E);//用颜色的16进制设置颜色
+
+
+/**********************************************/
+question:
+1.一个UIview中添加两种或以上的手势，同时作用，比如旋转和缩放？
+2.一个UIview在手指移动的时候，进行拖动，在手指放开的时候，恢复到原来位置？
+
+
+
+/**********************************************/
 /*
  1> UIButton  -> UIControl -> UIView
  
