@@ -27,25 +27,93 @@
  Rotation:旋转
  
  UIScreenEdgePanGestureRecongnizer继承直接的父类UIPanGesutreRecongnizer;
- ImageView需要打开用户交互才能用？ iv.userInteractionEnabled = YES;
  
+ 如果是ImageView，需要做以下处理：
+ [imageView setUserInteractionEnabled:YES];  或者 imageView.userInteractionEnabled = YES; //打开用户交互
+ [imageView setMultipleTouchEnabled:YES]; // 打开多手势
+ 
+ 
+ 旋转：
+ CGAffineTransformRotate(view.transform, rotationGestureRecognizer.rotation);
+ CGAffineTransformMakeRotation(sender.rotation);
+ 缩放：
+ CGAffineTransformScale(view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
+ CGAffineTransformMakeScale(sender.scale, sender.scale);
+ 
+ 上面两种方法的区别是，长的那种可以叠加其他手势效果；
  */
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [self shortTapGesture];
+    [self.myblue setMultipleTouchEnabled:YES];
+    [self.myblue setUserInteractionEnabled:YES];
+    [self addGestureRecognizerToView:_myblue];
 
 }
-# pragma mark 旋转和缩放手势：
- // 思考：如何定义一个view支持旋转和缩放两个手势?
-- (void)rotationAndPinchGesture{
-    UIRotationGestureRecognizer *rotationgesutre = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotationAction:)];
-    [self.myblue addGestureRecognizer:rotationgesutre];
-    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchAction:)];
-    [self.myblue addGestureRecognizer:pinchGesture];
-   
+# pragma mark 旋转和缩放手势,或者多手势：
+ // 思考：如何定义一个view支持旋转和缩放两个手势或者以上手势?
+
+- (void) addGestureRecognizerToView:(UIView *)view // 添加所有的手势
+{
+    // 旋转手势
+    UIRotationGestureRecognizer *rotationGestureRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotateView:)];
+    [view addGestureRecognizer:rotationGestureRecognizer];
+    
+    // 缩放手势
+    UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchView:)];
+    [view addGestureRecognizer:pinchGestureRecognizer];
+    
+    // 移动手势
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
+    [view addGestureRecognizer:panGestureRecognizer];
 }
+
+// 处理旋转手势
+- (void) rotateView:(UIRotationGestureRecognizer *)rotationGestureRecognizer
+{
+    UIView *view = rotationGestureRecognizer.view;
+    if (rotationGestureRecognizer.state == UIGestureRecognizerStateBegan || rotationGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        view.transform = CGAffineTransformRotate(view.transform, rotationGestureRecognizer.rotation);
+        [rotationGestureRecognizer setRotation:0];
+    } else if (rotationGestureRecognizer.state == UIGestureRecognizerStateEnded){
+        [UIView animateWithDuration:0.5 animations:^{
+            view.transform = CGAffineTransformIdentity;
+        }];
+    }
+}
+
+// 处理缩放手势
+- (void) pinchView:(UIPinchGestureRecognizer *)pinchGestureRecognizer
+{
+    UIView *view = pinchGestureRecognizer.view;
+    if (pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || pinchGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        view.transform = CGAffineTransformScale(view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
+        pinchGestureRecognizer.scale = 1;
+    } else if (pinchGestureRecognizer.state == UIGestureRecognizerStateEnded){
+        [UIView animateWithDuration:0.5 animations:^{
+            view.transform = CGAffineTransformIdentity;
+        }];
+    }
+}
+
+// 处理拖拉手势
+- (void) panView:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    UIView *view = panGestureRecognizer.view;
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [panGestureRecognizer translationInView:view.superview];
+        [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y + translation.y}];
+        [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+    } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded){
+        [UIView animateWithDuration:0.5 animations:^{
+            view.transform = CGAffineTransformIdentity;
+            
+        }];
+    }
+}
+
+/*****************************************************/
 
 # pragma mark 旋转手势 Rotation：
 - (void)rotationGesture{
