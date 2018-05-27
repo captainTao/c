@@ -21,7 +21,7 @@
 //这个方法是每次必调，或者手动调用setNeedDisplay
 
 - (void)drawRect:(CGRect)rect{
-    [self drawMyProperty4];
+    [self drawMyArc];
 }
 
 // 绘制直线     一个context
@@ -90,14 +90,16 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     [COLOR1 setFill];
     [COLOR2 setStroke];
-    CGContextSetLineWidth(context, 5.0);
+    CGContextSetLineWidth(context, 3.0);
     
+    CGContextMoveToPoint(context, 200, 300); // 设置圆心，不设置只会展示一部分
     // 圆心(200,200), 半径150， 开始角度0， 结束角度2pi, 顺时针1, 逆时针0
-    CGContextAddArc(context, 200, 300, 150, M_PI*3/4, M_PI*2, 1);
+//    CGContextAddArc(context, 200, 300, 150, 0, M_PI*2*0.25, 0);
+    CGContextAddArc(context, 200, 300, 150, M_PI*2*0.3, M_PI, 1); // 还是不懂为啥会画成那样？？。。x轴为横轴向右，y为纵轴向下， so顺指针变成了感觉数学中的逆时针
     CGContextClosePath(context); // 闭合路径的另外一种方法
-    
-    CGContextDrawPath(context, kCGPathFillStroke);
-//    CGContextStrokePath(context);
+//    CGContextDrawPath(context, kCGPathFill); // 只是填充
+    CGContextDrawPath(context, kCGPathFillStroke); // 填充和圆弧的边
+//    CGContextStrokePath(context); // 描边
 }
 
 // 图形的属性:

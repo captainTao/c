@@ -597,5 +597,28 @@ CoreGraphics核心矩阵操作
 
 /************************************************************/
 
-
+// 用栈保存段落，作用范围在入和出之间
+CGContextSaveGState(context); // 入栈
+[COLOR2 setStroke];
+CGContextSetLineWidth(context, 1.0);
+[self drawXY:context];
+CGContextRestoreGState(context); // 出栈
      
+
+1.创建一个UIview，就会自动创建一个drawRect方法；
+2.drawRect是重绘UIView
+3.什么时候调用此方法？
+a,init的时候不调用，
+b,设置当前frame的时候调用
+c,调用setNeedDisplay的时候调用
+
+另外：
+调用subview的时候，
+滚动一个storeview的时候，
+另外旋转UIScreen的时候是否调用此方法？
+
+
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
+    [self drawMyPie];
+}

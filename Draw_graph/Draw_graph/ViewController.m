@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
+    NSLog(@"view.bounds = %@", NSStringFromCGRect(self.view.bounds));
     Quartz2d *quartz2d =[[Quartz2d alloc]initWithFrame:self.view.bounds];
     [self.view addSubview:quartz2d];
     [quartz2d setNeedsDisplay];

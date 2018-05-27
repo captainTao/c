@@ -1914,8 +1914,12 @@ int main(int argc, char const *argv[])  // 主函数
 }
  
 
-/******************************* ARC *****************************/
- 
+/******************************* ARC *****************************/ 
+ARC property:
+
+@property (nonatomic, strong) Dog *dog; 
+@property (nonatomic, weak) Person *person;
+@property (nonatomic, assign) double percent;
 // ARC: Automatic Reference Counting
 
 /*

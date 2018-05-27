@@ -111,10 +111,10 @@
 				E4CC220820B96D7B00DFA706 /* Main.storyboard */,
 				E4CC220B20B96D7B00DFA706 /* Assets.xcassets */,
 				E4CC220D20B96D7B00DFA706 /* LaunchScreen.storyboard */,
-				E4CC221020B96D7B00DFA706 /* Info.plist */,
 				E4CC221120B96D7B00DFA706 /* main.m */,
 				E4CC223420B96DC300DFA706 /* Quartz2d.h */,
 				E4CC223520B96DC300DFA706 /* Quartz2d.m */,
+				E4CC221020B96D7B00DFA706 /* Info.plist */,
 			);
 			path = Draw_graph;
 			sourceTree = "<group>";
