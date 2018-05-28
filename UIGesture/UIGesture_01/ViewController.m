@@ -46,8 +46,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    [self.myblue setCenter:(CGPoint){self.view.center.x, self.view.center.y}]; // 设置myblue居中
+//    [self.myblue setCenter:CGPointMake(self.view.center.x, self.view.center.y)]; // 设置myblue居中
 
-    [self rotationAndPin];
+    [self addGestureRecognizerToView:self.myblue];
 
 }
 
@@ -55,17 +58,12 @@
 # pragma mark 旋转和缩放手势,或者多手势：
  // 思考：如何定义一个view支持旋转和缩放两个手势或者以上手势?
 
-- (void) rotationAndPin{  // 这个不行....
-    [self rotationGesture];
-    [self pinchGesture];
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer   // 这个是UIGestureRecognizerDelegate里面的一个委托方法  // 这个不行....
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer   // 这个是UIGestureRecognizerDelegate里面的一个委托方法
 {
-//    if ([gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:[UIRotationGestureRecognizer class]]) {
-//        return YES;  // 只需要执行缩放和旋转手势
-//    }
-    return YES;
+//    if ([gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] || [otherGestureRecognizer isKindOfClass:[UIRotationGestureRecognizer class]]) {
+//        return YES;  // 只需要执行缩放和旋转手势!
+//    }else{  return NO;}
+    return YES;  // 叠加所有手势
 }
 
 
@@ -73,6 +71,7 @@
 {
     // 旋转手势
     UIRotationGestureRecognizer *rotationGestureRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotateView:)];
+    rotationGestureRecognizer.delegate = self;
     [view addGestureRecognizer:rotationGestureRecognizer];
     
     // 缩放手势
@@ -90,7 +89,8 @@
     UIView *view = rotationGestureRecognizer.view;
     if (rotationGestureRecognizer.state == UIGestureRecognizerStateBegan || rotationGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         view.transform = CGAffineTransformRotate(view.transform, rotationGestureRecognizer.rotation);
-        [rotationGestureRecognizer setRotation:0];  // 这句是连续旋转？
+//        view.transform = CGAffineTransformMakeRotation(rotationGestureRecognizer.rotation); // this method can not overlays other effect.
+        [rotationGestureRecognizer setRotation:0];  // 这句是连续旋转？需要一个作为基准
     } else if (rotationGestureRecognizer.state == UIGestureRecognizerStateEnded){
         [UIView animateWithDuration:0.5 animations:^{
             view.transform = CGAffineTransformIdentity;
@@ -104,7 +104,7 @@
     UIView *view = pinchGestureRecognizer.view;
     if (pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || pinchGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         view.transform = CGAffineTransformScale(view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
-        pinchGestureRecognizer.scale = 1;  // 这句是连续缩放？
+        pinchGestureRecognizer.scale = 1;  // 这句是连续缩放？每一次有一个基准值
     } else if (pinchGestureRecognizer.state == UIGestureRecognizerStateEnded){
         [UIView animateWithDuration:0.5 animations:^{
             view.transform = CGAffineTransformIdentity;
@@ -119,11 +119,10 @@
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [panGestureRecognizer translationInView:view.superview];
         [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y + translation.y}];
-        [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+        [panGestureRecognizer setTranslation:CGPointZero inView:view.superview]; // 设置拖动的0点的基准值
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded){
         [UIView animateWithDuration:0.5 animations:^{
-            view.transform = CGAffineTransformIdentity;  //这儿拖动如何复原呢？
-            
+            [view setCenter:(CGPoint){self.view.center.x, self.view.center.y}]; // 设置为self.view的点
         }];
     }
 }
