@@ -27,10 +27,10 @@ self.loginbutton.backgroundColor = UIColorFromHex(0xC0FF3E);//用颜色的16进�
 
 /**********************************************/
 question:
-1.一个UIview中添加两种或以上的手势，同时作用，比如旋转和缩放？
-2.一个UIview在手指移动的时候，进行拖动，在手指放开的时候，恢复到原来位置？
-
-
+1.一个UIview中添加两种或以上的手势，同时作用，比如旋转和缩放？---有一个协议代理的方法,但实际操作怎么只能同时使用两种方法？
+2.一个UIview在手指移动的时候，进行拖动，在手指放开的时候，恢复到原来位置？----设置中心为self.view的中心
+3.设置指示器的时候，设置的坐标和UIview中的坐标还是有所差异？ ---cgcontext的坐标使用的是CoreGraphics
+4.一个方法中使用的另外一个方法中的变量时候，需要提前声明？
 
 /**********************************************/
 /*
@@ -575,14 +575,13 @@ http://blog.csdn.net/zhang5690800/article/details/51891879
 http://www.cocoachina.com/ios/20180110/21815.html
 
 1.1.1
-
+/*
 错误：
 error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: can't locate file for: -lPods-SuperStoreFW
 error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool: file: -lPods-SuperStoreFW is not an object file (not allowed in a library)
 原因：
 依赖除了问题，参考链接：https://www.jianshu.com/p/8c34e45a0499
-
-
+*/
 
 
 /************************************************************/
@@ -596,6 +595,12 @@ CoreGraphics核心矩阵操作
 
 
 /************************************************************/
+
+
+图形的上下文栈：
+
+1.栈 ：局部变量，全局变量，先进后出   // 系统自动回收，由操作系统分配和释放，先进后出
+2.堆 ：对象，先进先出            // 动态分配，手动回收,由程序员手动分配和释放，先进先出
 
 // 用栈保存段落，作用范围在入和出之间
 CGContextSaveGState(context); // 入栈
