@@ -14,7 +14,7 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    [self drawImageClip];
+    [self drawlogoTitle];
 }
 
 // 图片绘制
@@ -34,5 +34,36 @@
     UIImage *image = [UIImage imageNamed:@"images/1.jpg"];
     [image drawAtPoint:CGPointMake(150, 150)];
     CGContextFillPath(context);
+}
+
+// 在图片上  绘制文字
+- (void)drawlogoTitle{
+    UIImage *image = [UIImage imageNamed:@"images/1.jpg"];
+    [image drawAtPoint:CGPointMake(100, 100)];
+    
+    NSString *str = @"Captain website";
+    NSMutableParagraphStyle *paragraphstyle =  [[NSMutableParagraphStyle defaultParagraphStyle]mutableCopy];// 设置段落的样式为默认样式,mutablecopy为快速拷贝
+    paragraphstyle.lineBreakMode = NSLineBreakByClipping;
+    
+    NSDictionary *dic = @{NSFontAttributeName: [UIFont systemFontOfSize:10.0],NSParagraphStyleAttributeName:paragraphstyle,NSForegroundColorAttributeName:[UIColor greenColor]};// 设置文字的属性
+    [str drawInRect:CGRectMake(100, 100, 100, 10) withAttributes:dic];// draw文字的属性
+    [str drawInRect:CGRectMake(100, 150, 100, 10) withAttributes:nil];// draw文字的属性为空
+};
+
+// 图片上再做图
+- (void)drawlogOnImage{
+    UIImage *image = [UIImage imageNamed:@"images/1.jpg"];
+    [image drawAtPoint:CGPointMake(100, 100)];
+    [image drawAsPatternInRect:CGRectMake(100, 100, 30, 20)];
+}
+
+- (void)drawImagePixel{
+    UIImage *image = [UIImage imageNamed:@"images/1.jpg"];
+    
+    size_t width = 100;  //获取像素点
+    size_t height = 63;
+    
+    size_t bytePerRow = width*4;
+    CGImageAlphaInfo alphaInfo = kCGImageAlphaPremultipliedFirst;
 }
 @end
