@@ -7,14 +7,15 @@
 //
 
 #import "Quartz.h"
-
+#import <QuartzCore/QuartzCore.h>
+#import <Accelerate/Accelerate.h>
 @implementation Quartz
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    [self drawlogoTitle];
+    [self drawImagePixel];
 }
 
 // 图片绘制
@@ -57,13 +58,27 @@
     [image drawAsPatternInRect:CGRectMake(100, 100, 30, 20)];
 }
 
+// 算法优化，特效相机，选择像素点
 - (void)drawImagePixel{
     UIImage *image = [UIImage imageNamed:@"images/1.jpg"];
     
     size_t width = 100;  //获取像素点
     size_t height = 63;
-    
+    // 每1个像素由4个点构成：R＋G＋B＋alpha    8bit = 1 Byte
     size_t bytePerRow = width*4;
-    CGImageAlphaInfo alphaInfo = kCGImageAlphaPremultipliedFirst;
+    CGImageAlphaInfo alphaInfo = kCGImageAlphaPremultipliedFirst; // 获取alpha信息
+    CGContextRef bitmapContext = CGBitmapContextCreate(NULL, width, height, 8, bytePerRow, CGColorSpaceCreateDeviceRGB(), kCGBitmapByteOrderDefault|alphaInfo); // 创建一个像素矩阵
+    // 渲染
+    CGContextDrawImage(bitmapContext, CGRectMake(0, 0, width, height), image.CGImage);
+    
+    UInt8 *data = (UInt8 *)CGBitmapContextGetData(bitmapContext);
+    vImage_Buffer src = {data,height,width,bytePerRow}; // 源buffer
+    vImage_Buffer dest = {data,height,width,bytePerRow}; // 目的buffer
+    Pixel_8888 bgColor = {0,0,0,0}; // pixel
+    vImageRotate_ARGB8888(&src, &dest, NULL, M_PI_2, bgColor, kvImageBackgroundColorFill);
+    
+    CGImageRef rotateImageRef = CGBitmapContextCreateImage(bitmapContext);
+    UIImage *imageNew = [UIImage imageWithCGImage:rotateImageRef scale:0.5 orientation:image.imageOrientation]; // 用CGImage来创建一个UIImage
+    [imageNew drawAtPoint:CGPointMake(100, 100)];
 }
 @end
