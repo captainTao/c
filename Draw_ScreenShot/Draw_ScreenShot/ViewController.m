@@ -1,14 +1,16 @@
 //
 //  ViewController.m
-//  Draw_Picture
+//  Draw_ScreenShot
 //
-//  Created by captain on 2018/5/29.
+//  Created by captain on 2018/6/4.
 //  Copyright © 2018年 captain. All rights reserved.
 //
 
 #import "ViewController.h"
-#import "Quartz.h"
+# import "UIView+ScreenShot.h"
+
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UIView *myview;
 
 @end
 
@@ -17,10 +19,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    Quartz *quartzPicture = [[Quartz alloc]initWithFrame:self.view.bounds];
-//    quartzPicture.backgroundColor = [UIColor clearColor]; // 清除背景颜色
-    [self.view addSubview:quartzPicture];
-    [quartzPicture setNeedsDisplay];
+    
+    UIImage *image = [self.view imageScreenShot];
+    
+    // 保存到本地相册, 这儿需要在infolist中添加一个权限；Privacy - Photo Library Usage Description
+    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 }
 
 
