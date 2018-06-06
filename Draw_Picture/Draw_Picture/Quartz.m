@@ -37,7 +37,7 @@
     CGContextFillPath(context);
 }
 
-// 在图片上  绘制文字
+// 在图片上  绘制文字,添加水印
 - (void)drawlogoTitle{
     UIImage *image = [UIImage imageNamed:@"images/1.jpg"];
     [image drawAtPoint:CGPointMake(100, 100)];
@@ -47,6 +47,7 @@
     paragraphstyle.lineBreakMode = NSLineBreakByClipping;
     
     NSDictionary *dic = @{NSFontAttributeName: [UIFont systemFontOfSize:10.0],NSParagraphStyleAttributeName:paragraphstyle,NSForegroundColorAttributeName:[UIColor greenColor]};// 设置文字的属性
+    
     [str drawInRect:CGRectMake(100, 100, 100, 10) withAttributes:dic];// draw文字的属性
     [str drawInRect:CGRectMake(100, 150, 100, 10) withAttributes:nil];// draw文字的属性为空
 };

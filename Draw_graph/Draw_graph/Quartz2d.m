@@ -5,7 +5,11 @@
 //  Created by captain on 2018/5/26.
 //  Copyright © 2018年 captain. All rights reserved.
 //
-
+/*
+ CGContextSaveGState(context);
+ .......
+ CGContextRestoreGState(context);
+ */
 #import "Quartz2d.h"
 
 @implementation Quartz2d

@@ -141,7 +141,7 @@
     [COLOR2 setStroke];
     CGContextSetLineWidth(context, 10.0);
     
-    CGFloat lengths[] = {10,50,10};  // 指定虚线的length
+    CGFloat lengths[] = {10,50,10};  // 指定虚线的length, 先绘制10个点，再跳过50个点；再绘制10个点，再跳过10个点；再绘制50个点，跳过10个点，如此反复
     CGContextSetLineDash(context, 30, lengths, 3); // 参数2：偏移量，参数3：长度，参数4：length的长度
 
     CGContextMoveToPoint(context, 100, 0);
