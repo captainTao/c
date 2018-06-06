@@ -1917,9 +1917,9 @@ int main(int argc, char const *argv[])  // 主函数
 /******************************* ARC *****************************/ 
 ARC property:
 
-@property (nonatomic, strong) Dog *dog; 
-@property (nonatomic, weak) Person *person;
-@property (nonatomic, assign) double percent;
+@property (nonatomic, strong) Dog *dog;  // 适用于OC对象类型, 相当于原来的retain;
+@property (nonatomic, weak) Person *person; // 适用于OC对象类型, 相当于原来的assign;
+@property (nonatomic, assign) double percent; // 适用于非OC对象类型, 在ARC中还是可以用
 // ARC: Automatic Reference Counting
 
 /*
@@ -2707,7 +2707,7 @@ notification:
 }
 @end
 
-/*******************************Timer定时器*******************************/
+/*******************************NSTimer定时器*******************************/
 /*
 1.用scheduledTimerWithTimeInterval初始化，将以默认mode直接添加到当前的runloop中。
 2.用timerWithTimeInterval初始化，需要手动添加timer和mode到runloop中，定时器会在指定时候后自动触发。
@@ -2742,6 +2742,8 @@ notification:
 @end
 
 
+-(void)invalidate; // 此方法可以停止计时器的工作，一旦定时器被停止了，如果需要再次执行，需要创建一个新的定时器任务；
+
 /******************************* KVC *******************************/
 
 // key - value - coding
@@ -2768,7 +2770,32 @@ int main(int argc, const char * argv[]) {
 2.观察
 3.移除观察者
 
+-(void)testKVO
+{
+   // 1.注册
+    self.p1 = [[Person alloc]init];
+    [self.p1 setAge:15]; //_p1.age = 15;
+    // 2.观察
+    [self.p1 addObserver:self forKeyPath:@"age" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    self.p1.age = 19; //有年龄变化 _p1.age = 19;
+}    
 
+// 2.观察后做什么
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    NSLog(@"年龄age变化了");
+    
+    //获取老的和新的值：
+    NSString *oldage = [change valueForKey:@"old"];
+    NSLog(@"现在的年龄为：%@岁", oldage);
+    NSString *newage = [change valueForKey:@"new"];
+    NSLog(@"现在的年龄为：%@岁", newage);
+}
+
+// 3.移除观察者
+-(void)dealloc
+{
+    [self.p1 removeObserver:self forKeyPath:@"age"];
+}
 
 ================================Foundation====================================
 
@@ -2916,8 +2943,8 @@ NSString *str1 = [NSString stringWithFormat:@"%d",1];
 NSString *str2 = [NSString stringWithFormat:@"%f",3.1415]; 
 
 3.字符串转为基础数据类型：
-int a = str1.intValue;
-float b = str2.floatValue;
+int a = str1.intValue;   // 字符串转为整型
+float b = str2.floatValue;  // 字符串转为浮点型
 
 4.字符串的比较：
  if([str1 isEqualToString: str2]){ // 这是比较字符串的内容
@@ -2933,14 +2960,19 @@ float b = str2.floatValue;
  NSLog(@"%@",[NSString stringWithFormat:@"%@\n%@\n%@", str2, str3, str4]);
  6.字符串和数组的关系：
  
- 7.字符串的内容索引：
+ 7.字符串的内容索引：rangeOfString
  NSString *str1 = @"abcdefg";
  NSString *str2 = @"cde";
  NSRange range;
- range = [str1 rangeOfString:str2];
+ range = [str1 rangeOfString:str2]; //返回为一个结构体，如果找不到，length=0，location=NSNotFound==-1
  NSLog(@"%lu %lu",range.length, range.location);
 
- 8.字符串的位置索引：
+ NSString *str = @"ijjavahehe";
+ NSRange range = [str rangeOfString:@"java"]; // 查找java在str中的位置：
+ NSLog(@"loc = %ld, length=%ld", range.location, range.length);
+ // loc = 2, length=4
+
+ 8.字符串的位置索引：substringWithRange
  NSString *str1 = @"abcdefg";
  NSRange range = {range.length = 2, range.length = 3};
  NSString *str2 = [str1 substringWithRange:range];
