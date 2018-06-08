@@ -1,5 +1,20 @@
 
-CM + shift + O:头文件快速搜索
+Xcode导航：
+CM + shift + O :头文件快速搜索
+CM + shift + J :展开该文件所在的项目目录，同时在文件导航区选中该文件
+CM  + J : XCode从聚焦文件导航区状态，变回聚焦源文件编辑区状态，源文件进入编辑状态
+CM + ctr + UP 在头文件和.m文件之间切换
+
+CM + 0 : 隐藏和显示左侧导航栏
+CM + 1~9： 左侧导航栏的tab切换
+CM + shift + Y : 显示和隐藏下方调试栏
+CM + option + 0: 显示和隐藏右侧功能区
+
+ctr + 6 :在指定的文件中查找下拉列表的方法
+cm + ctrl + j: 跳转到对应文件的定义； 
+cm + ctrl + left : 后退 back
+cm + ctrl + right : 前进 forward
+
 /**********************************************/
 https://www.jianshu.com/p/4be17ec40cfc
 delegate、protocol、tagart-action、closure ？
