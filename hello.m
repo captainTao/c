@@ -1920,6 +1920,7 @@ ARC property:
 @property (nonatomic, strong) Dog *dog;  // 适用于OC对象类型, 相当于原来的retain;
 @property (nonatomic, weak) Person *person; // 适用于OC对象类型, 相当于原来的assign;
 @property (nonatomic, assign) double percent; // 适用于非OC对象类型, 在ARC中还是可以用
+@property (nonatomic, copy) NSString *name; // release旧值，copy新值（一般用于NSString *）
 // ARC: Automatic Reference Counting
 
 /*
