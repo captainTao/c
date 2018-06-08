@@ -48,6 +48,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self.myblue setCenter:(CGPoint){self.view.center.x, self.view.center.y}]; // 设置myblue居中
+//    self.myblue.center = self.view.center;
 //    [self.myblue setCenter:CGPointMake(self.view.center.x, self.view.center.y)]; // 设置myblue居中
 
     [self addGestureRecognizerToView:self.myblue];

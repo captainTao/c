@@ -42,14 +42,18 @@
     // #pragma mark 自定义textfield:
     self.loginbutton.layer.borderWidth = 2.0;
     self.loginbutton.layer.borderColor = [UIColor purpleColor].CGColor;
-    self.loginbutton.backgroundColor = [UIColor grayColor];
     
+    self.loginbutton.backgroundColor = [UIColor grayColor];
     self.loginbutton.backgroundColor = UIColorFromHex(0xC0FF3E);//用颜色的16进制设置颜色
     
     [self.loginbutton setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
     
     textfield1 = [[mytextField alloc]initWithFrame:CGRectMake(20, 60, 300, 30)];
+    textfield1.placeholder = @"用户名";
+    [textfield1 becomeFirstResponder]; // 设置初始化焦点
     textfield2 = [[mytextField alloc]initWithFrame:CGRectMake(20, 100, 300, 30)];
+    textfield2.placeholder = @"密码";
+    textfield2.secureTextEntry = YES;
     [self.view addSubview:textfield1];
     [self.view addSubview:textfield2];
 }
@@ -60,10 +64,17 @@
     // 文本框的属性
     UITextField *textfield = [[UITextField alloc]initWithFrame:CGRectMake(20, 50, 300, 30)];
     textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆角矩形
+    /*
+    注意，设置button背景图像与边框样式UITextBorderStyleRoundedRect不能重叠使用
+     textFiled.background = [UIImage imageNamed:@"img_01"];
+     */
+    
     textfield.textColor = [UIColor blueColor];
+    textfield.text = @"text";
     textfield.font = [UIFont systemFontOfSize:17.0];
     textfield.placeholder = @"please enter your text..";
     textfield.backgroundColor = [UIColor yellowColor];
+    
     textfield.layer.borderColor = [UIColor greenColor].CGColor;
     textfield.layer.borderWidth = 2.0;
     textfield.layer.cornerRadius = 5.0;
@@ -71,7 +82,8 @@
     textfield.clearButtonMode = UITextFieldViewModeWhileEditing; // 设置文本的清除模式
     textfield.tag = 100;
     textfield.keyboardType = UIKeyboardTypeURL; // 键盘类型
-    textfield.returnKeyType = UIReturnKeyDone; // 设置enter键的显示内容
+    textfield.returnKeyType = UIReturnKeyDone; // 设置enter键的显示文字
+    
     textfield.secureTextEntry = YES; // 设置密码输入就变点
     textfield.autocorrectionType = UITextAutocorrectionTypeNo; // 设置是否自动纠错
     textfield.clearsOnBeginEditing = YES; //再次编辑就清空
@@ -81,7 +93,7 @@
      文本框的响应方法：
      跟button响应方法不同，文本是通过设置代理：
      1.设置代理为self
-     2.当前方法需要遵守协议UI..
+     2.当前方法需要遵守协议<UITextFieldDelegate>
      */
     textfield.delegate = self;
     
@@ -141,7 +153,7 @@
 
 -(void)test7{
     
-    // button的枚举类型：UIControlStateNormal  UIControlStateNormal  UIButtonTypeCustom
+    // button的枚举类型：UIControlStateNormal   UIButtonTypeCustom
     // UIbutton 继承自UIControl, UIControl继承自UIView；
     // UIbutton绑定事件；
     self.view.backgroundColor = [UIColor yellowColor];
@@ -187,10 +199,13 @@
 {
     // button事件，跳转url
     NSLog(@"我被点击了！");
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"]];
-    
+    // [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"]]; // 老版本的用法，10已经启用openURL
+    NSString *scheme = @"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8";
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:scheme] options:@{} completionHandler:^(BOOL success) {
+        NSLog(@"Open %@: %d",scheme,success);
+    }];
     return;
-    //    [self presentViewController:[TestVC new] animated:YES completion:nil];
+    // [self presentViewController:[TestVC new] animated:YES completion:nil];
 }
 
 #pragma mark 多个图片的UIImageView：轮播效果图
