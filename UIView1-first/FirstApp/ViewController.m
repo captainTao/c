@@ -5,7 +5,17 @@
 //  Created by captain on 2018/2/26.
 //  Copyright © 2018年 captain. All rights reserved.
 //
-
+/*
+ 1.1 继承自UIControl的控件
+ ------------------------------------------
+ 1> UIButton    ->  UIControl   ->  UIView
+ 
+ 1.2 继承自UIView的视图
+ ------------------------------------------
+ 1> UILabel     ->  UIView
+ 2> UIImageView ->  UIView
+ 3> UITextField ->  UIView
+ */
 #import "ViewController.h"
 #import "mybutton.h"
 #import "mytextField.h"
@@ -13,8 +23,8 @@
 
 @interface ViewController () <UITextFieldDelegate> // 这儿加上Uitextfield需要遵守的协议
 {
-    mytextField *textfield1;
-    mytextField *textfield2;
+    mytextField *userText;
+    mytextField *pwdText;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *blue;
@@ -30,7 +40,7 @@
     self.mybutton.hidden = true;
     /*** insert code below .. ***/
     
-    [self test10];
+    [self testUITextfield10];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,8 +48,10 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)test10{
-    // #pragma mark 自定义textfield:
+#pragma mark 自定义textfield:
+
+-(void)testUITextfield10{
+
     self.loginbutton.layer.borderWidth = 2.0;
     self.loginbutton.layer.borderColor = [UIColor purpleColor].CGColor;
     
@@ -48,19 +60,40 @@
     
     [self.loginbutton setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];
     
-    textfield1 = [[mytextField alloc]initWithFrame:CGRectMake(20, 60, 300, 30)];
-    textfield1.placeholder = @"用户名";
-    [textfield1 becomeFirstResponder]; // 设置初始化焦点
-    textfield2 = [[mytextField alloc]initWithFrame:CGRectMake(20, 100, 300, 30)];
-    textfield2.placeholder = @"密码";
-    textfield2.secureTextEntry = YES;
-    [self.view addSubview:textfield1];
-    [self.view addSubview:textfield2];
+    userText = [[mytextField alloc]initWithFrame:CGRectMake(20, 60, 300, 30)];
+    userText.placeholder = @"用户名";
+    userText.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [userText becomeFirstResponder]; // 设置初始化焦点
+//    userText.delegate = self;
+   
+    pwdText = [[mytextField alloc]initWithFrame:CGRectMake(20, 100, 300, 30)];
+    pwdText.placeholder = @"密码";
+    pwdText.clearButtonMode = UITextFieldViewModeWhileEditing;
+    pwdText.secureTextEntry = YES;
+//    pwdText.delegate = self;
+    
+    [self.view addSubview:userText];
+    [self.view addSubview:pwdText];
+    
+    
 }
+
+// loginAction button点击时候调用方法：(自定义textfield)
+- (IBAction)loginAction:(UIButton *)sender {
+    [userText resignFirstResponder]; // 取消键盘的响应
+    [pwdText resignFirstResponder];
+    userText.layer.borderColor = [UIColor grayColor].CGColor;
+    pwdText.layer.borderColor = [UIColor grayColor].CGColor;
+    NSLog(@"%s %@ %@", __func__, userText.text, pwdText.text);
+    userText.text = @"";
+    pwdText.text = @"";
+}
+
 
 # pragma mark UITextFiled:
 
--(void)test9{
+// 绑定UItextfield的事件，需要设置代理<UITextFieldDelegate>
+-(void)testUITextfield9{
     // 文本框的属性
     UITextField *textfield = [[UITextField alloc]initWithFrame:CGRectMake(20, 50, 300, 30)];
     textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆角矩形
@@ -127,13 +160,35 @@
 // 点击done按键之后调用此方法：
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     NSLog(@"调用了tag=%ld的文本框",(long)textField.tag);
-    [textField resignFirstResponder]; // 取消当前键盘输入响应，即：输入完毕，收起键盘；
+    if (textField == userText) {
+        [pwdText becomeFirstResponder];
+    }else {
+//        [self.view endEditing:YES];// 关闭键盘的强制响应，一般用在不知道焦点在谁的时候
+        [textField resignFirstResponder];// 取消当前键盘输入响应，即：输入完毕，收起键盘；
+    }
     return true;
+//    return YES; // 两种return都可以用；
 }
 
 // 输入完成后调用此方法；在上面done方法之后调用；
 -(void)textFieldDidEndEditing:(UITextField *)textField{
     NSLog(@"输入的text = %@", textField.text);
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    NSLog(@"%@  %@", NSStringFromRange(range), string);
+    unsigned long loca = range.location;
+    return (loca <6); // 字符长度为6
+    /*
+     if (loca < 6) {
+     return YES;
+     }else{
+     return NO;
+     }
+
+     return yes的时候可以输入；
+     return No的时候不能输入；
+     */
 }
 
 # pragma mark UIButton：
@@ -143,15 +198,22 @@
  UIbutton设置属性最好通过set方式，并指定状态，直接赋值可能没有效果
  UIbutton的title不能直接进行赋值改变  btn.title
  */
--(void)test8{
-    // 自定义button,设置button内部的图片和文字位置:
+// 自定义button:
+-(void)testUIButton8{
+    // 设置button内部的图片和文字位置:
     mybutton *btn2 = [[mybutton alloc]initWithFrame:CGRectMake(80, 70, 200, 100)];
     btn2.backgroundColor = [UIColor yellowColor];
     btn2.titleLabel.font = [UIFont systemFontOfSize:26]; // 设置btn中文字的大小
     [self.view addSubview: btn2];
 }
 
--(void)test7{
+// myaction button点击时候调用方法：
+- (IBAction)myaction:(id)sender { // 通过拖拽方式生成的btn1的方法，点击之后响应：
+    UIButton *btn1 = (UIButton *)sender; //把id类型转为uibutton
+    btn1.backgroundColor = [UIColor greenColor];
+}
+
+-(void)testUIButton7{
     
     // button的枚举类型：UIControlStateNormal   UIButtonTypeCustom
     // UIbutton 继承自UIControl, UIControl继承自UIView；
@@ -204,13 +266,15 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:scheme] options:@{} completionHandler:^(BOOL success) {
         NSLog(@"Open %@: %d",scheme,success);
     }];
-    return;
+    
+    [bt removeTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside]; // 点击一下之后移除事件
+//    return;
     // [self presentViewController:[TestVC new] animated:YES completion:nil];
 }
 
 #pragma mark 多个图片的UIImageView：轮播效果图
 
--(void)test6{
+-(void)testCarousel6{
     // 图片轮播效果，幻灯片效果
     UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
     UIImage *img2 = [UIImage imageNamed:@"img2.jpg"];
@@ -232,7 +296,7 @@
 }
 
 #pragma mark 单个图片的UIImageView：
--(void)test5{
+-(void)testUIImage5{
     /*
      typedef NS_ENUM(NSInteger, UIViewContentMode) {
      UIViewContentModeScaleToFill,         // 填充，会变形,
@@ -269,7 +333,7 @@
     
 }
 
--(void)test4{
+-(void)testUIImage4{
     /*
      UIImageView: UI + image + view
      
@@ -290,7 +354,7 @@
 
 #pragma mark UILable:
 
--(void)test3{
+-(void)testUILable3{
     // UIlabel的相关属性：url：https://www.jianshu.com/p/d4c71fbd440e
     UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(50, 70, 200, 100)];//位置
     label1.backgroundColor = [UIColor grayColor];//背景颜色
@@ -340,7 +404,7 @@
 
 # pragma mark UIView:
 
--(void)test2{
+-(void)testUIview2{
     // view的增删改查：
     UIView *viewcolor1 = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
     viewcolor1.backgroundColor = [UIColor purpleColor];
@@ -407,7 +471,7 @@
 }
 
 
--(void)test1{
+-(void)testUIView1{
     /*
      struct CGRect { //CGRect两个属性 origin, size;
      CGPoint origin;
@@ -474,23 +538,5 @@
     
 }
 
-// myaction button点击时候调用方法：
-- (IBAction)myaction:(id)sender { // 通过拖拽方式生成的btn1的方法，点击之后响应：
-    UIButton *btn1 = (UIButton *)sender; //把id类型转为uibutton
-    btn1.backgroundColor = [UIColor greenColor];
-}
 
-// loginAction button点击时候调用方法：(自定义textfield)
-- (IBAction)loginAction:(UIButton *)sender {
-    [textfield1 resignFirstResponder]; // 取消键盘的响应
-    [textfield2 resignFirstResponder];
-    textfield1.layer.borderColor = [UIColor grayColor].CGColor;
-    textfield2.layer.borderColor = [UIColor grayColor].CGColor;
-    textfield1.text = @"";
-    textfield2.text = @"";
-}
 @end
-
-
-
-

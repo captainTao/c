@@ -666,3 +666,26 @@ btn.center = self.view.center;
 
 
 
+ -------------------------------------------------------------------------------
+ <UITextFieldDelegate>
+// 文本框的的事件代理 <UITextFieldDelegate>
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSLog(@"%@ %@", NSStringFromRange(range), string);
+    
+    // 限制输入的长度
+    unsigned long loc = range.location;
+    return (loc < 6);
+    
+//    if (loc < 6) {
+//        return YES;
+//    } else {
+//        return NO;
+//    }
+    
+    // 如果返回NO，就不向文本框中添加字符
+//    return YES;
+}
+
+@end

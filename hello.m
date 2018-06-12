@@ -2282,7 +2282,8 @@ int main()
 1.生成协议
 2.委托代理
 3.代理方法
-/*
+
+
  1.协议的定义
  @protocol 协议名称 <NSObject>
   // 方法声明列表....
@@ -2341,7 +2342,7 @@ int main()
  @implementation Person (MJ)
  // ----分类的方法的实现
  @end
- */
+
 
 
 
