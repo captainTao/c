@@ -84,7 +84,7 @@
     [pwdText resignFirstResponder];
     userText.layer.borderColor = [UIColor grayColor].CGColor;
     pwdText.layer.borderColor = [UIColor grayColor].CGColor;
-    NSLog(@"%s %@ %@", __func__, userText.text, pwdText.text);
+    NSLog(@"%s userText = %@ pwdText = %@", __func__, userText.text, pwdText.text);
     userText.text = @"";
     pwdText.text = @"";
 }
@@ -160,14 +160,10 @@
 // 点击done按键之后调用此方法：
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     NSLog(@"调用了tag=%ld的文本框",(long)textField.tag);
-    if (textField == userText) {
-        [pwdText becomeFirstResponder];
-    }else {
-//        [self.view endEditing:YES];// 关闭键盘的强制响应，一般用在不知道焦点在谁的时候
-        [textField resignFirstResponder];// 取消当前键盘输入响应，即：输入完毕，收起键盘；
-    }
+    // [self.view endEditing:YES];// 关闭键盘的强制响应，一般用在不知道焦点在谁的时候
+    [textField resignFirstResponder];// 取消当前键盘输入响应，即：输入完毕，收起键盘；
     return true;
-//    return YES; // 两种return都可以用；
+    //return YES; // 两种return都可以用；
 }
 
 // 输入完成后调用此方法；在上面done方法之后调用；
@@ -204,14 +200,11 @@
     mybutton *btn2 = [[mybutton alloc]initWithFrame:CGRectMake(80, 70, 200, 100)];
     btn2.backgroundColor = [UIColor yellowColor];
     btn2.titleLabel.font = [UIFont systemFontOfSize:26]; // 设置btn中文字的大小
+    btn2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter; // 文字水平居中对齐
     [self.view addSubview: btn2];
 }
 
-// myaction button点击时候调用方法：
-- (IBAction)myaction:(id)sender { // 通过拖拽方式生成的btn1的方法，点击之后响应：
-    UIButton *btn1 = (UIButton *)sender; //把id类型转为uibutton
-    btn1.backgroundColor = [UIColor greenColor];
-}
+
 
 -(void)testUIButton7{
     
@@ -538,5 +531,11 @@
     
 }
 
+
+// （通过storyboard添加的）myaction button点击时候调用方法：
+- (IBAction)myaction:(id)sender { // 通过拖拽方式生成的btn1的方法，点击之后响应：
+    UIButton *btn1 = (UIButton *)sender; //把id类型转为uibutton
+    btn1.backgroundColor = [UIColor greenColor];
+}
 
 @end

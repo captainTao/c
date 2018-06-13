@@ -688,4 +688,13 @@ btn.center = self.view.center;
 //    return YES;
 }
 
-@end
+
+//编辑结束后：
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    NSString *content = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];//去掉内容中的空格；
+    if ([content isEqualToString:@""] || content == nil) {
+        textField.layer.borderColor = [UIColor redColor].CGColor;
+    }else{
+        textField.layer.borderColor = [UIColor greenColor].CGColor;
+    }
+}

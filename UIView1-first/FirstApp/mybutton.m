@@ -48,7 +48,7 @@
 // 设置button中文字位置：
 -(CGRect)titleRectForContentRect:(CGRect)contentRect{
     CGFloat h = contentRect.size.height/2; // 设置button高度的1/2
-    CGFloat w = contentRect.size.width -h-5; // 设置字体的宽度
+    CGFloat w = contentRect.size.width -h-50; // 设置字体的宽度
     CGFloat x = 10+h+5; // 距离左边为5+h+5个像素
     CGFloat y = (contentRect.size.height-h)/2; // （button高度-图像高度）/2
     return CGRectMake(x, y, w, h);
