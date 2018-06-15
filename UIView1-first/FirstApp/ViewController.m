@@ -252,8 +252,14 @@
 
 - (void)buttonPressed:(UIButton *)bt // 含参的函数调用,如果方法没有冒号，这儿就不加后面的参数；
 {
-    // button事件，跳转url
-    NSLog(@"我被点击了！");
+    
+    NSLog(@"%s", __func__);
+    // 监听方法的对象
+    NSLog(@"%lu", (unsigned long)bt.allControlEvents);
+    // UIControlEventTouchUpInside事件的监听方法
+    NSLog(@"%@", [bt actionsForTarget:self forControlEvent:UIControlEventTouchUpInside]);
+    
+    // 跳转url:
     // [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"]]; // 老版本的用法，10已经启用openURL
     NSString *scheme = @"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:scheme] options:@{} completionHandler:^(BOOL success) {
@@ -261,8 +267,8 @@
     }];
     
     [bt removeTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside]; // 点击一下之后移除事件
-//    return;
     // [self presentViewController:[TestVC new] animated:YES completion:nil];
+    
 }
 
 #pragma mark 多个图片的UIImageView：轮播效果图

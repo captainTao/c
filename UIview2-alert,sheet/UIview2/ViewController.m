@@ -20,18 +20,17 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     /*本文讲解： UIAlertView和UIActionSheet  后学再学习UIAlertController */
-    
-    // UIAlertView在ios9之后不推荐使用了，苹果不进行维护，推荐使用UIAlertController
-    [self test7];
-    
-    
-    // 自定义alertview:  == 1个lable +2个button:
 
+    // 自定义alertview:  == 1个lable +2个button:
     UiviewtoAlertView *myalertview = [[UiviewtoAlertView alloc] initWithFrame:CGRectMake(20, 100, self.view.frame.size.width-40, 100)];
     [self.view addSubview: myalertview];
-
+    
+    // UIAlertView, UIActionSheet 在ios8之后不推荐使用了,苹果不进行维护,推荐使用 UIAlertController : UIViewController
+    [self create];
 }
-# pragma mark UIAcitonSheet:
+
+
+# pragma mark UIAcitonSheet:  <UIActionSheetDelegate>
 // UIActionSheet:
 // 代理为self时候，协议用：UIActionSheetDelegate， 响应方法：
 // Cancel--最下面，OK---最上面
@@ -47,11 +46,13 @@
     NSLog(@"button Index = %ld", buttonIndex);
 }
 
-# pragma mark UIAlertView:
+
+
+# pragma mark UIAlertView  <UIAlertViewDelegate>
 // UIAlertView:
 - (void)test6{
     // 如果代理为自己，那么对一个的.m文件需要遵守 <UIAlertViewDelegate>协议
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:@"OK", nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:@"OK",@"other", nil];
     alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;// name,password模式；
     [alert show];
 }
@@ -62,6 +63,12 @@
     // ok--1  cancel--0  textfield--nil
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:@"OK", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    /*
+     UIAlertViewStyleDefault = 0,  // 默认
+     UIAlertViewStyleSecureTextInput,  // 密文
+     UIAlertViewStylePlainTextInput,  // 普通文本
+     UIAlertViewStyleLoginAndPasswordInput  // user and pwd
+     */
     UITextField *alertextfield = [alert textFieldAtIndex:0]; // 找到textfield的输入
     alertextfield.keyboardType = UIKeyboardTypeNumberPad;// 数字键
     [alert show];
@@ -74,7 +81,13 @@
     [alert show];
 }
 
-// 点击alerView的响应方法：
+
+/*
+ 1>  ok - index:0
+ 2>  cancle - index:0  ok - index:1  // textfield - index:0
+ 3>  cancle"--index:0  "1"--index:1  "2"--index:2  // textfield - index:0  textfield - index:1
+*/
+// 点击alerView的delegate响应方法：
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSLog(@"buttonIndex = %ld", buttonIndex);
     if(buttonIndex == 1){
@@ -91,8 +104,9 @@
 
 }
 
+# pragma mark UIAlertView no delegete
 - (void)test3{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:nil cancelButtonTitle:@"Cancle" otherButtonTitles:@"1",@"2", nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:@"1",@"2", nil];
     [alert show];
 }
 // cancle - 0 ok -1
@@ -101,9 +115,55 @@
     [alert show];
 }
 - (void)test1{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
 }
+
+/********************************************/
+// refer to : https://www.jianshu.com/p/85edffe95d2a
+- (void)actionSheet {
+    
+    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *showAllInfoAction = [UIAlertAction actionWithTitle:@"查看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"评论" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [actionSheetController addAction:cancelAction];
+    [actionSheetController addAction:commentAction];
+    [actionSheetController addAction:showAllInfoAction];
+    
+    [self presentViewController:actionSheetController animated:YES completion:nil];
+    
+}
+
+- (void)alertStyleWithTextField
+{
+    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:nil message:@"输入姓名" preferredStyle:UIAlertControllerStyleAlert];
+    [actionSheetController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请输入姓名";
+    }];
+    
+    UIAlertAction *determineAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [actionSheetController addAction:determineAction];
+    [actionSheetController addAction:cancelAction];
+    
+    [self presentViewController:actionSheetController animated:YES completion:nil];
+}
+
 
 # pragma mark AlterController使用，还不会。。。
 // 弹出对话框

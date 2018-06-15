@@ -698,3 +698,33 @@ btn.center = self.view.center;
         textField.layer.borderColor = [UIColor greenColor].CGColor;
     }
 }
+
+
+textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆角矩形
+/*
+1.注意，设置button背景图像与边框样式UITextBorderStyleRoundedRect不能重叠使用
+2.textFiled.background = [UIImage imageNamed:@"img_01"];
+*/
+
+
+- (void)buttonPressed:(UIButton *)bt // button target调用的方法；
+{
+    
+    NSLog(@"%s", __func__);
+    // 监听方法的对象
+    NSLog(@"%lu", (unsigned long)bt.allControlEvents);
+    // UIControlEventTouchUpInside事件的监听方法
+    NSLog(@"%@", [bt actionsForTarget:self forControlEvent:UIControlEventTouchUpInside]);
+}
+
+
+<UIAlertViewDelegate>
+#pragma mark - 提示框代理方法
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex) {
+        NSLog(@"用户登录");
+    } else {
+        NSLog(@"取消登录");
+    }
+}
