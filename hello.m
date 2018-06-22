@@ -2753,6 +2753,12 @@ NSTimer准确吗？如果不准确，怎么办？
 通常用来有一定事件跨度的周期性事件的处理！CADisplayLink
 
 
+<UIScrollViewDelegate>
+从代码上看，运行循环有两种模式：
+NSDefaultRunLoopMode
+NSRunLoopCommonModes(滚动)
+一旦发现有滚动事件，默认模式暂时不监听
+
 /******************************* KVC *******************************/
 
 // key - value - coding

@@ -670,6 +670,8 @@ btn.center = self.view.center;
  <UITextFieldDelegate>
 // 文本框的的事件代理 <UITextFieldDelegate>
 
+/* 用户每次输入文字的时候通知视图控制器具体的输入内容 */
+** 限制文本框的输入长度
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSLog(@"%@ %@", NSStringFromRange(range), string);
@@ -700,6 +702,12 @@ btn.center = self.view.center;
 }
 
 
+/** 用户在文本框中按回车键时通知代理: */
+*** 键盘焦点的切换
+*** 关闭键盘
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+
+
 textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆角矩形
 /*
 1.注意，设置button背景图像与边框样式UITextBorderStyleRoundedRect不能重叠使用
@@ -707,7 +715,9 @@ textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆�
 */
 
 
-- (void)buttonPressed:(UIButton *)bt // button target调用的方法；
+/**********************************************/
+
+- (void)buttonPressed:(UIButton *)bt // button target绑定的方法；
 {
     
     NSLog(@"%s", __func__);
@@ -717,9 +727,10 @@ textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆�
     NSLog(@"%@", [bt actionsForTarget:self forControlEvent:UIControlEventTouchUpInside]);
 }
 
-
+/**********************************************/
 <UIAlertViewDelegate>
 #pragma mark - 提示框代理方法
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex) {
@@ -728,3 +739,11 @@ textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆�
         NSLog(@"取消登录");
     }
 }
+
+/**********************************************/
+<UIScrollViewDelegate>
+
+
+
+
+

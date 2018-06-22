@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "UiviewtoAlertView.h"
+/*本文讲解： UIAlertView和UIActionSheet  后学再学习UIAlertController */
 
 @interface ViewController () <UIAlertViewDelegate, UIActionSheetDelegate>
 
@@ -19,7 +20,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    /*本文讲解： UIAlertView和UIActionSheet  后学再学习UIAlertController */
+
 
     // 自定义alertview:  == 1个lable +2个button:
     UiviewtoAlertView *myalertview = [[UiviewtoAlertView alloc] initWithFrame:CGRectMake(20, 100, self.view.frame.size.width-40, 100)];
@@ -87,6 +88,7 @@
  2>  cancle - index:0  ok - index:1  // textfield - index:0
  3>  cancle"--index:0  "1"--index:1  "2"--index:2  // textfield - index:0  textfield - index:1
 */
+
 // 点击alerView的delegate响应方法：
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSLog(@"buttonIndex = %ld", buttonIndex);
@@ -221,6 +223,97 @@
         
     }];
 }
+
+
+- (void)actionSheetStyle {
+    
+    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:nil message:@"actionSheetStyle" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *showAllInfoAction = [UIAlertAction actionWithTitle:@"查看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    UIAlertAction *pickAction = [UIAlertAction actionWithTitle:@"评论" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [actionSheetController addAction:pickAction];
+    [actionSheetController addAction:cancelAction];
+    [actionSheetController addAction:showAllInfoAction];
+    
+    [self presentViewController:actionSheetController animated:YES completion:nil];
+}
+
+- (void)alertStyle
+{
+    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *showAllInfoAction = [UIAlertAction actionWithTitle:@"查看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    UIAlertAction *pickAction = [UIAlertAction actionWithTitle:@"评论" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [actionSheetController addAction:pickAction];
+    [actionSheetController addAction:cancelAction];
+    [actionSheetController addAction:showAllInfoAction];
+    
+    [self presentViewController:actionSheetController animated:YES completion:nil];
+}
+
+- (void)alertStyleWithTextField1
+{
+    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:nil message:@"输入姓名" preferredStyle:UIAlertControllerStyleAlert];
+    [actionSheetController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请输入姓名";
+    }];
+    
+    UIAlertAction *determineAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [actionSheetController addAction:determineAction];
+    [actionSheetController addAction:cancelAction];
+    
+    [self presentViewController:actionSheetController animated:YES completion:nil];
+}
+
+
+- (void)alertStyleWithTwoTextField
+{
+    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:nil message:@"登录" preferredStyle:UIAlertControllerStyleAlert];
+    [actionSheetController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"账号";
+    }];
+    [actionSheetController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"密码";
+        textField.secureTextEntry = YES;
+    }];
+    
+    UIAlertAction *determineAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [actionSheetController addAction:determineAction];
+    [actionSheetController addAction:cancelAction];
+    
+    [self presentViewController:actionSheetController animated:YES completion:nil];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
