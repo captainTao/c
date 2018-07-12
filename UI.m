@@ -98,7 +98,73 @@ btn.center = self.view.center;
  2> UILabel     -> UIView
 
  链接url:   https://www.jianshu.com/p/d4c71fbd440e
- 
+
+
+//自动计算label的高度，自动换行
+
+NSString * str = @"阿什顿客服哈是客户的空间哈伦裤的是否考虑啥可来得及发货时看见啊奥斯卡交电话费看见啦释放及时奥斯卡恢复卡是否啊开始地方可拉伸阿什顿客服哈是客户的空间哈伦裤的是否考虑啥可来得及发货时看见啊奥斯卡交电话费看见啦释放及时奥斯卡恢复卡是否啊开始地方可拉伸";
+
+/*
+计算显示当前字符串需要多大的空间(宽和高)
+参数1:限制显示当前字符串的最大宽度和最大高度
+参数2:渲染模式
+参数3:字符串的属性（设置文字颜色和字体）
+NSFontAttributeName:设置字体的键
+NSForegroundColorAttributeName:设置文字颜色的键
+参数4:上下文
+*/
+
+CGRect rect = [str boundingRectWithSize:CGSizeMake(200, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17], NSForegroundColorAttributeName:[UIColor redColor]} context:nil];
+
+UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, rect.size.width, rect.size.height)];
+label.text = str;
+label.numberOfLines = 0; //自动换行
+label.lineBreakMode = NSLineBreakByWordWrapping;
+label.font = [UIFont systemFontOfSize:17];
+
+
+
+//ios动态获取UILabel的高度和宽度
+http://www.cnblogs.com/spiritstudio/archive/2011/11/17/2252074.html
+
+在使用UILabel存放字符串时，经常需要获取label的长宽数据，本文列出了部分常用的计算方法。
+
+1.获取宽度，获取字符串不折行单行显示时所需要的长度 
+CGSize titleSize = [aString sizeWithFont:font constrainedToSize:CGSizeMake(MAXFLOAT, 30)];
+注：如果想得到宽度的话，size的width应该设为MAXFLOAT。
+
+2.获取高度，获取字符串在指定的size内(宽度超过label的宽度则换行)所需的实际高度.
+
+CGSize titleSize = [aString sizeWithFont:font constrainedToSize:CGSizeMake(label.frame.size.width, MAXFLOAT) lineBreakMode:UILineBreakModeWordWrap];
+注：如果想得到高度的话，size的height应该设为MAXFLOAT。
+
+3.实际编程时，有时需要计算一段文字最后一个字符的位置，并在其后添加图片或其他控件（如info图标），下面代码为计算label中最后一个字符后面一位的位置的方法。
+
+CGSize sz = [label.text sizeWithFont:label.font constrainedToSize:CGSizeMake(MAXFLOAT, 40)];
+CGSize linesSz = [label.text sizeWithFont:label.font constrainedToSize:CGSizeMake(label.frame.size.width, MAXFLOAT) lineBreakMode:UILineBreakModeWordWrap];
+if(sz.width <= linesSz.width) //判断是否折行
+{
+        lastPoint = CGPointMake(label.frame.origin.x + sz.width, label.frame.origin.y);  
+}
+else  
+{  
+        lastPoint = CGPointMake(label.frame.origin.x + (int)sz.width % (int)linesSz.width,linesSz.height - sz.height);  
+}
+
+
+
+//调整行间距
+UILabel *yearVipLabel = [[UILabel alloc]initWithFrame:CGRectMake(intevar, CGRectGetMaxY(yearVipTitle.frame) + intevar, self.view.width - intevar * 2, 200)];
+
+ yearVipLabel.numberOfLines = 0;
+
+ NSString *descStr = _buyYearInfoModel.desc;
+ NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:descStr];
+ NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+ [paragraphStyle setLineSpacing:15];//调整行间距
+ [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [descStr length])];
+ yearVipLabel.attributedText = attributedString;
+
 /***********************************************************************/UIImageView
  3> UIImageView -> UIView
 
@@ -349,7 +415,6 @@ c,调用setNeedDisplay的时候调用
 
 
 /************************************************************/
-
 
 
 

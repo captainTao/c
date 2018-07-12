@@ -230,6 +230,7 @@
     [btn setBackgroundImage:[UIImage imageNamed:@"btnbg.jpg"] forState:UIControlStateHighlighted];
     
     [btn setTitle:@"点击内容" forState:UIControlStateNormal]; //设置内容
+
     // 默认情况下字体title的颜色为白色
     [btn setTitleColor:[UIColor purpleColor] forState:UIControlStateNormal];//设置内容颜色
     
@@ -373,7 +374,7 @@
     //label1.adjustsFontSizeToFitWidth = true; //字体大小自适应,这种方法会缩小字体，不建议使用
     label1.numberOfLines = 0; //行数自适应
     [self.view addSubview:label1];
-    
+
     //继承UIview的属性,这是label的样式
     label1.layer.borderColor = [UIColor redColor].CGColor; //转换为CGcolor
     label1.layer.borderWidth = 5.0;
@@ -381,16 +382,16 @@
     label1.layer.cornerRadius = 5.0;
     label1.layer.shadowOffset = CGSizeMake(20, 20);
     label1.layer.shadowOpacity = 0.7; //阴影的透明度，越大越不透明；
-    
+
     //设置label中的字体样式
     label1.shadowColor = [UIColor yellowColor];
     label1.shadowOffset = CGSizeMake(2, 2);
     
     
-    
+
     //根据label的内容设置合适的宽和高,比如微信：
     UIFont *font = [UIFont systemFontOfSize:15.0];
-    NSString *content =@"hello,嘿嘿！！！";
+    NSString *content =@"hello,嘿嘿！！！哈哈";
     //根据文本内容，以及字体大小生成合适的宽高。
     CGSize lableWh = [content sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil]];
     UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(50, 250, lableWh.width, lableWh.height)];
@@ -398,7 +399,30 @@
     label2.font = font;
     label2.backgroundColor = [UIColor yellowColor];
     [self.view addSubview:label2];
+
     
+    //自动计算label的高度，自动换行
+    NSString * str = @"阿什顿客服哈是客户的空间哈伦裤的是否考虑啥可来得及发货时看见啊奥斯卡交电话费看见啦释放及时奥斯卡恢复卡是否啊开始地方可拉伸阿什顿客服哈是客户的空间哈伦裤的是否考虑啥可来得及发货时看见啊奥斯卡交电话费看见啦释放及时奥斯卡恢复卡是否啊开始地方可拉伸";
+
+    /*
+     计算显示当前字符串需要多大的空间(宽和高)
+     参数1:限制显示当前字符串的最大宽度和最大高度
+     参数2:渲染模式
+     参数3:字符串的属性（设置文字颜色和字体）
+     NSFontAttributeName:设置字体的键
+     NSForegroundColorAttributeName:设置文字颜色的键
+     参数4:上下文
+     */
+
+    CGRect rect = [str boundingRectWithSize:CGSizeMake(300, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17], NSForegroundColorAttributeName:[UIColor redColor]} context:nil];
+
+    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, rect.size.width, rect.size.height)];
+    label.text = str;
+    label.numberOfLines = 0; //自动换行
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.font = [UIFont systemFontOfSize:17];
+    [self.view addSubview:label];
+
 }
 
 # pragma mark UIView:
