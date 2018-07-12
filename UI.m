@@ -49,10 +49,20 @@ question:
 3.设置指示器的时候，设置的坐标和UIview中的坐标还是有所差异？ ---cgcontext的坐标使用的是CoreGraphics
 4.一个方法中使用的另外一个方法中的变量时候，需要提前声明？
 
-/**********************************************/
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+//////////////////////////////////////////////////////
+/***********************************************************************/UIButton
 
  1> UIButton  -> UIControl -> UIView
  
+
+ // 设置button的中心点为view的中心点
+btn.center = self.view.center;
+
+
  1.1 设置控件的状态
  
  启用、禁用
@@ -72,8 +82,27 @@ question:
  - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents;
  - (void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents;
 
+
+
+- (void)buttonPressed:(UIButton *)bt // button target绑定的方法；
+{
+    
+    NSLog(@"%s", __func__);
+    // 监听方法的对象
+    NSLog(@"%lu", (unsigned long)bt.allControlEvents);
+    // UIControlEventTouchUpInside事件的监听方法
+    NSLog(@"%@", [bt actionsForTarget:self forControlEvent:UIControlEventTouchUpInside]);
+}
+/***********************************************************************/UILabel
+
  2> UILabel     -> UIView
+
+ 链接url:   https://www.jianshu.com/p/d4c71fbd440e
+ 
+/***********************************************************************/UIImageView
  3> UIImageView -> UIView
+
+/***********************************************************************/UITextField
  4> UITextField -> UIControl
  
  *** 代理设计模式，在OC中，使用最为广泛的一种设计模式
@@ -89,300 +118,82 @@ question:
 
 
 
-//////////////////////////////////////////////////////////////////////////
+------------------------------ <UITextFieldDelegate>
+// 文本框的的事件代理 <UITextFieldDelegate>
 
-
-@implementation ViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.blue.hidden = true;
-    
-    // UIbutton绑定事件；
-    self.view.backgroundColor = [UIColor yellowColor];
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btn setBackgroundColor:[UIColor grayColor]];
-    [btn setTitle:@"点击内容" forState:UIControlStateNormal]; //设置内容
-    [btn setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];//设置内容颜色
-    btn.frame = CGRectMake(100, 200, 100, 100);
-    // UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(100, 200, 100, 100)]; //可以直接初始化的时候设置位置大小
-    [btn addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    // UIControlEventTouchUpInside:点击之后响应事件
-    [self.view addSubview:btn];
-}
-
-- (void)buttonPressed:(UIButton *)bt // 含参的函数调用
+/* 用户每次输入文字的时候通知视图控制器具体的输入内容 */
+** 限制文本框的输入长度
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    // button事件，跳转url
-    NSLog(@"我被点击了！");
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"]];
+    NSLog(@"%@ %@", NSStringFromRange(range), string);
     
-    return;
-    //    [self presentViewController:[TestVC new] animated:YES completion:nil];
+    // 限制输入的长度
+    unsigned long loc = range.location;
+    return (loc < 6);
+    
+//    if (loc < 6) {
+//        return YES;
+//    } else {
+//        return NO;
+//    }
+    
+    // 如果返回NO，就不向文本框中添加字符
+//    return YES;
 }
 
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
--(void)test6{
-    // 图片轮播效果，幻灯片效果
-    UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
-    UIImage *img2 = [UIImage imageNamed:@"img2.jpg"];
-    UIImage *img3 = [UIImage imageNamed:@"img3.jpg"];
-    
-    //设置imageview的尺寸
-    CGSize screensize = [UIScreen mainScreen].bounds.size;
-    CGFloat imgheight = screensize.width * (img1.size.height / img1.size.width);
-    UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, screensize.width, imgheight)];
-    
-    imageview.animationImages = [NSArray arrayWithObjects:img1,img2,img3, nil];//设置图像，需要先把图像包装成UIimage
-    imageview.animationDuration = 3; //循环间隔
-    imageview.animationRepeatCount =5; //循环次数
-    imageview.alpha = 0.9; // 修改view的透明度alpha,取值范围为0-1，数值越小，透明度越高；
-    [self.view addSubview:imageview];
-    [imageview startAnimating]; //开始动画
-    
-}
-
--(void)test5{
-    /*
-     typedef NS_ENUM(NSInteger, UIViewContentMode) {
-     UIViewContentModeScaleToFill,         // 填充，会变形,
-     UIViewContentModeScaleAspectFit,      // 居中适配，不变形, contents scaled to fit with fixed aspect. remainder is transparent
-     UIViewContentModeScaleAspectFill,     // 全部填充，不变形，部分裁切, contents scaled to fill with fixed aspect. some portion of content may be clipped.
-     UIViewContentModeRedraw,              // redraw on bounds change (calls -setNeedsDisplay)
-     UIViewContentModeCenter,              // contents remain same size. positioned adjusted.
-     UIViewContentModeTop,
-     UIViewContentModeBottom,
-     UIViewContentModeLeft,
-     UIViewContentModeRight,
-     UIViewContentModeTopLeft,
-     UIViewContentModeTopRight,
-     UIViewContentModeBottomLeft,
-     UIViewContentModeBottomRight,
-     };
-     凡是没有带Scale的，当图片尺寸超过 ImageView尺寸时，只有部分显示在ImageView中;
-     
-     */
-    
-    UIImage *img2 = [UIImage imageNamed:@"img4.jpg"];
-    UIImageView *imageview2 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, 300, 500)];
-    imageview2.image = img2;
-    imageview2.contentMode = UIViewContentModeScaleAspectFit;
-    //view的变换：
-    imageview2.center = CGPointMake(150, 300);//中心移动：移动view的中心点
-    imageview2.transform = CGAffineTransformMakeRotation(M_1_PI);//旋转办法；
-    imageview2.transform = CGAffineTransformMakeScale(0.5, 0.5);//缩放，参数分别为宽，高
-    imageview2.transform = CGAffineTransformMakeTranslation(100, 100);//相对移动：屏幕上的点再移动100，100
-    
-    [self.view addSubview:imageview2];
-    imageview2.layer.borderColor = [UIColor redColor].CGColor;
-    imageview2.layer.borderWidth = 3.0;
-    
-}
-
--(void)test4{
-    /*
-     UIImageView: UI + image + view
-     
-     直接通过imageview添加的图片没有大小限制，会根据图片的实际大小来展示；
-     UIImageView *imageview2 = [[UIImageView alloc]initWithImage:img1];
-     [self.view addSubview:imageview2];
-     */
-    
-    UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
-    //根据屏幕设备的宽度来适配图片的高度
-    CGSize screensize = [UIScreen mainScreen].bounds.size;
-    CGFloat imgheight = screensize.width * (img1.size.height / img1.size.width);
-    UIImageView *imageview1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, screensize.width, imgheight)];
-    imageview1.image = img1;
-    [self.view addSubview:imageview1];
-    
-}
-
--(void)test3{
-    // UIlabel的相关属性：url：https://www.jianshu.com/p/d4c71fbd440e
-    UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(50, 70, 200, 100)];//位置
-    label1.backgroundColor = [UIColor grayColor];//背景颜色
-    label1.text  = @"这是label1的内容！";//内容
-    [label1 setText:@"hello,world 你好,呵呵呵，哈哈哈，哼哼，唧唧，乐乐, 说走咱就走啊，你有我有全都有啊！嘿嘿嘿！！！"];
-    label1.textColor = [UIColor greenColor];//字体颜色
-    [label1 setTextColor:[UIColor colorWithRed:1.0 green:0.5 blue:0.0 alpha:1.0]];//设置rgb;
-    label1.font = [UIFont systemFontOfSize:12.0];//字体大小
-    label1.font = [UIFont fontWithName:@"Menlo" size:14.0];//字体
-    label1.font = [UIFont boldSystemFontOfSize:13];//加粗
-    label1.font = [UIFont italicSystemFontOfSize:13.0];//斜体
-    [label1 setTextAlignment:NSTextAlignmentCenter];//文本对齐
-    label1.textAlignment = NSTextAlignmentLeft;
-    [label1 setNumberOfLines:3];//设置行数
-    [label1 setLineBreakMode:NSLineBreakByWordWrapping]; //折行模式
-    label1.lineBreakMode = NSLineBreakByTruncatingTail; //最后省略模式
-    //label1.adjustsFontSizeToFitWidth = true; //字体大小自适应,这种方法会缩小字体，不建议使用
-    label1.numberOfLines = 0; //行数自适应
-    [self.view addSubview:label1];
-    
-    //继承UIview的属性
-    label1.layer.borderColor = [UIColor redColor].CGColor; //转换为CGcolor
-    label1.layer.borderWidth = 5.0;
-    
-    label1.layer.shadowColor = [UIColor greenColor].CGColor; //转换为CGcolor
-    label1.layer.cornerRadius = 5.0;
-    label1.layer.shadowOffset = CGSizeMake(20, 20);
-    label1.layer.shadowOpacity = 0.7; //阴影的透明度，越大越不透明；
-    
-    //设置label中的字体样式
-    label1.shadowColor = [UIColor yellowColor];
-    label1.shadowOffset = CGSizeMake(2, 2);
-    
-    
-    
-    //根据label的内容设置合适的宽和高,比如微信：
-    UIFont *font = [UIFont systemFontOfSize:15.0];
-    NSString *content =@"hello,嘿嘿！！！";
-    //根据文本内容，以及字体大小生成合适的宽高。
-    CGSize lableWh = [content sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil]];
-    UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(50, 250, lableWh.width, lableWh.height)];
-    label2.text = content;
-    label2.font = font;
-    label2.backgroundColor = [UIColor yellowColor];
-    [self.view addSubview:label2];
-    
-}
-
-
--(void)test2{
-    // view的增删改查：
-    UIView *viewcolor1 = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
-    viewcolor1.backgroundColor = [UIColor purpleColor];
-    [self.view addSubview:viewcolor1];
-    
-    UIView *viewcolor2 = [[UIView alloc]initWithFrame:CGRectMake(75, 105, 200, 50)];
-    viewcolor2.backgroundColor = [UIColor greenColor];
-    [self.view addSubview:viewcolor2];//在最后一个view后面添加
-    
-    //插入某个view到哪一层
-    [self.view insertSubview:viewcolor2 atIndex:2];
-    //view的交换,self.view的index为1，后面的子视图依次+1;
-    [self.view exchangeSubviewAtIndex:2 withSubviewAtIndex:3];
-    
-    UIView *viewcolor3 = [[UIView alloc]initWithFrame:CGRectMake(80, 110, 200, 50)];
-    viewcolor3.backgroundColor = [UIColor yellowColor];
-    [self.view addSubview:viewcolor3];//在最后一个view后面添加
-    
-    //调整到最后一个view
-    [self.view sendSubviewToBack:viewcolor3];
-    //调整到最前面来
-    [self.view bringSubviewToFront:viewcolor3];
-    //从视图中移除
-    [viewcolor3 removeFromSuperview];
-    
-    
-    //遍历：
-    viewcolor1.tag = 1;//添加tag
-    viewcolor2.tag = 2;
-    viewcolor3.tag = 3;
-    NSArray *subviewArray = self.view.subviews;//通过父视图获取子视图
-    for (UIView *view in subviewArray){ // 通过数组遍历
-        if(view.tag == 1){
-            view.backgroundColor = [UIColor grayColor];
-        }
-        if(view.tag == 2){
-            view.frame = CGRectMake(75, 105, 250, 70);
-        }
+//编辑结束后：
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    NSString *content = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];//去掉内容中的空格；
+    if ([content isEqualToString:@""] || content == nil) {
+        textField.layer.borderColor = [UIColor redColor].CGColor;
+    }else{
+        textField.layer.borderColor = [UIColor greenColor].CGColor;
     }
-    
-    
-    /*
-     layer和UIview的区别：
-     1.layer无法响应响应事件， UIview可以响应
-     2.layer继承自NSObject,  UIview继承自UIResponder
-     3.layer：主要进行内容的绘制，创建；UIview：显示管理
-     4.layer：能实现一些特殊的效果，比如圆角和阴影
-     */
-    //修改view的透明度alpha,取值范围为0-1，数值越小，透明度越高；
-    _blue.alpha = 0.7;
-    //隐藏：hidden属性为bool类型，也可以设置它的透明度为0来把它隐藏
-    self.blue.hidden = false;
-    
-    //描边：
-    self.blue.layer.borderWidth = 3;
-    self.blue.layer.borderColor = [UIColor redColor].CGColor;//注意要转换为CGColor
-    //圆角：
-    self.blue.layer.cornerRadius = 10;
-    //阴影：
-    self.blue.layer.shadowColor = [UIColor grayColor].CGColor;
-    self.blue.layer.shadowOffset = CGSizeMake(10, 10); //设置shandow偏移量；
-    _blue.layer.shadowOpacity = 0.5; //设置透明度
-
 }
 
 
--(void)test1{
-    /*
-     struct CGRect { //CGRect两个属性 origin, size;
-     CGPoint origin;
-     CGSize size;
-     };
-     struct CGSize {
-     CGFloat width;
-     CGFloat height;
-     };
-     struct CGPoint {
-     CGFloat x;
-     CGFloat y;
-     };
-     */
-    // 添加main.storyboard的背景颜色
-    self.view.backgroundColor = [UIColor yellowColor];
-    
-    // 获取当前设备的物理尺寸: UIscreen
-    CGFloat w = [UIScreen mainScreen].bounds.size.width;
-    CGFloat h = [UIScreen mainScreen].bounds.size.height;
-    NSLog(@"width = %f, height = %f", w, h);
-    
-    // 获取原点坐标
-    CGFloat x = [UIScreen mainScreen].bounds.origin.x;
-    CGFloat y = [UIScreen mainScreen].bounds.origin.y;
-    NSLog(@"x = %f, y = %f", x, y);
-    
-    
+/** 用户在文本框中按回车键时通知代理: */
+*** 键盘焦点的切换
+*** 关闭键盘
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 
-    //UIview的四个属性：frame, bounds, center, transform;
 
-    // 添加一个色块：
-    UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 200, 50)];
-    //    UIView *viewcolor = [[UIView alloc]initWithFrame:CGRectMake(70, 100, 375-100-10, 50)];//375-100-10标识总的尺寸，然后左边留100，右边留10
-    viewcolor.backgroundColor = [UIColor purpleColor];
-    [self.view addSubview:viewcolor];
-    
-    CGFloat x1 = viewcolor.frame.origin.x;
-    CGFloat y1 = viewcolor.frame.origin.y;
-    NSLog(@"x=%f,y=%f",x1,y1);//x=70.000000,y=100.000000
-    NSLog(@"size=%@",NSStringFromCGSize(viewcolor.frame.size));//size={200, 50},相对于屏幕的宽高
-    NSLog(@"bounds=%@",NSStringFromCGRect(viewcolor.bounds));//bounds={{0, 0}, {200, 50}}，相对于自己的宽高
-    NSLog(@"bounds=%@",NSStringFromCGRect(self.view.bounds));//bounds={{0, 0}, {375, 667}}，这是屏幕的尺寸
-    
-    
-    // 图片轮播效果
-    UIImage *img1 = [UIImage imageNamed:@"img1.jpg"];
-    UIImage *img2 = [UIImage imageNamed:@"img2.jpg"];
-    UIImage *img3 = [UIImage imageNamed:@"img3.jpg"];
-    UIImageView *imageview = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
-    imageview.animationImages = [NSArray arrayWithObjects:img1,img2,img3, nil];
-    imageview.animationDuration = 5;
-    [imageview startAnimating];
-    [self.view addSubview:imageview];
-    
+textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆角矩形
+/*
+1.注意，设置button背景图像与边框样式UITextBorderStyleRoundedRect不能重叠使用
+2.textFiled.background = [UIImage imageNamed:@"img_01"];
+*/
+
+
+
+
+/***********************************************************************/UIAlertView
+
+------------------------------<UIAlertViewDelegate>
+#pragma mark - 提示框代理方法
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex) {
+        NSLog(@"用户登录");
+    } else {
+        NSLog(@"取消登录");
+    }
 }
 
-@end
+
+/***********************************************************************/UIScrollView
+------------------------------<UIScrollViewDelegate>
+
+
+
+
+
 
 //////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 
-/************************************************************/
 
 先加载main.storyboard
 
@@ -436,13 +247,13 @@ contentStretch - 视图内容如何拉伸
 
 
 6.创建 UIImageView 有两种方法
-1、一种是通过 UIImage 来加载：
+a、一种是通过 UIImage 来加载：
 
     UIImage *image = [UIImage imageNamed:@"picture"];
     UIImageView *imageview = [[UIImageView alloc]initWithImage:image];
 
 
-2、一种是通过initWithFrame来加载，然后手工修改UIImageView的属性    
+b、一种是通过initWithFrame来加载，然后手工修改UIImageView的属性    
 animationImages：属性，是一个 NSArray，包含要加载到 UIImageView 中的图像；
 animationRepeatCount：属性，指定动画播放多少次，不指定为无限循环播放；
 image：属性，指定一个要加载的图像；
@@ -470,120 +281,13 @@ layer和UIview的区别：
 4.layer：能实现一些特殊的效果，比如圆角和阴影
 
 
-
 8.UILabel:
-链接url:
-https://www.jianshu.com/p/d4c71fbd440e
-
-
+链接url:   https://www.jianshu.com/p/d4c71fbd440e
 
 
 
 /************************************************************/
-UIColor的颜色#494949转rgb模式！
 
-//
-//  UIColor+ext.h
-//  HFramework
-//
-//  Created by zhangchutian on 14-6-5.
-//  Copyright (c) 2014年 zhangchutian. All rights reserved.
-//
-
-#import <UIKit/UIKit.h>
-
-@interface UIColor (ext)
-
-- (UIColor *)revertColor;
-
-//formate : @"#f6ee34" or @"0x45fed2"
-+ (UIColor *)colorWithString:(NSString *)colorStr alpha:(float)alpha;
-+ (UIColor *)colorWithString:(NSString *)colorStr;
-
-//formate : 0x9875a3
-+ (UIColor *)colorWithHex:(int)hex alpha:(float)alpha;
-+ (UIColor *)colorWithHex:(int)hex;
-
-+ (UIColor *)random;
-@end
-
-/*---------------------------分割线---------------------------------*/
-//
-//  UIColor+ext.m
-//  HFramework
-//
-//  Created by zhangchutian on 14-6-5.
-//  Copyright (c) 2014年 zhangchutian. All rights reserved.
-//
-
-#import "UIColor+ext.h"
-
-@implementation UIColor (ext)
-- (UIColor *)revertColor
-{
-    CGColorSpaceModel colorSpaceModel = CGColorSpaceGetModel(CGColorGetColorSpace(self.CGColor));
-    if (colorSpaceModel == kCGColorSpaceModelRGB)
-    {
-        const CGFloat *components = CGColorGetComponents(self.CGColor);
-        return [UIColor colorWithRed:(1.0 - components[0]) green:(1.0 - components[1]) blue:(1.0 - components[2]) alpha:components[3]];
-    }
-    else return nil;
-}
-
-+ (UIColor *)colorWithString:(NSString *)colorStr
-{
-    return [self colorWithString:colorStr alpha:1.0];
-}
-
-+ (UIColor *)colorWithString:(NSString *)colorStr alpha:(float)alpha
-{
-    NSString *cString = [[colorStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
-    if ([cString length] < 6) return [UIColor clearColor];
-    if ([cString hasPrefix:@"0X"] || [cString hasPrefix:@"0x"]) cString = [cString substringFromIndex:2];
-    if ([cString hasPrefix:@"#"]) cString = [cString substringFromIndex:1];
-
-    if ([cString length] != 6) return [UIColor clearColor];
-    NSRange range;
-    range.location = 0;
-    range.length = 2;
-    NSString *rString = [cString substringWithRange:range];
-
-    range.location = 2;
-    NSString *gString = [cString substringWithRange:range];
-
-    range.location = 4;
-    NSString *bString = [cString substringWithRange:range];
-    unsigned int r, g, b;
-    [[NSScanner scannerWithString:rString] scanHexInt:&r];
-    [[NSScanner scannerWithString:gString] scanHexInt:&g];
-    [[NSScanner scannerWithString:bString] scanHexInt:&b];
-
-    return [UIColor colorWithRed:((float) r / 255.0f)
-                           green:((float) g / 255.0f)
-                            blue:((float) b / 255.0f)
-                           alpha:alpha];
-}
-
-+ (UIColor *)colorWithHex:(int)hex
-{
-    return [self colorWithHex:hex alpha:1.0];
-}
-
-+ (UIColor *)colorWithHex:(int)hex alpha:(float)alpha
-{
-    float r = ((float)((hex & 0xff0000) >> 16))/255.0;
-    float g = ((float)((hex & 0xff00) >> 8))/255.0;
-    float b = ((float)((hex & 0xff) >> 0))/255.0;
-    return [UIColor colorWithRed:r green:g blue:b alpha:alpha];
-}
-+ (UIColor *)random
-{
-    return [UIColor colorWithRed:(arc4random()%256)*1.0/256 green:(arc4random()%256)*1.0/256 blue:(arc4random()%256)*1.0/256 alpha:1];
-}
-@end
-
-
-/************************************************************/
 
 
 安装cocoapods:
@@ -606,8 +310,6 @@ error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctool
 Quartz2d绘制图形，图标，
 drwaRect 重绘
 CoreGraphics核心矩阵操作
-
-
 
 
 
@@ -649,99 +351,11 @@ c,调用setNeedDisplay的时候调用
 /************************************************************/
 
 
-// 设置button的中心点为view的中心点
-btn.center = self.view.center;
-
-
- 1.1 继承自UIControl的控件
- -------------------------------------------------------------------------------
- 1> UIButton    ->  UIControl   ->  UIView
- 
- 1.2 继承自UIView的视图
- -------------------------------------------------------------------------------
- 1> UILabel     ->  UIView
- 2> UIImageView ->  UIView
- 3> UITextField ->  UIView
 
 
 
+/************************************************************/
 
- -------------------------------------------------------------------------------
- <UITextFieldDelegate>
-// 文本框的的事件代理 <UITextFieldDelegate>
-
-/* 用户每次输入文字的时候通知视图控制器具体的输入内容 */
-** 限制文本框的输入长度
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    NSLog(@"%@ %@", NSStringFromRange(range), string);
-    
-    // 限制输入的长度
-    unsigned long loc = range.location;
-    return (loc < 6);
-    
-//    if (loc < 6) {
-//        return YES;
-//    } else {
-//        return NO;
-//    }
-    
-    // 如果返回NO，就不向文本框中添加字符
-//    return YES;
-}
-
-
-//编辑结束后：
--(void)textFieldDidEndEditing:(UITextField *)textField{
-    NSString *content = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];//去掉内容中的空格；
-    if ([content isEqualToString:@""] || content == nil) {
-        textField.layer.borderColor = [UIColor redColor].CGColor;
-    }else{
-        textField.layer.borderColor = [UIColor greenColor].CGColor;
-    }
-}
-
-
-/** 用户在文本框中按回车键时通知代理: */
-*** 键盘焦点的切换
-*** 关闭键盘
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-
-
-textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆角矩形
-/*
-1.注意，设置button背景图像与边框样式UITextBorderStyleRoundedRect不能重叠使用
-2.textFiled.background = [UIImage imageNamed:@"img_01"];
-*/
-
-
-/**********************************************/
-
-- (void)buttonPressed:(UIButton *)bt // button target绑定的方法；
-{
-    
-    NSLog(@"%s", __func__);
-    // 监听方法的对象
-    NSLog(@"%lu", (unsigned long)bt.allControlEvents);
-    // UIControlEventTouchUpInside事件的监听方法
-    NSLog(@"%@", [bt actionsForTarget:self forControlEvent:UIControlEventTouchUpInside]);
-}
-
-/**********************************************/
-<UIAlertViewDelegate>
-#pragma mark - 提示框代理方法
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex) {
-        NSLog(@"用户登录");
-    } else {
-        NSLog(@"取消登录");
-    }
-}
-
-/**********************************************/
-<UIScrollViewDelegate>
 
 
 
