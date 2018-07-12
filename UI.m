@@ -223,6 +223,17 @@ UILabel *yearVipLabel = [[UILabel alloc]initWithFrame:CGRectMake(intevar, CGRect
 *** 键盘焦点的切换
 *** 关闭键盘
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+     if (textField == userText) {
+        [pwdText becomeFirstResponder];
+    }else if (textField == pwdText){
+        [self myaction:_loginbutton]; // 调用登录按钮
+    }
+    return YES; // return true;
+}
+
+// [self.view endEditing:YES];// 关闭键盘的强制响应，一般用在不知道焦点在谁的时候
+[textField resignFirstResponder];// 取消当前键盘输入响应，即：输入完毕，收起键盘；
 
 
 textfield.borderStyle = UITextBorderStyleRoundedRect; // 设置输入框为圆角矩形

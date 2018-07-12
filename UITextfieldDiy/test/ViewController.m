@@ -61,6 +61,7 @@
     
 }
 
+// 定义button click的事件
 - (IBAction)myaction:(id)sender {
     NSLog(@"the excuting function is: %s; the input content is: user = %@, pwd = %@", __func__, userText.text, pwdText.text);
     [userText resignFirstResponder];
@@ -91,7 +92,7 @@
     if (textField == userText) {
         [pwdText becomeFirstResponder];
     }else if (textField == pwdText){
-        [self myaction:_loginbutton];
+        [self myaction:_loginbutton]; // 调用登录按钮
     }
     return YES;
 }

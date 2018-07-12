@@ -36,6 +36,7 @@
     }else{
         self.layer.borderColor = [UIColor greenColor].CGColor;
     }
+    
 }
 
 

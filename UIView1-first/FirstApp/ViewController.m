@@ -50,6 +50,8 @@
 
 #pragma mark 自定义textfield:
 
+// 自定义的textfield遵循代理的话，调用方法是在对应的类中去调用，而并不会调用本页面中写的代理方法？？？？？？
+
 -(void)testUITextfield10{
 
     self.loginbutton.layer.borderWidth = 2.0;
@@ -89,7 +91,7 @@
     pwdText.text = @"";
 }
 
-
+/***********************************************/
 # pragma mark UITextFiled:
 
 // 绑定UItextfield的事件，需要设置代理<UITextFieldDelegate>
@@ -162,6 +164,7 @@
     NSLog(@"调用了tag=%ld的文本框",(long)textField.tag);
     // [self.view endEditing:YES];// 关闭键盘的强制响应，一般用在不知道焦点在谁的时候
     [textField resignFirstResponder];// 取消当前键盘输入响应，即：输入完毕，收起键盘；
+    
     return true;
     //return YES; // 两种return都可以用；
 }
