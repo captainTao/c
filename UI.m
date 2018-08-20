@@ -36,6 +36,8 @@ cmd +1, cmd +2, cmd +3, 4, 5; 调整模拟器大小；
 编译+运行：cmd+r
 大小： cmd+1~7,一般用cmd+3
 
+IOS另外一款模拟器：REVEAL 
+https://revealapp.com/
 
 设置颜色十六进制的代码：
 #define UIColorFromHex(s) [UIColor colorWithRed:(((s & 0xFF0000) >> 16))/255.0 green:(((s & 0xFF00) >>8))/255.0 blue:((s & 0xFF))/255.0 alpha:1.0] // 宏定义16进制代码转rgb模式
