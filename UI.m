@@ -429,7 +429,14 @@ c,调用setNeedDisplay的时候调用
 
 /************************************************************/
 
-
+ CGContextStrokePath(context) 实心绘制
+ CGContextDrawPath(context, kCGPathStroke);空心绘制
+ 
+[COLOR1 setStroke];//边色
+[COLOR2 setFill];//填充色
+CGContextStrokePath(context);//边色渲染
+CGContextFillPath(context);//填充渲染
+CGContextDrawPath(context, kCGPathFill);
 
 
 /************************************************************/

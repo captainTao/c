@@ -9,6 +9,13 @@
  CGContextSaveGState(context);
  .......
  CGContextRestoreGState(context);
+ 
+ 1.CGContextStrokePath(context) 实心绘制
+ 2.CGContextDrawPath(context, kCGPathStroke);空心绘制
+ 
+ [COLOR1 setStroke];
+ [COLOR2 setFill];
+ 
  */
 #import "Quartz2d.h"
 
@@ -17,8 +24,26 @@
 
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    [self drawMyPie];
+    [self drawMyRect];
 }
+
+// 绘制XY轴
+- (void)drawXY:(CGContextRef)context{
+    CGContextMoveToPoint(context, 20, 350); // 绘制x轴
+    CGContextAddLineToPoint(context, 360, 350);
+    CGContextAddLineToPoint(context, 350, 345);
+    CGContextMoveToPoint(context, 360, 350);  // 挪动坐标到线段的最末端
+    CGContextAddLineToPoint(context, 350, 355);
+    
+    CGContextMoveToPoint(context, 20, 350); // 绘制y轴
+    CGContextAddLineToPoint(context, 20, 20);
+    CGContextAddLineToPoint(context, 15, 30);
+    CGContextMoveToPoint(context, 20, 20);
+    CGContextAddLineToPoint(context, 25, 30);
+    
+    CGContextStrokePath(context);
+}
+
 
 // 折线图
 - (void)drawMyLine{
@@ -44,13 +69,14 @@
     
     CGContextStrokePath(context);
     
-    // 柱状图的绘制：
-    /*
-     1.绘制线条，然后把线条加粗---弊端：不能绘制空心的柱状图
-     2.绘制矩形，矩形内部可以填充或者不填充，又或者选择不同的渲染方式
-     */
-    
 }
+
+// 柱状图的绘制：
+/*
+ 1.绘制线条，然后把线条加粗---弊端：不能绘制空心的柱状图
+ 2.绘制矩形，矩形内部可以填充或者不填充，又或者选择不同的渲染方式
+ */
+
 
 // 柱状图的绘制：（实心）
 - (void)drawMyBarChart{
@@ -111,23 +137,6 @@
     
 }
 
-// 绘制XY轴
-- (void)drawXY:(CGContextRef)context{
-    CGContextMoveToPoint(context, 20, 350); // 绘制x轴
-    CGContextAddLineToPoint(context, 360, 350);
-    CGContextAddLineToPoint(context, 350, 345);
-    CGContextMoveToPoint(context, 360, 350);  // 挪动坐标到线段的最末端
-    CGContextAddLineToPoint(context, 350, 355);
-    
-    CGContextMoveToPoint(context, 20, 350); // 绘制y轴
-    CGContextAddLineToPoint(context, 20, 20);
-    CGContextAddLineToPoint(context, 15, 30);
-    CGContextMoveToPoint(context, 20, 20);
-    CGContextAddLineToPoint(context, 25, 30);
- 
-    CGContextStrokePath(context);
-}
-
 
 // 饼状图的绘制：
 
@@ -145,7 +154,7 @@
     CGContextSaveGState(context);
     [COLOR2 setFill];
     CGContextMoveToPoint(context, 200, 200); // 需要移动点到圆的中心，不然图形只有弧度的一部分；
-    CGContextAddArc(context, 200, 200, 150, 0, M_PI*2*0.3, 0); //  顺时针1, 逆时针0
+    CGContextAddArc(context, 200, 200, 150, 0, M_PI*2*0.3, 0); //  顺时针1, 逆时针0；但实际效果画出来顺时针和逆时针方向是反的；
     CGContextDrawPath(context, kCGPathFill);
     CGContextRestoreGState(context);
 
@@ -170,7 +179,8 @@
     [COLOR5 setFill];
     CGContextMoveToPoint(context, 200, 200); // 需要移动点到圆的中心，不然图形只有弧度的一部分；
     CGContextAddArc(context, 200, 200, 150, M_PI*2*0.95, M_PI*2, 0);
-    CGContextDrawPath(context, kCGPathFill);
+//    CGContextDrawPath(context, kCGPathFill);
+    CGContextFillPath(context); //也可以这样填充
     CGContextRestoreGState(context);
     
     // 划线
@@ -190,4 +200,17 @@
     [self addSubview:lab];
 }
 
+// 绘制矩形：
+- (void)drawMyRect{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [COLOR1 setStroke];//边色
+    [COLOR2 setFill];//填充色
+    CGContextSetLineWidth(context, 1.0);
+    CGContextAddRect(context, CGRectMake(100, 100, 200, 160));//绘制矩形
+    CGContextSetLineJoin(context, kCGLineJoinRound);//设置为圆角
+//    CGContextStrokePath(context);//边色渲染
+//    CGContextFillPath(context);//填充渲染
+    CGContextDrawPath(context, kCGPathFill);
+
+}
 @end

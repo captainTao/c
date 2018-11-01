@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:testAlert.xcodeproj">
+      location = "self:Draw_Stock_Curve.xcodeproj">
    </FileRef>
 </Workspace>
