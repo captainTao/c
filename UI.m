@@ -388,7 +388,7 @@ error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctool
 绘图：
 Quartz2d绘制图形，图标，
 drwaRect 重绘
-CoreGraphics核心矩阵操作
+Core Graphics核心矩阵操作
 
 
 
@@ -429,16 +429,26 @@ c,调用setNeedDisplay的时候调用
 
 /************************************************************/
 
- CGContextStrokePath(context) 实心绘制
- CGContextDrawPath(context, kCGPathStroke);空心绘制
- 
 [COLOR1 setStroke];//边色
 [COLOR2 setFill];//填充色
+
 CGContextStrokePath(context);//边色渲染
 CGContextFillPath(context);//填充渲染
-CGContextDrawPath(context, kCGPathFill);
 
+CGContextDrawPath(context, kCGPathStroke); //描边
+CGContextDrawPath(context, kCGPathFill); //填充
+CGContextDrawPath(context, kCGPathFillStroke);//描边和填充
 
+CGcontextMovetoPoint  //直接绘制
+CGPathMovetoPoint //绘制路径然后添加
+CGContextAddPath(context,pathref)
+
+CGContextAddCurveToPoint// 绘制曲线
+
+CGContextSetLineWidth
+
+CGContextSetLineCap：设置线条的头尾样式
+CGContextSetLineJoin：设置连接点样式 
 /************************************************************/
 
 

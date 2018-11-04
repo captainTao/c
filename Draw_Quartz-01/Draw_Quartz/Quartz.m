@@ -11,17 +11,16 @@
 @implementation Quartz
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
+1.绘制：线条，矩形，三角形，圆，椭圆，扇形，曲线
+2.用点或者路径来绘制
+3.填充的颜色为单色或者渐变色
+？1.绘制三角形的边没有合拢
 */
 
 //这个方法是每次必调，或者手动调用setNeedDisplay
 
 - (void)drawRect:(CGRect)rect{
-    [self drawMyArc];
+    [self drawMyTriangle];
 }
 
 // 绘制直线     一个context
@@ -39,7 +38,7 @@
     CGContextStrokePath(context); // 渲染
 }
 
-// 绘制矩形     一个context
+// 绘制矩形     可以用addrect或者用path
 - (void)drawMyRect{
     // 1绘制画板   2画，属性   3渲染
     CGContextRef context = UIGraphicsGetCurrentContext();  // 画板 ,注意context前面没有*
@@ -65,7 +64,7 @@
     CGPathAddLineToPoint(pathref, nil, 300, 300);
     CGPathAddLineToPoint(pathref, nil, 100, 300);
     CGPathAddLineToPoint(pathref, nil, 200, 200); // 还需要把终点和起点进行重合
-    
+//    CGContextClosePath(context); //或者用closePath
     CGContextAddPath(context, pathref);
     CGContextDrawPath(context, kCGPathFillStroke);
 }
@@ -97,9 +96,20 @@
 //    CGContextAddArc(context, 200, 300, 150, 0, M_PI*2*0.25, 0);
     CGContextAddArc(context, 200, 300, 150, M_PI*2*0.3, M_PI, 1); // 还是不懂为啥会画成那样？？。。x轴为横轴向右，y为纵轴向下， so顺指针变成了感觉数学中的逆时针
     CGContextClosePath(context); // 闭合路径的另外一种方法
+    
 //    CGContextDrawPath(context, kCGPathFill); // 只是填充
     CGContextDrawPath(context, kCGPathFillStroke); // 填充和圆弧的边
 //    CGContextStrokePath(context); // 描边
+}
+
+// 绘制椭圆
+- (void)drawMyEllipseInRect{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [COLOR1 setFill];
+    [COLOR2 setStroke];
+    CGContextSetLineWidth(context, 2.0);
+    CGContextAddEllipseInRect(context, CGRectMake(20, 20, 200, 300));
+    CGContextDrawPath(context, kCGPathFillStroke);
 }
 
 // 图形的属性:
@@ -129,7 +139,7 @@
     CGPathAddLineToPoint(pathref, nil, 100, 300);
     CGPathAddLineToPoint(pathref, nil, 200, 200); // 还需要把终点和起点进行重合
     
-    CGContextSetLineJoin(context, kCGLineJoinRound); // 设置转角位圆形
+    CGContextSetLineJoin(context, kCGLineJoinRound); // 设置转角为圆形,连接样式
     CGContextAddPath(context, pathref);
     CGContextDrawPath(context, kCGPathFillStroke);
 }
@@ -166,5 +176,26 @@
     CGContextStrokePath(context);
 }
 
+- (void)drawDesign{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [COLOR1 setFill];
+    [COLOR2 setStroke];
+    CGContextSetLineWidth(context, 2.0);
+    // 二次曲线
+    CGContextMoveToPoint(context, 120, 300);//设置Path的起点
+    CGContextAddQuadCurveToPoint(context,190, 310, 120, 390);//设置贝塞尔曲线的控制点坐标和终点坐标
+    CGContextStrokePath(context);
+    // 三次曲线
+    CGContextMoveToPoint(context, 200, 300);//设置Path的起点
+    CGContextAddCurveToPoint(context,250, 280, 250, 400, 280, 300);//设置贝塞尔曲线的控制点坐标和控制点坐标终点坐标
+    CGContextStrokePath(context);
+    // 图片
+    UIImage *image = [UIImage imageNamed:@"apple.jpg"];
+    [image drawInRect:CGRectMake(60, 40, 200, 200)];//在坐标中画出图片
+//    [image drawAtPoint:CGPointMake(100, 340)];//保持图片大小在point点开始画图片
+    CGContextDrawImage(context, CGRectMake(100, 540, 200, 200), image.CGImage);//使图片上下颠倒了,参考:http://blog.csdn.net/koupoo/article/details/8670024
+ // CGContextDrawTiledImage(context, CGRectMake(0, 0, 20, 20), image.CGImage);//平铺图
+    
+}
 
 @end

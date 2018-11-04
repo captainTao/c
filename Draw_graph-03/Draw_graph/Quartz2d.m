@@ -154,7 +154,7 @@
     CGContextSaveGState(context);
     [COLOR2 setFill];
     CGContextMoveToPoint(context, 200, 200); // 需要移动点到圆的中心，不然图形只有弧度的一部分；
-    CGContextAddArc(context, 200, 200, 150, 0, M_PI*2*0.3, 0); //  顺时针1, 逆时针0；但实际效果画出来顺时针和逆时针方向是反的；
+    CGContextAddArc(context, 200, 200, 150, 0, M_PI*2*0.3, 0); //  顺时针1, 逆时针0；但实际效果画出来顺时针和逆时针方向是反的；因为原点在左上角，y轴方向向下
     CGContextDrawPath(context, kCGPathFill);
     CGContextRestoreGState(context);
 

@@ -16,6 +16,7 @@
 		E4CC21DB20B9009600DFA706 /* Draw_QuartzTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CC21DA20B9009600DFA706 /* Draw_QuartzTests.m */; };
 		E4CC21E620B9009600DFA706 /* Draw_QuartzUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CC21E520B9009600DFA706 /* Draw_QuartzUITests.m */; };
 		E4CC21F520B9014900DFA706 /* Quartz.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CC21F420B9014900DFA706 /* Quartz.m */; };
+		E4FA2F0E218DD6EF00E29BF1 /* apple.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E4FA2F0D218DD6EF00E29BF1 /* apple.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		E4CC21E720B9009600DFA706 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4CC21F320B9014900DFA706 /* Quartz.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Quartz.h; sourceTree = "<group>"; };
 		E4CC21F420B9014900DFA706 /* Quartz.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Quartz.m; sourceTree = "<group>"; };
+		E4FA2F0D218DD6EF00E29BF1 /* apple.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = apple.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 		E4CC21C020B9009300DFA706 /* Draw_Quartz */ = {
 			isa = PBXGroup;
 			children = (
+				E4FA2F0D218DD6EF00E29BF1 /* apple.jpg */,
 				E4CC21C120B9009300DFA706 /* AppDelegate.h */,
 				E4CC21C220B9009300DFA706 /* AppDelegate.m */,
 				E4CC21C420B9009300DFA706 /* ViewController.h */,
@@ -242,6 +245,7 @@
 			files = (
 				E4CC21CE20B9009600DFA706 /* LaunchScreen.storyboard in Resources */,
 				E4CC21CB20B9009600DFA706 /* Assets.xcassets in Resources */,
+				E4FA2F0E218DD6EF00E29BF1 /* apple.jpg in Resources */,
 				E4CC21C920B9009300DFA706 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

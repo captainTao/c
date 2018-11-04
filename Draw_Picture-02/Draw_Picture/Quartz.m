@@ -47,7 +47,7 @@
     paragraphstyle.lineBreakMode = NSLineBreakByClipping;
     
     NSDictionary *dic = @{NSFontAttributeName: [UIFont systemFontOfSize:10.0],NSParagraphStyleAttributeName:paragraphstyle,NSForegroundColorAttributeName:[UIColor greenColor]};// 设置文字的属性
-    
+    [str drawAtPoint:CGPointMake(100, 100) withAttributes:dic];//从点开始做
     [str drawInRect:CGRectMake(100, 100, 100, 10) withAttributes:dic];// draw文字的属性
     [str drawInRect:CGRectMake(100, 150, 100, 10) withAttributes:nil];// draw文字的属性为空
 };
