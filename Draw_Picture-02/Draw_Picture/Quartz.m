@@ -30,7 +30,7 @@
 - (void)drawImageClip{
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextAddEllipseInRect(context, CGRectMake(150, 150, 60, 60));
-    CGContextClip(context);
+    CGContextClip(context);// context裁剪路径，后续操作的路径
     CGContextFillPath(context);
     UIImage *image = [UIImage imageNamed:@"images/1.jpg"];
     [image drawAtPoint:CGPointMake(150, 150)];

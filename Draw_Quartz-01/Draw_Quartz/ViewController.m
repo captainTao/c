@@ -21,6 +21,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     Quartz *quartz2d = [[Quartz alloc]initWithFrame:self.view.bounds]; // 初始化view, 也可以直接在声明中初始化一个变量
+    quartz2d.backgroundColor = [UIColor clearColor];//清除背景颜色黑色，变为白色；
     [self.view addSubview:quartz2d]; // 添加view
     [quartz2d setNeedsDisplay]; // 手动调用方法
 }

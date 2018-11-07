@@ -24,7 +24,7 @@
 
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    [self drawMyRect];
+    [self drawMyPie];
 }
 
 // 绘制XY轴
@@ -200,17 +200,5 @@
     [self addSubview:lab];
 }
 
-// 绘制矩形：
-- (void)drawMyRect{
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [COLOR1 setStroke];//边色
-    [COLOR2 setFill];//填充色
-    CGContextSetLineWidth(context, 1.0);
-    CGContextAddRect(context, CGRectMake(100, 100, 200, 160));//绘制矩形
-    CGContextSetLineJoin(context, kCGLineJoinRound);//设置为圆角
-//    CGContextStrokePath(context);//边色渲染
-//    CGContextFillPath(context);//填充渲染
-    CGContextDrawPath(context, kCGPathFill);
 
-}
 @end
