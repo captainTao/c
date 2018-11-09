@@ -452,7 +452,14 @@ CGContextSetLineJoin：设置连接点样式
 /************************************************************/
 
 
+//stock加载数据：
+- (NSMutableArray *)loadStockData{
+    NSString *filePath = [[NSBundle mainBundle]pathForResource:@"data" ofType:@"txt"];
+    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    NSString *stockListStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    NSMutableArray *array = [[NSMutableArray alloc]initWithArray:[stockListStr componentsSeparatedByString:@"\n"]];
+    return array;
+}
 
-
-
+CGFloat h = fabsf(beginPrice-endPrice);// 绝对值
 

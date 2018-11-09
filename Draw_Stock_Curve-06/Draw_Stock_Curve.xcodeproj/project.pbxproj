@@ -13,6 +13,9 @@
 		E4123404218B46AE0027E8C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4123403218B46AE0027E8C1 /* Assets.xcassets */; };
 		E4123407218B46AE0027E8C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4123405218B46AE0027E8C1 /* LaunchScreen.storyboard */; };
 		E412340A218B46AE0027E8C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E4123409218B46AE0027E8C1 /* main.m */; };
+		E49AC9522193E24D0089A9A9 /* QuartzClass.m in Sources */ = {isa = PBXBuildFile; fileRef = E49AC9512193E24D0089A9A9 /* QuartzClass.m */; };
+		E4DF87AE2193273100479237 /* StockClass.m in Sources */ = {isa = PBXBuildFile; fileRef = E4DF87AD2193273100479237 /* StockClass.m */; };
+		E4DF87B02193282A00479237 /* data.txt in Resources */ = {isa = PBXBuildFile; fileRef = E4DF87AF2193282A00479237 /* data.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,11 @@
 		E4123406218B46AE0027E8C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E4123408218B46AE0027E8C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4123409218B46AE0027E8C1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E49AC9502193E24D0089A9A9 /* QuartzClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuartzClass.h; sourceTree = "<group>"; };
+		E49AC9512193E24D0089A9A9 /* QuartzClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuartzClass.m; sourceTree = "<group>"; };
+		E4DF87AC2193273100479237 /* StockClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StockClass.h; sourceTree = "<group>"; };
+		E4DF87AD2193273100479237 /* StockClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StockClass.m; sourceTree = "<group>"; };
+		E4DF87AF2193282A00479237 /* data.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,11 +70,16 @@
 				E41233FB218B46AC0027E8C1 /* AppDelegate.m */,
 				E41233FD218B46AC0027E8C1 /* ViewController.h */,
 				E41233FE218B46AC0027E8C1 /* ViewController.m */,
+				E4DF87AF2193282A00479237 /* data.txt */,
 				E4123400218B46AC0027E8C1 /* Main.storyboard */,
 				E4123403218B46AE0027E8C1 /* Assets.xcassets */,
 				E4123405218B46AE0027E8C1 /* LaunchScreen.storyboard */,
 				E4123408218B46AE0027E8C1 /* Info.plist */,
 				E4123409218B46AE0027E8C1 /* main.m */,
+				E4DF87AC2193273100479237 /* StockClass.h */,
+				E4DF87AD2193273100479237 /* StockClass.m */,
+				E49AC9502193E24D0089A9A9 /* QuartzClass.h */,
+				E49AC9512193E24D0089A9A9 /* QuartzClass.m */,
 			);
 			path = Draw_Stock_Curve;
 			sourceTree = "<group>";
@@ -128,6 +141,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4DF87B02193282A00479237 /* data.txt in Resources */,
 				E4123407218B46AE0027E8C1 /* LaunchScreen.storyboard in Resources */,
 				E4123404218B46AE0027E8C1 /* Assets.xcassets in Resources */,
 				E4123402218B46AC0027E8C1 /* Main.storyboard in Resources */,
@@ -142,6 +156,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E41233FF218B46AC0027E8C1 /* ViewController.m in Sources */,
+				E4DF87AE2193273100479237 /* StockClass.m in Sources */,
+				E49AC9522193E24D0089A9A9 /* QuartzClass.m in Sources */,
 				E412340A218B46AE0027E8C1 /* main.m in Sources */,
 				E41233FC218B46AC0027E8C1 /* AppDelegate.m in Sources */,
 			);
