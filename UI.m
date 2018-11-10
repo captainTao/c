@@ -392,6 +392,31 @@ Core Graphics核心矩阵操作
 
 
 
+
+@implementation UIView (ScreenShot)
+
+-(UIImage *)imageScreenShot{
+    UIGraphicsBeginImageContext(self.frame.size); // 开始绘制
+    [self.layer renderInContext:UIGraphicsGetCurrentContext()]; // 绘制当前
+    UIImage *shotImage = UIGraphicsGetImageFromCurrentImageContext(); // 获取当前
+    UIGraphicsEndImageContext(); // 结束绘制
+    return shotImage;
+}
+@end
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    UIImage *image = [self.view imageScreenShot];
+    
+    // 保存到本地相册, 这儿需要在infolist中添加一个权限；Privacy - Photo Library Usage Description
+    // Privacy - Photo Library Additions Usage Description
+    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+}
+
+
+
 /************************************************************/
 
 

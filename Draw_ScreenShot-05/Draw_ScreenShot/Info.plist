@@ -43,5 +43,7 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>to save picture to ablum.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>to save picture to ablum.</string>
 </dict>
 </plist>
