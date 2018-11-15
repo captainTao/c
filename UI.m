@@ -56,6 +56,11 @@ question:
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 //////////////////////////////////////////////////////
+
+@property (nonatomic, strong) Dog *dog;  // 适用于OC对象类型, 相当于原来的retain;
+@property (nonatomic, weak) Person *person; // 适用于OC对象类型, 相当于原来的assign;
+@property (nonatomic, assign) double percent; // 适用于非OC对象类型, 在ARC中还是可以用
+@property (nonatomic, copy) NSString *name; // release旧值，copy新值（一般用于NSString *）
 /***********************************************************************/UIButton
 
  1> UIButton  -> UIControl -> UIView
@@ -474,6 +479,40 @@ CGContextSetLineWidth
 
 CGContextSetLineCap：设置线条的头尾样式
 CGContextSetLineJoin：设置连接点样式 
+
+CGpath:
+-------------
+CGMutablePathRef pathref = CGPathCreateMutable(); // 创建path()
+CGPathMoveToPoint(pathref, nil, 200, 200); // 起点
+CGPathAddLineToPoint(pathref, nil, 300, 300);
+CGPathAddLineToPoint(pathref, nil, 100, 300);
+CGPathAddLineToPoint(pathref, nil, 200, 200); // 还需要把终点和起点进行重合
+
+CGContextSetLineJoin(context, kCGLineJoinRound); // 设置转角为圆形,连接样式
+CGContextAddPath(context, pathref);
+CGContextDrawPath(context, kCGPathFillStroke);
+
+
+ point: CGContextMoveToPoint, CGContextAddLineToPoint
+ line: CGContextAddLineToPoint, CGContextAddLines
+ arc: CGContextAddArc, CGContextAddArcToPoint
+ curve: CGContextAddCurveToPoint
+ ellipse: CGContextAddEllipseInRect
+ rectangle: CGContextAddRect, CGContextAddRects //current point does not change!!
+ 
+ path:
+ CGPathCreateMutable 类似于 CGContextBeginPath
+ CGPathMoveToPoint 类似于 CGContextMoveToPoint
+ CGPathAddLineToPoint 类似于 CGContextAddLineToPoint
+ CGPathAddCurveToPoint 类似于 CGContextAddCurveToPoint
+ CGPathAddEllipseInRect 类似于 CGContextAddEllipseInRect
+ CGPathAddArc 类似于 CGContextAddArc
+ CGPathAddRect 类似于 CGContextAddRect
+ CGPathCloseSubpath 类似于 CGContextClosePath
+ CGPathRef
+ CGMutablePathRef
+ 
+ CGContextAddPath
 /************************************************************/
 
 
@@ -488,3 +527,35 @@ CGContextSetLineJoin：设置连接点样式
 
 CGFloat h = fabsf(beginPrice-endPrice);// 绝对值
 
+/************************************************************/
+- (void)drawRect:(CGRect)rect {
+    if (self.path) {
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextAddPath(context, self.path);
+        CGContextSetLineWidth(context, 4.0);
+        CGContextSetStrokeColorWithColor(context, [UIColor grayColor].CGColor);
+        CGContextDrawPath(context, kCGPathStroke);
+    }
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    UITouch *touch = touches.anyObject;
+    CGPoint pt = [touch locationInView:touch.view];
+    self.path = CGPathCreateMutable();
+    CGPathMoveToPoint(self.path, NULL, pt.x, pt.y);
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    UITouch *touch = touches.anyObject;
+    CGPoint pt = [touch locationInView:touch.view];
+    CGPathAddLineToPoint(self.path, NULL, pt.x, pt.y);
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    CGPathRelease(self.path);
+    self.path = nil;
+}
+/************************************************************/
+
+self.nodeViews = [NSMutableArray array]; //初始化一个空数组？
+self.throughNodeViews = [NSMutableArray array];
