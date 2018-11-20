@@ -570,13 +570,60 @@ UIAlertAction *action = [UIAlertAction actionWithTitle:@"ok" style:UIAlertAction
 [alert addAction:action];// alert添加action
 [self presentViewController:alert animated:YES completion:nil];  //展示controller
 
-
+/************************************************************/调试debug:
 https://www.jianshu.com/p/c69f34e436e7
+
+1.NSLog
 我们可以使用宏来解决调用NSLog方法可能导致的安全问题，只在调试版本中调用NSLog。可以采用全局可访问的头文件，把所有日志记录都灌进去，而且不用担心它们会出现在成品代码当中。
 #ifdef DEBUG#define DMLog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])#else#define DMLog(...) do { } while (0)
 
-DMLog的名字可以随便取
+DMLog的名字可以随便取,它将只向调试版本输出结果，任何成品代码都不会受到影响。PRETTY_FUNCTION也帮上了大忙，它会根据日志信息来源为函数命名。
 
+2.console log
+3.po print object,主要功能是输出objective-c中对象（objects）的信息
+4.p, print 命令：有点类似于格式化输出，可以输出对象的不同信息。即原生类型（boolean、integer、float等
+5.expr 表达式：打印表达式。
+6.info 命令：我们可以查看内存地址所在信息。
+7.info line *内存地址：可以获取内存地址所在的代码行相关信息。
+8.show 命令：显示 GDB 相关的信息。如：show version 显示GDB版本信息。
+9.bt: 显示当前进程的函数调用栈的情况；”up num”:查看调用的详细信息；down:返回栈列表；l:显示详细代码信息；p:输出数值。
+10.help 命令：如果忘记某条命令的语法了，用来获取帮助信息。
+上述为GDB的调试命令，在LLDB中会有所差异
 
+notice:
+通过使用expr 表达式可实现在运行时修改变量的值。
+expr username = @"username"expr password = @"badpassword"
+通过上面的代码段，变量username和password分别被重新赋值。
 
+11.设置NSZombieEnabled、MallocStackLogging、NSAutoreleaseFreedObjectCheckEnabled、NSDebugEnabled
+a.
+1. Product->Edit Scheme...->Run...->EnvironmentVariables.
+2. add NSZombieEnabled，set the value with YES
+3. add MallocStackLogging, set the value with YES.
+4. add NSAutoreleaseFreedObjectCheckEnabled, set the value with YES.
+5. add NSDebugEnabled, set the value with YES.
+主要为了解决EXC_BAD_ACCESS问题，MallocStackLogging用来启用malloc记录(使用方式 malloc_history${App_PID}${Object_instance_addr})。
 
+b.
+直接通过Editing Scheme窗口中的Run选项下的Diagnostics选项卡来设置。
+
+notice:
+NSZombieEnabled只能在调试的时候使用，千万不要忘记在产品发布的时候去掉，因为NSZombieEnabled不会真正去释放dealloc对象的内存。
+NSZombieEnabled只能在调试的时候使用，千万不要忘记在产品发布的时候去掉，因为NSZombieEnabled不会真正去释放dealloc对象的内存。
+
+12. 重写respondsToSelector
+实现方式:
+#ifdef _FOR_DEBUG_-(BOOL) respondsToSelector:(SEL)aSelector {    printf("SELECTOR: %s\n", [NSStringFromSelector(aSelector) UTF8String]);return[super respondsToSelector:aSelector]; }#endif
+
+使用方法:
+需要在每个object的.m或者.mm文件中加入上面代码（应该可以使用类属实现），并且在other c flags中加入-DFOR_DEBUG（记住请只在Debug Configuration下加入此标记）。这样当你程序崩溃时，XCode的console上就会准确地记录了最后运行的object的方法。
+
+http://mobile.51cto.com/iphone-377138.htm“iOS故障排除指南：基本技巧”
+http://my.oschina.net/notting/blog/115294“Xcode LLDB Debug教程”
+http://www.2cto.com/kf/201210/162934.html“Xcode调试攻略”
+https://www.jianshu.com/p/087cd19d49ba“深入了解GDB和LLDB”
+
+指针行，快速添加删除断点：cmd + \
+断点设置条件，比如循环中设定i值
+断点设置action:格式化输出数据
+po [[NSString alloc] initWithFormat:@"Item index is: %d", index]
