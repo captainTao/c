@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface UIBlockView : UIView
-
+@property(nonatomic, copy) void(^unblockViewBlock)(UIBlockView *bview, BOOL success);//回调
+- (void)reset;
 @end

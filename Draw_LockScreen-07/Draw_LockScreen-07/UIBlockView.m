@@ -13,14 +13,17 @@
 @property(nonatomic,strong) NSMutableArray *nodeViews;
 @property(nonatomic,strong)NSMutableArray *throughNodeViews;
 @property BOOL isValidateGesture;
+@property(nonatomic,strong)NSMutableString *secret;
 @end
 
 @implementation UIBlockView
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Home_refresh_bg"]];
         self.nodeViews = [NSMutableArray array];
         self.throughNodeViews = [NSMutableArray array];
+        self.secret = [[NSMutableString alloc]init];
         [self initNodeViews];
     }
     return self;
@@ -33,7 +36,7 @@
     for (int i =0; i < 9; i++) {
         NodeView *node = [[NodeView alloc]init];
         node.userInteractionEnabled = NO; //取消在touch中获得的相对位置
-        node.backgroundColor = [UIColor orangeColor];
+        node.image =[UIImage imageNamed:@"gesture_node_normal"];//集成自UIImageView时直接可以用.image
         node.center = CGPointMake(x*(i%3+1), startY+y*(i/3+1));
         node.bounds = CGRectMake(0, 0, 50, 50);
         node.number = [NSString stringWithFormat:@"%d", i+1];
@@ -52,7 +55,7 @@
             *stop =YES;
         }
     }];
-    return nodeView;//这儿用nodeView做判断标准，因为nodeView只有9个确定，但画的点不确定
+    return nodeView;//这儿用nodeView做判断标准，因为nodeView只有9个确定，但画的点不确定，另外判断这个nodeview是否被手势选取过
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -60,7 +63,7 @@
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextAddPath(context, self.path);
         CGContextSetLineWidth(context, 4.0);
-        CGContextSetStrokeColorWithColor(context, [UIColor yellowColor].CGColor);
+        CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
         CGContextDrawPath(context, kCGPathStroke);
     }
 }
@@ -75,7 +78,9 @@
         self.isValidateGesture = YES;
         self.path = CGPathCreateMutable();
         CGPathMoveToPoint(self.path, NULL, nodeView.center.x, nodeView.center.y);
+        nodeView.image =[UIImage imageNamed:@"gesture_node_highlighted"];
         [self.throughNodeViews addObject:nodeView];
+        [self.secret appendString:nodeView.number];
     }
     
 }
@@ -94,7 +99,9 @@
         if (![self.throughNodeViews containsObject:nodeView]) {
             CGPathAddLineToPoint(self.path, NULL, nodeView.center.x, nodeView.center.y);//这儿不能用pt的点来画，用nodeView的中心点来画
             [self setNeedsDisplay];
+            nodeView.image = [UIImage imageNamed:@"gesture_node_highlighted"];
             [self.throughNodeViews addObject:nodeView];
+            [self.secret appendString:nodeView.number];
         }
     }
 }
@@ -105,7 +112,28 @@
     }
     CGPathRelease(self.path);
     self.path = nil;
+    [self validateSecret];
 }
 
+- (void)validateSecret{
+    BOOL isSuccess = NO;
+    if ([self.secret isEqualToString:@"1478"]) {
+        isSuccess = YES;
+    }
+    if(self.unblockViewBlock){
+        self.unblockViewBlock(self, isSuccess);
+    }
+}
+
+-(void)reset{
+    [self.throughNodeViews enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NodeView *node = obj;
+        node.image = [UIImage imageNamed:@"gesture_node_normal"];
+    }];
+    [self.throughNodeViews removeAllObjects];
+    self.isValidateGesture = NO;
+    [self.secret setString:@""];
+    [self setNeedsDisplay]; //重置之后重新绘制
+}
 
 @end

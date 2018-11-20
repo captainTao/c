@@ -122,6 +122,8 @@
 }
 
 /********************************************/
+# pragma mark UIAlertController:
+
 // refer to : https://www.jianshu.com/p/85edffe95d2a
 - (void)actionSheet {
     
@@ -167,7 +169,6 @@
 }
 
 
-# pragma mark AlterController使用，还不会。。。
 // 弹出对话框
 - (void)createAlterController
 {

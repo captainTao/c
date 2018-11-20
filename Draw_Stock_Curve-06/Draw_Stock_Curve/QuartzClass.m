@@ -34,7 +34,7 @@
     }
     return self;
 }
-// 画矩形和线条
+// 画股价矩形和线条
 - (void)drawStockRectAndLine{
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 1.0);
@@ -64,7 +64,7 @@
         }
     }
 }
-
+// 画交易量的曲线
 - (void)drawTradeVolumeLine{
     CGContextRef context =UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 2.0);
@@ -103,12 +103,12 @@
     return CGPointMake(x, y);
 }
 
-// 获取交易量
+// 获取交易量位置
 - (CGPoint)getCurrentVolume:(int)i Volume:(int)Volume{
     CGSize ScreenSize =[UIScreen mainScreen].bounds.size;
     CGFloat w = ScreenSize.width/displayNumber-4;
     CGFloat x = i*ScreenSize.width/displayNumber+2+w/2; //画的起点+rect的一半
-    CGFloat y = ScreenSize.height*displayRatio - Volume-150;
+    CGFloat y = ScreenSize.height*displayRatio - Volume - 100;//高度再提高150pixel
     return CGPointMake(x, y);
 }
 @end

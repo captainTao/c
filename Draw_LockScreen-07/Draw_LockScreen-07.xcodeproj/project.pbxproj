@@ -15,6 +15,7 @@
 		E401E41921991C5900BEB6C0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E401E41821991C5900BEB6C0 /* main.m */; };
 		E401E42121991D3400BEB6C0 /* UIBlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = E401E42021991D3400BEB6C0 /* UIBlockView.m */; };
 		E401E42421996CC800BEB6C0 /* NodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E401E42321996CC800BEB6C0 /* NodeView.m */; };
+		E44FC13321A3012D001A47BC /* FuncitonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E44FC13221A3012D001A47BC /* FuncitonViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		E401E42021991D3400BEB6C0 /* UIBlockView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIBlockView.m; sourceTree = "<group>"; };
 		E401E42221996CC800BEB6C0 /* NodeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeView.h; sourceTree = "<group>"; };
 		E401E42321996CC800BEB6C0 /* NodeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeView.m; sourceTree = "<group>"; };
+		E44FC13121A3012D001A47BC /* FuncitonViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FuncitonViewController.h; sourceTree = "<group>"; };
+		E44FC13221A3012D001A47BC /* FuncitonViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FuncitonViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +80,8 @@
 				E401E42221996CC800BEB6C0 /* NodeView.h */,
 				E401E42321996CC800BEB6C0 /* NodeView.m */,
 				E401E41821991C5900BEB6C0 /* main.m */,
+				E44FC13121A3012D001A47BC /* FuncitonViewController.h */,
+				E44FC13221A3012D001A47BC /* FuncitonViewController.m */,
 			);
 			path = "Draw_LockScreen-07";
 			sourceTree = "<group>";
@@ -151,6 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E44FC13321A3012D001A47BC /* FuncitonViewController.m in Sources */,
 				E401E42121991D3400BEB6C0 /* UIBlockView.m in Sources */,
 				E401E42421996CC800BEB6C0 /* NodeView.m in Sources */,
 				E401E40E21991C5700BEB6C0 /* ViewController.m in Sources */,

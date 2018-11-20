@@ -14,7 +14,7 @@ ctr + 6 :在指定的文件中查找下拉列表的方法
 cm + ctrl + j: 跳转到对应文件的定义； 
 cm + ctrl + left : 后退 back
 cm + ctrl + right : 前进 forward
-
+cm + alt +[/] : 代码上移或者下移
 /**********************************************/
 https://www.jianshu.com/p/4be17ec40cfc
 delegate、protocol、tagart-action、closure ？
@@ -559,3 +559,24 @@ CGFloat h = fabsf(beginPrice-endPrice);// 绝对值
 
 self.nodeViews = [NSMutableArray array]; //初始化一个空数组？
 self.throughNodeViews = [NSMutableArray array];
+CGRectContainsPoint(rect, pt)// 点是否在矩形中
+
+
+//UIAlterController:
+UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"title" message:success?@"解锁成功":@"解锁失败" preferredStyle:UIAlertControllerStyleAlert];
+UIAlertAction *action = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+      [bview reset];
+}
+[alert addAction:action];// alert添加action
+[self presentViewController:alert animated:YES completion:nil];  //展示controller
+
+
+https://www.jianshu.com/p/c69f34e436e7
+我们可以使用宏来解决调用NSLog方法可能导致的安全问题，只在调试版本中调用NSLog。可以采用全局可访问的头文件，把所有日志记录都灌进去，而且不用担心它们会出现在成品代码当中。
+#ifdef DEBUG#define DMLog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])#else#define DMLog(...) do { } while (0)
+
+DMLog的名字可以随便取
+
+
+
+

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NodeView : UIView
+@interface NodeView : UIImageView
 @property(nonatomic,copy)NSString *number;
 @end
