@@ -18,11 +18,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+//    [self AlterViewWithTwoTextField6];// AlterView调用
     
      // 自定义alertview:  == 1个lable +2个button:
      UiviewtoAlertView *myalertview = [[UiviewtoAlertView alloc] initWithFrame:CGRectMake(20, 100, self.view.frame.size.width-40, 100)];
-     [self.view addSubview: myalertview];
+    [self.view addSubview: myalertview];
+
     
 }
 
@@ -46,7 +48,7 @@
 
 # pragma mark UIAlertView  <UIAlertViewDelegate>
 // UIAlertView:
-- (void)AlterView6{
+- (void)AlterViewWithTwoTextField6{
     // 如果代理为自己，那么对一个的.m文件需要遵守 <UIAlertViewDelegate>协议
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:@"OK",@"other", nil];
     alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;// name,password模式；
@@ -54,7 +56,7 @@
 }
 
 // test5的结果输出的是： cancel--0  ok--1  textfield--nil
-- (void)AlterView5{
+- (void)AlterViewWithTextField5{
     // 如果代理为自己，那么对一个的.m文件需要遵守 <UIAlertViewDelegate>协议
     // ok--1  cancel--0  textfield--nil
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:@"OK", nil];
@@ -77,6 +79,7 @@
     [alert show];
 }
 
+
 /*
  1>  ok - index:0
  2>  cancle - index:0  ok - index:1  // textfield - index:0
@@ -88,11 +91,11 @@
     NSLog(@"buttonIndex = %ld", buttonIndex);
     if(buttonIndex == 1){
 
-         // test5中的调用：
+         // AlterViewWithTextField5中的调用：
          UITextField *textfield = [alertView textFieldAtIndex:0];
          NSLog(@"输入的内容为%@",textfield.text);
-         
-        // test 6中的调用：
+        
+        // AlterViewWithTwoTextField6中的调用：
         UITextField *textfield1 = [alertView textFieldAtIndex:0];
         UITextField *textfield2 = [alertView textFieldAtIndex:1];
         NSLog(@"name = %@, password = %@", textfield1.text, textfield2.text);
@@ -120,9 +123,8 @@
 # pragma mark UIAlertController:
 
 // refer to : https://www.jianshu.com/p/85edffe95d2a
-
+// UIAlertView, UIActionSheet 在ios8之后不推荐使用了,苹果不进行维护,推荐使用 UIAlertController :UIViewController
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    // UIAlertView, UIActionSheet 在ios8之后不推荐使用了,苹果不进行维护,推荐使用 UIAlertController : UIViewController
     // 不能直接在viewDiaLoad中调用[self actionSheet]
     [self alertStyleWithTwoTextField];
 }
@@ -198,7 +200,7 @@
 }
 
 
-// 带标题的文本对话框：
+// 带标题的文本框：
 - (void)alertStyleWithTextFieldWithTitle
 {
     UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"文本对话框" message:@"保存" preferredStyle:UIAlertControllerStyleAlert];

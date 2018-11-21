@@ -570,6 +570,11 @@ UIAlertAction *action = [UIAlertAction actionWithTitle:@"ok" style:UIAlertAction
 [alert addAction:action];// alert添加action
 [self presentViewController:alert animated:YES completion:nil];  //展示controller
 
+//UIAlterView:
+// 且要遵循协议： <UIAlertViewDelegate, UIActionSheetDelegate>
+UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:@"1",@"2", nil];
+[alert show];
+
 /************************************************************/调试debug:
 https://www.jianshu.com/p/c69f34e436e7
 
