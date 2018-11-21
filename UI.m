@@ -570,11 +570,22 @@ UIAlertAction *action = [UIAlertAction actionWithTitle:@"ok" style:UIAlertAction
 [alert addAction:action];// alert添加action
 [self presentViewController:alert animated:YES completion:nil];  //展示controller
 
+
 //UIAlterView:
 // 且要遵循协议： <UIAlertViewDelegate, UIActionSheetDelegate>
-UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:@"1",@"2", nil];
-[alert show];
+- (void)AlterView{
+    // 如果代理为自己，那么对一个的.m文件需要遵守 <UIAlertViewDelegate>协议
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"ALert" message:@"message" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:@"1",@"2", nil];
+    [alert show];
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 
+- (void)ActionSheet{
+    UIActionSheet *sheet1 = [[UIActionSheet alloc]initWithTitle:@"Action" delegate:self cancelButtonTitle:@"cancle" destructiveButtonTitle:@"OK" otherButtonTitles:@"other1",@"other2", nil];
+    sheet1.actionSheetStyle = UIActionSheetStyleDefault;
+    [sheet1 showInView:self.view];
+}
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 /************************************************************/调试debug:
 https://www.jianshu.com/p/c69f34e436e7
 
