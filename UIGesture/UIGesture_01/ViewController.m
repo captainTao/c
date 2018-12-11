@@ -10,6 +10,7 @@
 
 @interface ViewController () <UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UIView *myblue;
+@property (weak, nonatomic) IBOutlet UIView *myorange;
 
 @end
 
@@ -41,6 +42,8 @@
  CGAffineTransformMakeScale(sender.scale, sender.scale);
  
  上面两种方法的区别是，长的那种可以叠加其他手势效果；make方法的不能叠加其他效果；
+ 
+ https://www.jianshu.com/p/5ccbe616030c
  */
 
 - (void)viewDidLoad {
@@ -51,13 +54,16 @@
 //    self.myblue.center = self.view.center;
 //    [self.myblue setCenter:CGPointMake(self.view.center.x, self.view.center.y)]; // 设置myblue居中
 
-    [self addGestureRecognizerToView:self.myblue];
+//    [self rotationGesture]; // 单手势
+    [self addGestureRecognizerToView:self.myblue];// 多手势
+    [self addGestureRecognizerToView:self.myorange];
+    
 
 }
 
 
 # pragma mark 旋转和缩放手势,或者多手势：
- // 思考：如何定义一个view支持旋转和缩放两个手势或者以上手势?
+ // 思考：如何定义一个view支持旋转和缩放两个手势或者以上手势?  <UIGestureRecognizerDelegate>
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer   // 这个是UIGestureRecognizerDelegate里面的一个委托方法
 {
@@ -68,11 +74,11 @@
 }
 
 
-- (void) addGestureRecognizerToView:(UIView *)view // 添加所有的手势 // 这个不行....
+- (void) addGestureRecognizerToView:(UIView *)view // 叠加手势,需要使用上面delegete的方法返回YES....
 {
     // 旋转手势
     UIRotationGestureRecognizer *rotationGestureRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotateView:)];
-    rotationGestureRecognizer.delegate = self;
+    rotationGestureRecognizer.delegate = self; // 下面两个手势不需要delegate?
     [view addGestureRecognizer:rotationGestureRecognizer];
     
     // 缩放手势
@@ -120,10 +126,11 @@
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [panGestureRecognizer translationInView:view.superview];
         [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y + translation.y}];
+        [_myblue setCenter:(CGPoint){_myblue.center.x + translation.x, _myblue.center.y + translation.y}];
         [panGestureRecognizer setTranslation:CGPointZero inView:view.superview]; // 设置拖动的0点的基准值
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded){
         [UIView animateWithDuration:0.5 animations:^{
-            [view setCenter:(CGPoint){self.view.center.x, self.view.center.y}]; // 设置为self.view的点
+//            [view setCenter:(CGPoint){self.view.center.x, self.view.center.y}]; // 设置为self.view的点
         }];
     }
 }
