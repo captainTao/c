@@ -15,6 +15,9 @@ cm + ctrl + j: 跳转到对应文件的定义；
 cm + ctrl + left : 后退 back
 cm + ctrl + right : 前进 forward
 cm + alt +[/] : 代码上移或者下移
+
+cm+alt+shift+<--/-->  折叠/打开方法内容
+cm+ctl+shit+<--/-->  折叠/打开注释内容
 /**********************************************/
 https://www.jianshu.com/p/4be17ec40cfc
 delegate、protocol、tagart-action、closure ？
