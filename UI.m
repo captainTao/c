@@ -397,6 +397,18 @@ error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctool
 依赖除了问题，参考链接：https://www.jianshu.com/p/8c34e45a0499
 */
 
+sudo gem uninstall cocoapods
+gem install cocoapods -v 1.5.3
+gem list --local | grep cocoapods
+
+Q&A:
+
+'openssl/evp.h' file not found
+---------------------------------
+podfile，cocoapods用 v1.5.3
+pod 'OpenSSL-Universal' // openssl换成下面这一行
+pod 'OpenSSL-Universal', :git => 'https://github.com/Alex1989Wang/OpenSSL.git', :branch => :master
+
 
 /************************************************************/
 绘图：
