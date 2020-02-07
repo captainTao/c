@@ -96,6 +96,9 @@ NSLog(@"%d %d", YES, NO);
 面向对象编程 Object Oriented Programming，简称OOP
 
 
+类型转换：
+Animal *aa = [Dog new];
+Dog *dd = (Dog *)aa; //类型的强制转换，如： int a = (int) 3.14;
 
 /***************************** BOOL *********************************/
 #import <Foundation/Foundation.h>
