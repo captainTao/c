@@ -264,47 +264,64 @@ print(sumof())
 
 */
 
-// 类
-class Shape {
-    var numberOfSlides = 0
-    // 初始化方法，初始化的时候，需要传入初始化参数
-    // 初始化方法，也是构造方法
-    init(_ numberOfSliders: Int) {
-        self.numberOfSlides = numberOfSliders
-    }
-    func Description() -> String {
-        return "A shape of \(self.numberOfSlides)!"
-    }
-}
+/*
+ // 类
+ class Shape {
+     var numberOfSlides = 0
+     // 初始化方法，初始化的时候，需要传入初始化参数
+     // 初始化方法，也是构造方法
+     init(_ numberOfSliders: Int) {
+         self.numberOfSlides = numberOfSliders
+     }
+     func Description() -> String {
+         return "A shape of \(self.numberOfSlides)!"
+     }
+ }
 
-//let shape = Shape(3)
-//shape.numberOfSlides = 5
-//print(shape.Description())
+ //let shape = Shape(3)
+ //shape.numberOfSlides = 5
+ //print(shape.Description())
 
-// 可选链式调用
-var shape: Shape? = Shape(3)
-shape = nil
-// 为可选类型的时候，对象后面要加?
-print(shape?.Description())
+ // 可选链式调用
+ var shape: Shape? = Shape(3)
+ shape = nil
+ // 为可选类型的时候，对象后面要加?
+ print(shape?.Description())
 
-//继承
-class nameShape: Shape {
-    let name: String
-    var dot: Int
-    init(_ name: String, numberOfSliders: Int, dot: Int) {
-        self.name = name
-        self.dot = dot
-        super.init(numberOfSliders)
-    }
-    // 重写需要保持： 返回值类型
-    override func Description() -> String {
-        return "A \(self.dot) dot and \(self.numberOfSlides) sliders with the name: \(self.name) shape!"
-    }
-}
+ //继承
+ class nameShape: Shape {
+     let name: String
+     var dot: Int
+     init(_ name: String, numberOfSliders: Int, dot: Int) {
+         self.name = name
+         self.dot = dot
+         super.init(numberOfSliders)
+     }
+     // 重写需要保持： 返回值类型
+     override func Description() -> String {
+         return "A \(self.dot) dot and \(self.numberOfSlides) sliders with the name: \(self.name) shape!"
+     }
+ }
 
-var ccshape = nameShape("kk", numberOfSliders: 7, dot: 6)
-//var ccshape = nameShape(name: "cc", numberOfSliders: 7, dot: 3)
-//ccshape.name = "salanghei" // 常量不能更改
-ccshape.dot = 4
-print(ccshape.dot)
-print(ccshape.Description())
+ var ccshape = nameShape("kk", numberOfSliders: 7, dot: 6)
+ //var ccshape = nameShape(name: "cc", numberOfSliders: 7, dot: 3)
+ //ccshape.name = "salanghei" // 常量不能更改
+ ccshape.dot = 4
+ print(ccshape.dot)
+ print(ccshape.Description())
+ */
+
+import UIKit
+import PlaygroundSupport
+
+let view = UIView()
+view.frame = CGRect(x: 0, y:0, width: 200, height: 200)
+view.backgroundColor = UIColor.green
+PlaygroundPage.current.liveView = view
+
+let imageView = UIImageView(image: UIImage(named: "logo.png"))
+PlaygroundPage.current.liveView = imageView
+
+let vc = UITableViewController()
+vc.view.backgroundColor = UIColor.lightGray
+PlaygroundPage.current.liveView = vc
