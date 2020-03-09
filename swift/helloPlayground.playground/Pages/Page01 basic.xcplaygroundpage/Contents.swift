@@ -1,107 +1,208 @@
+
+// 单行注释
+/*
+ 多行注释
+ /* 多行注释支持嵌套*/
+ */
+//: 双行加冒号表示使用markup语法，跟markdown类似
+//: # 一级标题
+//: ## 二级标题
+
+/*:
+ # 一级标题
+ ## 二级标题
+ @next, @previous是系统自带的:
+ [上一页](@previous)
+ [下一页](@next)
+ */
+
+
+ /*
+ 
+ swfit汇编语言
+ -----------
+ call 调用函数
+ lea 地址传递
+ mov 移动,赋值
+ %rdi 带有%的是寄存器
+ (%rdi) 带小括号的是寻找寄存器的存储空间
+ je,jmp 跳转，即switch case语句中使用
+ 
+ 常用的16个寄存器
+ rax, rbx, rcx, rdx, rsi, rdi, rbp, rsp
+ r8, r9, r10, r11, r12,r13, r14, r15
+ 
+ 寄存器用途:
+ rax,rdx常用作函数返回值使用
+ rdi, rsi, rdx, rcx, r8, r0等常用于存放函数参数
+ rsp, rbp用于栈操作
+ rip作为指令指针：
+ 存储着cpu吓一跳要执行的指令的地址
+ 一旦cpu读取一条指令，rip会自动指向下一条指令
+ */
+
+
 //import UIKit
 
 //var str = "Hello, playground"
 //print("str")
 //print(str)
 
-/*
+
+// print输出函数
+// public func print(items: Any..., separator: String = default, terminator: String = default)
+
+ for x in 0...10{
+     print("\(x) ", terminator: "")
+ }
+ print()
+ // 用户输入
+ let theInput = readLine()
+
+ // typealias
+ // typealias newname = type
+ typealias Feet = Int
+ // 在swift中没有下面三个类型
+ typealias Byte = Int8
+ typealias Short = Int16
+ typealias Long = Int32
+ 
+ typealias Date = (year: Int, month: Int, day: Int)
+ print(Date(1996,32,44).year)
+ 
+
+ // Int类型在swift中是结构体，所以有以下方法：
+ print(UInt8.max) // 求解UInt8的最大数
+ print(Int16.min) // 求解UInt8的最大数
+
+
+ // swift标准库中有定义：Void就是空元祖()
+ public typealias Void = ()
+ 
+
+// Boolean类型在oc中是YES,NO,在swift中是true,false
+
  let z = 1
  let x:Double = 1
  let y:Double = 1.0
 
+ let string = "小马哥" // 字符串类型推断
+ let character:Character = "A" // 字符类型需要标明
+ 
+ //字面量可以直接相加：
+ let result1 = 3 + 4.34353643
+ 
  var i = 1
  var name: String
-
- var Name: String?
+ var Name: String? // 可选类型
 
  let str = "x+y= "
  let xy = x + y
-
  print("str + String(xy)")
  print("x + y = \(x + y)")
+
+
+// 整数和浮点数可以额外添加0和下划线增加识别度
+100_0000; 1_000_000.000_1; 0000123.456
+ 
+// 强制类型转换：
+ let int1: UInt16 = 2_000
+ let int2: UInt8 = 1
+ let int3 = int1 + UInt16(int2) // 一般把占用空间小的转换为空间大的
+ 
+ let int = 3
+ let double = 3.14343636
+ let result = Double(int)+double
+ 
+// let intPi = Int(pi)
+ 
 
  let num = [1,2,3]
  var names = ["i","j"]
  let dic = ["one":1, "two":2]
 
  let t = (1,3,5)
- t.0
+ t.0  // 通过.取值
  t.1
 
-*/
 
-/*
-//赋值
-let a = 5
-var b = 6
-b = a
+ // 包含
+ let range =  ...5
+ range.contains(5)
 
-let (x, y) = (1, 2)
-x
-y
+ let stringRange = "cc"..."ff"
+ stringRange.contains("cd")
+ stringRange.contains("fg")
 
-
-if x == y {
-    
-}
-
-// 四则运算
-//+ - * /
-
-let i = -1
--i
-+i
-9%4
-9/4
+ let stringRange2 = "a"..."f"
+ stringRange2.contains("e")
  
- */
+ /*
 
-
-// 组合运算符，比较运算符
-//var a = 0
-//a+=2
-//==
-//!=
-//< >
-
-
-
-/*
-let at = (2, "abc")
-let bt = (2, "bcd")
-at > bt
-//元组最多能比较7个元素
-
-// 三目、空合
-
-let a = 1
-let b = 2
-let c = a > b ? "a > b" : "a <= b"
-
-var name: String?
-let realName = name != nil ? name! : "unknown"
-let realN = name ?? "unknow"
-print(realName)
-print(realN)
-// 区间、逻辑
-//开区间
-for id in 1..<5 {
-    print(id)
-}
-//闭区间
-for id in 1...3 {
-    print(id)
-}
-*/
-
-
-
-/*
+ // 取数组元素：
+ 
+ // i默认为let类型，如果需要更改，则需要在变量i前面加上var
  let numbers = [1, 2, 3, 4]
  for i in numbers{
      print(i)
  }
+ 
+ //如果不需要用i值，则用下划线代替
+ for _ in numbers{
+    print("hello, world!")
+ }
 
+ // 可以通过下标来取值
+ let names = ["Tony", "Jack", "Sparrow", "QiQi", "Jony"]
+ for name in names[0...3]{
+     print(name)
+ }
+
+ // 单侧区间，一边可以理解为无穷大
+ for name in names[...2]{
+     print(name)
+ }
+ for name in names[..<2]{
+     print(name)
+ }
+ for name in names[2...]{
+     print(name)
+ }
+ 
+
+ // 数组步长
+ for tickMark in stride(from: 3, through: 11, by: 2){
+     print(tickMark) // 3...11
+ }
+
+ for e in stride(from: 3, to: 11, by: 2){
+     print(e) // 3...9
+ }
+
+ // for中用where来过滤数组
+ let numbers = [10, 20, 30, -10, 50, -30]
+ var sum = 0
+ for num in numbers where num > 0 {
+     sum += num
+ }
+ print(sum)
+ 
+ 
+
+ // 标签语句
+ outer: for i in 1...4 {
+     for k in 1...4 {
+         if k == 3 {
+             continue outer
+         }
+         if i == 3 {
+             break outer
+         }
+         print("i = \(i), k = \(k)")
+     }
+ }
+ 
+ 
  // 字典为无序
  let dict = ["a": 1, "b": 2, "c": 3]
  for (key, value) in dict {
@@ -117,6 +218,7 @@ for id in 1...3 {
  print(i)
 
  // 类似do...while
+ // 从swift3中取消了自增，自减的运算符
  repeat {
      i += 1
  } while i < 100
@@ -129,8 +231,8 @@ for id in 1...3 {
 
 
  // switch:
- // 1.不存在隐式的贯穿：不用加break,这个是q跟其他语言的区别
- // 2.区间匹配
+ // 1.不存在隐式的贯穿：不用加break,这个是跟其他语言的区别
+ // 2.支持区间匹配
  let someInt = 3
  switch someInt {
  case 0...3:
@@ -141,7 +243,7 @@ for id in 1...3 {
      print("default")
  }
 
- // 3.支持y元组
+ // 3.支持元组匹配
  // 4.值绑定
  // 5.支持where条件
  // 6.支持复合条件匹配
@@ -157,171 +259,66 @@ for id in 1...3 {
  case let(x, y) where x == -y:
      print("x = ", x, "y =", y)
      fallthrough // 这个是贯穿的意思
+ case (-2...2, -2...2):
+    print("inside the square!")
  default:
      print("other")
  }
+ 
+ // 7.switch必须能处理所有的情况
+ 
+ // 枚举类型, switch中也可以不加default. default可以排除没有列举完的类型
+ enum Answer {case right, wrong}
+ let answer = Answer.right
+ switch answer {
+ case Answer.right:
+     print("right")
+ case Answer.wrong:
+     print("wrong")
+ }
+ 
+ // 8.switch在oc中只支持整形，在swift中支持字符串，字符类型
+ 
+ // 不能像其他语言那样写两个case，可以case 1, 2: 或者case1后加fallthrough
+ /*
+  var a = 3
+  switch a {
+  case 1:
+  case 2:
+      print("1")
+  default:
+      print("2")
+  }
  */
 
-// continue, break用在for语句中
-//let numbers = [1,2,3,4,5,6,7,8]
-//for num in numbers{
-//    if num == 5{
-//        continue// break
-//    }
-//    print(num, terminator: "")
-//}
-// fallthrough用在switch中
-// return用在函数中
-// throw用在try中
-
-
-/*
-// 函数
-// 无参，无返回
-func hello() {
-    print("hello,HH")
-}
-hello()
-// 有参，无返回
-func helloSB(person: String) {
-    print("hello,\(person)")
-}
-helloSB(person: "Captain")
-
-// 有参，有返回
-func Greeting(person: String, isGreeted: Bool) -> String{
-    return !isGreeted ? "hello,\(person)!" : "\(person) has gretted!"
-}
-print(Greeting(person: "Captain", isGreeted: true))
-print(Greeting(person: "Lemon", isGreeted: false))
-
-// 多参，多返回
-func mult(a: Int, b: Int) -> (product: Int, sum: Int){
-    return (a * b, a + b)
-}
-print(mult(a: 3, b: 4))
-
-// 函数的参数标签
-func Greet(name person: String, from place: String) -> String{
-    return "hello,\(person) from \(place)!"
-}
-print(Greet(name: "SongLi", from: "YiBing"))
-
-// 用 _可以省略输入函数标签name，from, 开发过程中经常省略第一个标签
-// 可以添加默认值
-func Greeta(_ person: String, _ place: String = "China") -> String{
-    return "hello, \(person) from \(place)!"
-}
-print(Greeta("Avatar", "360"))
-print(Greeta("QiQi"))
-
-
-// 函数作为参数
-func Sum(a:Double, b:Double) -> Double{
-    return a + b
-}
-
-func Product(a:Double, b:Double) ->Double{
-    return a * b
-}
-
-func MathFunc(_ Fun: (Double, Double) -> Double, figureOne a: Double, figureTwo b: Double) -> String{
-    return "Result = \(Fun(a, b))"
-}
-
-print(MathFunc(Sum(a:b:), figureOne: 3.4, figureTwo: 5.2))
-print(MathFunc(Product(a:b:), figureOne: 3.2, figureTwo: 2.5))
-
-
-// 函数作为返回类型
-let value = 3
-func forward(_ value: Int) -> Int {
-    return value + 1
-}
-
-func backforward(_ value: Int) -> Int {
-    return value - 1
-}
-
-func chooseFunc(_ value: Int) -> (Int) -> Int {
-    return value > 0 ? forward : backforward
-}
-
-let Function = chooseFunc(4)
-print(Function(4))
-print(chooseFunc(3)(-2)) //选择函数然后计算
-
-// 非固定参数
-func sumof(numbers: Int...) -> Int {
-    var sum = 0
-    for number in numbers{
-        sum += number
-    }
-    return sum
-}
-print(sumof(numbers: 42, 597, 12))
-print(sumof())
-
-*/
-
-/*
- // 类
- class Shape {
-     var numberOfSlides = 0
-     // 初始化方法，初始化的时候，需要传入初始化参数
-     // 初始化方法，也是构造方法
-     init(_ numberOfSliders: Int) {
-         self.numberOfSlides = numberOfSliders
+ 
+ // continue, break用在for语句中
+ let numbers = [1,2,3,4,5,6,7,8]
+ for num in numbers{
+     if num == 5{
+         continue// break
      }
-     func Description() -> String {
-         return "A shape of \(self.numberOfSlides)!"
-     }
+     print(num, terminator: "")
  }
+ // fallthrough用在switch中
+ // return用在函数中
+ // throw用在try中
 
- //let shape = Shape(3)
- //shape.numberOfSlides = 5
- //print(shape.Description())
 
- // 可选链式调用
- var shape: Shape? = Shape(3)
- shape = nil
- // 为可选类型的时候，对象后面要加?
- print(shape?.Description())
 
- //继承
- class nameShape: Shape {
-     let name: String
-     var dot: Int
-     init(_ name: String, numberOfSliders: Int, dot: Int) {
-         self.name = name
-         self.dot = dot
-         super.init(numberOfSliders)
-     }
-     // 重写需要保持： 返回值类型
-     override func Description() -> String {
-         return "A \(self.dot) dot and \(self.numberOfSlides) sliders with the name: \(self.name) shape!"
-     }
+ let numbers = ["10", "20", "30", "-10", "50", "-kk30"]
+ var sum = 0
+ var index = 0
+ while let num = Int(numbers[index]), num > 0 {
+     sum += num
+     index += 1
  }
+ print(sum)
 
- var ccshape = nameShape("kk", numberOfSliders: 7, dot: 6)
- //var ccshape = nameShape(name: "cc", numberOfSliders: 7, dot: 3)
- //ccshape.name = "salanghei" // 常量不能更改
- ccshape.dot = 4
- print(ccshape.dot)
- print(ccshape.Description())
+ var aa:Int? = 8
+ print(String(describing: aa))
+
  */
 
-import UIKit
-import PlaygroundSupport
+// 对于字符的可选类型，条件转换可以用逗号
 
-let view = UIView()
-view.frame = CGRect(x: 0, y:0, width: 200, height: 200)
-view.backgroundColor = UIColor.green
-PlaygroundPage.current.liveView = view
-
-let imageView = UIImageView(image: UIImage(named: "logo.png"))
-PlaygroundPage.current.liveView = imageView
-
-let vc = UITableViewController()
-vc.view.backgroundColor = UIColor.lightGray
-PlaygroundPage.current.liveView = vc
