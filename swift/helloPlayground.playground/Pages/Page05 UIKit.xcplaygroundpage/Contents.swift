@@ -1,4 +1,5 @@
-
+//: [Previous](@previous)
+//: [Next](@next)
  // 可以l预览一个view, vc
  import UIKit
  import PlaygroundSupport
