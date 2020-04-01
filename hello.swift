@@ -748,6 +748,45 @@ MemoryLayout.size(ofValue: pwd) // 33
 MemoryLayout.alignment(ofValue: pwd)  // 8
 
 
+enum TestEnum {
+    case test
+}
+MemoryLayout<TestEnum>.stride // 0 分配到的内存,因为初始化没有指定test类型
+MemoryLayout<TestEnum>.size // 1 实际用到的内存大小
+MemoryLayout<TestEnum>.alignment // 1 对齐参数
+
+
+enum TestEnum: Int {
+    case test1(Int, Int, Int)
+    case test2(Int, Int)
+    case test3(Int)
+    case test4(Bool)
+    case test5
+}
+// 1个字节存储成员值
+// N个字节存储关联值（N取决于内存占用最大的关联值），任何一个case的关联值都共用这个N歌字节
+// 共用体
+var e = TestEnum.test1(1, 2, 3)
+// e的存储形式：
+// 01 00 00 00 00 00 00 00  
+// 02 00 00 00 00 00 00 00  
+// 03 00 00 00 00 00 00 00  
+// 00 
+// 00 00 00 00 00 00 00
+
+e = .test2(4, 5)
+// e的存储形式：
+// 04 00 00 00 00 00 00 00  
+// 05 00 00 00 00 00 00 00  
+// 00 00 00 00 00 00 00 00  
+// 01
+// 00 00 00 00 00 00 00
+
+// 大端存储：
+// 
+// 小端存储：高高低低
+// 0x00 00 00 00 00 00 01
+
 
 /************************************类*/
 
@@ -910,3 +949,78 @@ if let first = Int("4"), let second = Int("42"), first < second && second < 100 
      index += 1
  }
  print(sum)
+
+
+
+ // 空合并运算
+/*
+ a ?? b
+ a是可选项，b可以是或者不是可选项
+ a,b 存储类型相同
+ 最终结果:类型，取决于b, 值取决于a是否为nil
+ 
+ let a: Int? = 1
+ let b: Int? = 2
+ let c = a ?? b  // Optional(1)
+ 
+ let a: Int? = nil
+ let b: Int? = 2
+ let c = a ?? b // 2
+ 
+ 
+ ？？跟if let配合使用
+ let a: Int? = nil
+ let b: Int? = 2
+ if let c = a ?? b {
+    print(c)
+ }
+ // 类似 if a != nil || b != nil
+ 
+ if let c = a, let d = b {
+    print(c)
+    print(d)
+ }
+ // 类似if a != nil && b != nil
+ 
+ */
+
+/*
+ guard语句：
+ guard 条件 else {
+    // do something
+    // return, break, continue, throw error
+ }
+ 1.guard条件为false时，就会执行大括号里面的代码，为true的时候，跳过guard语句
+ 2.特别适合做“提前退出”
+ 3.guard括号里的的常量，变量也能在外层作用域中使用
+ */
+
+/*
+ 字符串插值
+ */
+var age: Int? = 10
+//print("age is \(age)")// 会报错
+// 下面三种都可以解决报错的问题
+print("age is \(age!)")
+print("age is \(String(describing: age))")
+print("age is \(age ?? 0)")
+
+// 多重可选项
+/*
+ var num1: Int? = 10
+ var num2: Int?? = num1
+ var num3: Int?? = 10
+ print(num2 == num3) // true
+ */
+
+// 可以使用用lldb指令frame variable -R或者 fr v -R查看区别
+var num1: Int? = nil
+var num2: Int?? = num1
+var num3: Int?? = nil
+print(num2 == num3) // false
+(num2 ?? 1) ?? 2  // 2
+(num3 ?? 1) ?? 2  //1
+
+
+
+

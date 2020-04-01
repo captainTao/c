@@ -137,3 +137,43 @@ MemoryLayout.size(ofValue: pwd) // 33
 MemoryLayout.alignment(ofValue: pwd)  // 8
 
 
+
+enum TestEnum1 {
+    case test
+}
+MemoryLayout<TestEnum1>.stride // 0 分配到的内存,因为初始化没有指定test类型
+MemoryLayout<TestEnum1>.size // 1 实际用到的内存大小
+MemoryLayout<TestEnum1>.alignment // 1 对齐参数
+
+
+
+enum TestEnum {
+    case test1(Int, Int, Int)
+    case test2(Int, Int)
+    case test3(Int)
+    case test4(Bool)
+    case test5
+}
+// 1个字节存储成员值
+// N个字节存储关联值（N取决于内存占用最大的关联值），任何一个case的关联值都共用这个N歌字节
+// 共用体
+var e = TestEnum.test1(1, 2, 3)
+// e的存储形式：
+// 01 00 00 00 00 00 00 00
+// 02 00 00 00 00 00 00 00
+// 03 00 00 00 00 00 00 00
+// 00
+// 00 00 00 00 00 00 00
+
+e = .test2(4, 5)
+// e的存储形式：
+// 04 00 00 00 00 00 00 00
+// 05 00 00 00 00 00 00 00
+// 00 00 00 00 00 00 00 00
+// 01
+// 00 00 00 00 00 00 00
+
+// 大端存储：
+//
+// 小端存储：高高低低
+// 0x00 00 00 00 00 00 01
