@@ -56,6 +56,7 @@
      print("\(x) ", terminator: "")
  }
  print()
+
  // 用户输入
  let theInput = readLine()
 
@@ -113,7 +114,7 @@
  let int = 3
  let double = 3.14343636
  let result = Double(int)+double
- 
+ let result23 = Int(double)  // 3，也可以把大的转化成小的
 // let intPi = Int(pi)
  
 
@@ -210,6 +211,17 @@
      print("\(key) = \(value)")
  }
 
+ 
+  // 数组和元组
+ let num = [1,2,3]
+ var names = ["i","j"]
+ let dic = ["one":1, "two":2]
+
+  let t = (1,3,5)
+  t.0  // 通过.取值
+  t.1
+ 
+ 
  // while...do
  var i = 100
  while i < 100 {
@@ -217,6 +229,7 @@
  }
  print(i)
 
+ 
  // 类似do...while
  // 从swift3中取消了自增，自减的运算符
  repeat {
@@ -305,7 +318,7 @@
  // throw用在try中
 
 
-
+ 
  let numbers = ["10", "20", "30", "-10", "50", "-kk30"]
  var sum = 0
  var index = 0
@@ -317,8 +330,9 @@
 
  var aa:Int? = 8
  print(String(describing: aa))
-
+ 
+// 对于字符的可选类型，条件转换可以用逗号
  */
 
-// 对于字符的可选类型，条件转换可以用逗号
+
 

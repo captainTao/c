@@ -43,7 +43,7 @@ let i = -1
 let at = (2, "abc")
 let bt = (2, "bcd")
 at > bt
-//元组最多能比较7个元素
+// 元组最多能比较7个元素
  
 // 元组取数据
 at.1
@@ -66,11 +66,11 @@ print(realName)
 print(realN)
 
 // 区间、逻辑
-//开区间
+// 开区间
 for id in 1..<5 {
     print(id)
 }
-//闭区间
+// 闭区间
 for id in 1...3 {
     print(id)
 }

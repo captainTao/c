@@ -6,5 +6,7 @@
         <page name='Page03 函数'/>
         <page name='Page04 枚举'/>
         <page name='Page05 UIKit'/>
+        <page name='Page06 可选项'/>
+        <page name='test'/>
     </pages>
 </playground>
