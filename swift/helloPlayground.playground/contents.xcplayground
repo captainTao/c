@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <playground version='6.0' target-platform='ios' display-mode='raw'>
     <pages>
-        <page name='Page01 basic'/>
-        <page name='Page02 basic'/>
-        <page name='Page03 函数'/>
-        <page name='Page04 枚举'/>
-        <page name='Page05 UIKit'/>
-        <page name='Page06 可选项'/>
+        <page name='Page01 字符串'/>
+        <page name='Page02 数组,字典，元组'/>
+        <page name='Page03 逻辑条件'/>
+        <page name='Page04 运算符 类'/>
+        <page name='Page05 函数'/>
+        <page name='Page06 枚举'/>
+        <page name='Page07 UIKit'/>
+        <page name='Page08 可选项'/>
         <page name='test'/>
     </pages>
 </playground>

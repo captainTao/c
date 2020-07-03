@@ -118,11 +118,22 @@ var i = 1
 var name: String
 var Name: String? // 可选类型
 
+
+
 let str = "x+y= "
 let xy = x + y
-
 print("str + String(xy)")
 print("x + y = \(x + y)")
+
+
+
+// 多行字符串"""
+let apples = 3
+let oranges = 2
+let quotation = """
+I said "I have \(apples) apples."
+And then I said "I have \(apples + oranges) pieces of fruit."
+"""
 
 
 // 整数和浮点数可以额外添加0和下划线增加识别度
@@ -167,11 +178,14 @@ let intPi = Int(pi)
     print("hello, world!")
  }
 
- // 可以通过下标来取值
+ // 可以通过下标来取值，最后一个元素后面允许有逗号
  let names = ["Tony", "Jack", "Sparrow", "QiQi", "Jony"]
  for name in names[0...3]{
      print(name)
  }
+
+ //
+
 
  // 单侧区间，一边可以理解为无穷大
  for name in names[...2]{
@@ -184,6 +198,10 @@ let intPi = Int(pi)
      print(name)
  }
  
+
+ // 添加
+ names.append("blue paint")
+
 
  // 数组步长：
  for tickMark in stride(from: 3, through: 11, by: 2){
@@ -233,7 +251,12 @@ let dic = ["one":1, "two":2]
  let t = (1,3,5)
  t.0  // 通过.取值
  t.1
+
+
 /********************************循环和条件*/
+// 在 if 语句中，条件必须是一个布尔表达式
+// ——这意味着像 if score { ... } 这样的代码将报错，而不会隐形地与 0 做对比。
+
  // while...do
  var i = 100
  while i < 100 {
@@ -665,7 +688,7 @@ case let .string(value): // 一个参数的，参数可变性写外边
 }
 
 
-// 原始值（Raw Values），需要是相同类型，在enume后面加入raw value的类型
+// 原始值（Raw Values），需要是相同类型，在enum后面加入raw value的类型
 // 原始值不占用枚举变量的内存
 enum Grade : String {
     case perfect = "A"
@@ -891,27 +914,37 @@ func get(_ index: Int) -> Int? {
 }
 print(get(1))
 print(get(-1))
-print(get(-4))
+print(get(-4) ?? 3)
 
 
-// 取出被包装的数据，解包用!
-var age: Int? = 10
-var ageInt: Int = age!
-ageInt += 10
+/ 解包：
+ // 取出被包装的数据，解包用!
+ var age1: Int? = 10
+ var ageInt: Int = age1!
+ ageInt += 10
+ 
+ // 对nil 的可选项解包会产生运行时错误
+ // Fatal error: Unexpectedly found nil while unwrapping an Optional value
+ // var age: Int?
+ // age!
+
+ // 隐式解包,类型后面加！，可以避免每次都要去解包
+ let num1: Int! = 10
+ let num2: Int! = num1
+ 
+ let num3: Int! = nil
+ //Fatal error: Unexpectedly found nil while .....
+ 
 
 
-// 对nil 的可选项解包会产生运行时错误
-// Fatal error: Unexpectedly found nil while unwrapping an Optional value
-
-// var age: Int?
-// age!
-
-let number = Int("123") // 这里number是可选类型，可以通过编译器提示查看
-if number != nil {
-    print("转换成功：\(number)")
-} else {
-    print("转换失败")
-}
+ let number = Int("kk123") // 这里number是可选类型，可以通过编译器提示查看
+ if number != nil {
+    // print("转换成功：\(number)")
+    // 可选项用下面这个转换为字符串
+    print("转换成功：\(String(describing: number))")
+ } else {
+     print("转换失败")
+ }
 
 
 /************************************可选项值绑定*/
@@ -974,31 +1007,44 @@ if let first = Int("4"), let second = Int("42"), first < second && second < 100 
  a是可选项，b可以是或者不是可选项
  a,b 存储类型相同
  最终结果:类型，取决于b, 值取决于a是否为nil
- 
+*/
+
  let a: Int? = 1
  let b: Int? = 2
- let c = a ?? b  // Optional(1)
+ let c = a ?? b  // Int?, Optional(1)
  
- let a: Int? = nil
- let b: Int? = 2
- let c = a ?? b // 2
+ let a1: Int? = nil
+ let b1: Int? = 2
+ let c1 = a1 ?? b1 // Int?, Optional(2)
  
+ let a2: Int? = nil
+ let b2: Int? = nil
+ let c2 = a1 ?? b1 // Int?, nil
  
- ？？跟if let配合使用
- let a: Int? = nil
- let b: Int? = 2
- if let c = a ?? b {
+ let a3: Int? = 1
+ let b3: Int = 2
+ let c3 = a1 ?? b1 // Int, 1
+
+ let a4: Int? = nil
+ let b4: Int = 2
+ let c4 = a1 ?? b1 // Int, 2
+
+
+// ？？跟if let配合使用
+// 类似 if a != nil || b != nil
+ let a5: Int? = nil
+ let b5: Int? = 2
+ if let c = a5 ?? b5 {
     print(c)
  }
- // 类似 if a != nil || b != nil
  
+// 类似if a != nil && b != nil
  if let c = a, let d = b {
     print(c)
     print(d)
  }
- // 类似if a != nil && b != nil
- 
- */
+
+
 
 /*
  guard语句：

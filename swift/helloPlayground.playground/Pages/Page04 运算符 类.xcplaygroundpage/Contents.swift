@@ -53,6 +53,7 @@ at.0
  let httpstatus = (statusCode: 200, discription: "OK")
  print("The status code is \(httpstatus.statusCode)")
  
+
 // 三目、空合
 
 let a = 1
@@ -64,6 +65,7 @@ let realName = name != nil ? name! : "unknown"
 let realN = name ?? "unknow"
 print(realName)
 print(realN)
+
 
 // 区间、逻辑
 // 开区间
@@ -94,11 +96,16 @@ class Shape {
 //shape.numberOfSlides = 5
 //print(shape.Description())
 
+
 // 可选链式调用
 var shape: Shape? = Shape(3)
 shape = nil
 // 为可选类型的时候，对象后面要加?
-print(shape?.Description())
+// print(shape?.Description())
+print(shape?.Description() ?? "No Description!")
+
+
+
 
 //继承
 class nameShape: Shape {
