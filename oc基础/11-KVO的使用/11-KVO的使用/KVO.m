@@ -40,7 +40,7 @@
     
     //获取老的和新的值：
     NSString *oldage = [change valueForKey:@"old"];
-    NSLog(@"现在的年龄为：%@岁", oldage);
+    NSLog(@"以前的年龄为：%@岁", oldage);
     NSString *newage = [change valueForKey:@"new"];
     NSLog(@"现在的年龄为：%@岁", newage);
 }

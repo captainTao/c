@@ -40,7 +40,11 @@ let result = mult(a: 3, b: 4)
 print(result.product) // 通过.来取值
 print(result.sum)
 
- 
+
+// 如果返回是可选类型，则在返回参数后面加？
+func mult1(a: Int, b: Int) -> (product: Int, sum: Int){
+    return (a * b, a + b)
+}
 
 // 函数隐式返回：
 // 函数体内只有一个单一的表达式，那么这个函数会隐式返回,可以不用写return

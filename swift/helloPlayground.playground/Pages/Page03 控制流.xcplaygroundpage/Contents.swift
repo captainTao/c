@@ -1,5 +1,12 @@
 //: [Previous](@previous)
 
+/*
+ 1. for..in , 在数组[]，字典[key:value], 默认遍历元素为let
+ 2. while, repeat...while
+ 3. if...else if..,  switch xx case
+ 4. guard, assert(assertionFailure), precondtion(preconditionFailure), do {try ..} catch xx{...}
+ */
+
  // 在 if 语句中，条件必须是一个布尔表达式
  // ——这意味着像 if score { ... } 这样的代码将报错，而不会隐形地与 0 做对比。
 
@@ -100,6 +107,29 @@
  // throw用在try中
 
 
+/*
+控制转移语句：
+continue
+break
+fallthrough
+return
+throw
+*/
 
+
+/*
+ if #available (平台名称 版本号, ..., *)
+ 平台名： iOS，macOS，watchOS 和 tvOS
+ 最后一个参数，*，是必须的
+ 表示：版本号高于你的设备指定的最低版本时，if 语句的代码块将会运行
+ */
+
+if #available(iOS 10, macOS 10.12, *) {
+    // 在 iOS 使用 iOS 10 的 API, 在 macOS 使用 macOS 10.12 的 API
+    print("hahha")
+} else {
+    // 使用先前版本的 iOS 和 macOS 的 API
+    print("hehehe")
+}
 
 //: [Next](@next)

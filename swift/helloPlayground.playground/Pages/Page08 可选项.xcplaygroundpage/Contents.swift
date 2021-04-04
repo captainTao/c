@@ -1,6 +1,17 @@
 //: [Previous](@previous)
 //: [Next](@next)
 
+/*
+Swift 的nil 和 Objective-C 中的nil 并不一样。
+在 Objective-C 中，nil 是一个指向不存在对象的指针。
+在 Swift 中，nil不是指针——它是一个确定的值，用来表示值缺失。任何类型的可选状态都可以被设置为 nil，不只是对象类型。
+
+ 用 != 来判断
+ if convertedNumber != nil {
+     print("convertedNumber: \(convertedNumber!).")
+ }
+ 
+ */
 
  // 在类型后面加一个问号，定义一个可选项
  // 可选项初始化默认值为nil, 也可以赋值为nil

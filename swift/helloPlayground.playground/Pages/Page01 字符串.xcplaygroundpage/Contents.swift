@@ -48,6 +48,7 @@
 //print("str")
 //print(str)
 
+/*输入，输出*/
 
 // print输出函数
 // public func print(items: Any..., separator: String = default, terminator: String = default)
@@ -57,16 +58,57 @@
  }
  print()
 
+ // 可选项输出：
+var aa:Int? = 8
+print(String(describing: aa))
+
+
  // 用户输入
  let theInput = readLine()
 
+
+/*
+ 字符串插值
+ */
+var age: Int? = 10
+//print("age is \(age)")// 会报错
+// 下面三种都可以解决报错的问题
+print("age is \(age!)")
+print("age is \(String(describing: age))")
+print("age is \(age ?? 0)")
+
+
+/*
+ 一行定义多个变量，设置变量类型
+ var x = 0.0, y = 0.0, z = 0.0
+ var welcomeMessage: String
+ var red, green, blue: Double
+ */
+
+
+
+// 不同进制表示
+let decimalInteger = 17
+let binaryInteger = 0b10001       // 二进制的17
+let octalInteger = 0o21           // 八进制的17
+let hexadecimalInteger = 0x11     // 十六进制的17
+
+
+// 在32位平台上，Int 和 Int32 长度相同。
+// 在64位平台上，Int 和 Int64 长度相同。
+
+// 一般不使用UInt
+// 使用Int, 优先Double，其次Float, 类型推荐也会被推断为Double
+
+
+
  // typealias
  // typealias newname = type
- typealias Feet = Int
+ typealias Feet = Int   //bit
  // 在swift中没有下面三个类型
- typealias Byte = Int8
- typealias Short = Int16
- typealias Long = Int32
+ typealias Byte = Int8  //8bit
+ typealias Short = Int16  //16bit, char
+ typealias Long = Int32   //Int64??  Int:32bit, float:32bit, long:64bit, double:64bit, string:16bit,
  
  typealias Date = (year: Int, month: Int, day: Int)
  print(Date(1996,32,44).year)
@@ -90,6 +132,10 @@
  let string = "小马哥" // 字符串类型推断
  let character:Character = "A" // 字符类型需要标明
  
+ var emptyString = ""               // 空字符串字面量
+ var anotherEmptyString = String()  // 初始化方法
+ emptyString.isEmpty  // isEmpty来判断是否为空
+
  //字面量可以直接相加：
  let result1 = 3 + 4.34353643
  
@@ -97,9 +143,10 @@
  var name: String
  var Name: String? // 可选类型
 
+
  let str = "x+y= "
  let xy = x + y
- print("str + String(xy)")
+ print("str" + String(xy))
  print("x + y = \(x + y)")
 
 
@@ -143,10 +190,33 @@ And then I said "I have \(apples + oranges) pieces of fruit."
  let stringRange = "cc"..."ff"
  stringRange.contains("cd")
  stringRange.contains("fg")
+ stringRange.contains("fc")
+
 
  let stringRange2 = "a"..."f"
  stringRange2.contains("e")
  
- // 可选项输出：
-var aa:Int? = 8
-print(String(describing: aa))
+// 对字符串进行遍历,会打印出单个字符
+for char in "Dog!" {
+    print(char)
+}
+
+
+// 连接字符串
+let string1 = "hello"
+let string2 = " there"
+var welcome = string1 + string2
+// 也可以使用+=
+var instruction = "look over"
+instruction += string2
+// 也可以使用.append()
+let exclamationMark: Character = "!"
+welcome.append(exclamationMark)
+
+// 对字符串进行拆分数组
+var badStart = """
+one
+two
+"""
+print(badStart.split(separator: "\n"))
+

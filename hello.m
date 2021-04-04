@@ -22,6 +22,21 @@ runloop runtime
 dealloc  最好还是写起   也还要做些事情   比如移除观察者  等其他释放性的操作
 这里面要写广播的注册，发送，响应，销毁
 观察者，是移除广播，还是kVO中的移除观察值的变化？（应该是后者）
+
+
+https://blog.csdn.net/ming_me/article/details/5897985?utm_medium=distribute.pc_relevant_bbs_down.none-task--2~all~sobaiduend~default-3.nonecase&depth_1-utm_source=distribute.pc_relevant_bbs_down.none-task--2~all~sobaiduend~default-3.nonecase
+void *memset(void *s,int c,size_t n)
+总的作用：将已开辟内存空间 s 的首 n 个字节的值设为值 c。
+
+
+CC_MD5(fooData, (CC_LONG)strlen(fooData), result);
+/*
+第一个参数:要加密的字符串
+第二个参数: 获取要加密字符串的长度
+第三个参数: 接收结果的数组
+*/
+
+
 --------------------------------------
 1. 常见区别
 关键字以@开头
@@ -2804,7 +2819,7 @@ int main(int argc, const char * argv[]) {
     
     //获取老的和新的值：
     NSString *oldage = [change valueForKey:@"old"];
-    NSLog(@"现在的年龄为：%@岁", oldage);
+    NSLog(@"以前的年龄为：%@岁", oldage);
     NSString *newage = [change valueForKey:@"new"];
     NSLog(@"现在的年龄为：%@岁", newage);
 }

@@ -30,3 +30,4 @@ void test2(Car *newC){  //创建car类的指针，car类似于int,char类型
     newC->speed = 250;
     newC->wheels = 6;
 }
+

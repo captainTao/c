@@ -1,6 +1,7 @@
 //: [Previous](@previous)
 //: [Next](@next)
 // 枚举类型：
+// 与 C 和 Objective-C 不同，Swift 的枚举成员在被创建时不会被赋予一个默认的整型值。比如下面0,1,2,3
 enum Direction {
     case north
     case south
@@ -22,6 +23,23 @@ case .east:
 default:
     print("others!")
 }
+
+
+
+enum Beverage: CaseIterable {  //遵循CaseIterable协议
+    case coffee, tea, juice
+}
+// Beverage.allCases可以访问Beverage枚举所有成员的集合
+let numberOfChoices = Beverage.allCases.count //3
+print("\(numberOfChoices) beverages available")
+
+for beverage in Beverage.allCases {
+    print(beverage)
+}
+// coffee, tea, juice
+
+
+
 
 // 关联值
 // 有时候会将成员枚举值和关联的类型存储在一起
@@ -66,8 +84,11 @@ var gg = Grade.perfect
 print(gg.rawValue)
 print(Grade.perfect.rawValue)
 
+
+
 // 隐式原始值
 // 如果枚举的原始类型是Int,String, Swift会自动分配原始值
+// 当使用整数作为原始值时，隐式赋值的值依次递增 1。如果第一个枚举成员没有设置原始值，其原始值将为 0。
 enum Season : Int {
     case spring, summer, autumn, winter
 }
@@ -84,6 +105,8 @@ print(Season1.spring.rawValue) //1
 print(Season1.summer.rawValue) //2
 print(Season1.autumn.rawValue) //4
 print(Season1.winter.rawValue) //5
+
+let testSeason = Season1(rawValue: 5) //通过原始值创建变量，testSeason为可选类型Season1？
 
 
 // 递归枚举

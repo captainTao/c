@@ -74,6 +74,7 @@ int main()
     BOOL b1 = [Circle isInteractBetweenCircle1:c1 andCircle2:c2];
     NSLog(@"%d", b1);
     
+    
     /*
      Point2D *p1 = [Point2D new];
      // (10, 15)
@@ -88,3 +89,4 @@ int main()
      NSLog(@"%f", d1);*/
     return 0;
 }
+
